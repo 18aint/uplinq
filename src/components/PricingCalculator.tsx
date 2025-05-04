@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import QuoteBasket from './QuoteBasket';
 import { WebIcon, StoreIcon, LandingIcon, MobileIcon, UserIcon, CMSIcon, PaymentsIcon, ChatIcon, NotificationIcon, AdminIcon, ReportingIcon, ComplexityIcon, TimelineIcon, SEOIcon, AnalyticsIcon, MaintenanceIcon, ContentIcon } from './QuoteIcons';
 
@@ -208,13 +208,10 @@ const PricingCalculator = () => {
   
   // State for UI
   const [activeStep, setActiveStep] = useState<number>(1);
-  const [showBasketOnMobile, setShowBasketOnMobile] = useState<boolean>(false);
   
   // State for quote basket
   const [basketItems, setBasketItems] = useState<SelectedItem[]>([]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
-  const [basketVisible, setBasketVisible] = useState<boolean>(false);
-  const [fadeIn, setFadeIn] = useState<boolean>(false);
   
   // Auto-scroll to next section when platform is selected
   useEffect(() => {
@@ -299,16 +296,6 @@ const PricingCalculator = () => {
     
     setBasketItems(newBasketItems);
     setTotalPrice(newTotalPrice);
-    
-    // Show quote basket if any selection is made
-    if (newBasketItems.length > 0) {
-      setBasketVisible(true);
-      // Add a slight delay to fade in the basket for a smoother experience
-      setTimeout(() => setFadeIn(true), 100);
-    } else {
-      setFadeIn(false);
-      setTimeout(() => setBasketVisible(false), 300);
-    }
   }, [selectedPlatform, selectedFeatures, selectedComplexity, selectedTimeline, selectedEnhancements]);
   
   // Handle platform selection
@@ -376,13 +363,8 @@ const PricingCalculator = () => {
     }
   };
   
-  // Toggle mobile basket visibility
-  const toggleMobileBasket = () => {
-    setShowBasketOnMobile(prev => !prev);
-  };
-  
   return (
-    <div className="max-w-7xl mx-auto px-4">
+    <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
       {/* Progress indicator */}
       <div className="hidden md:block mb-10">
         <div className="flex items-center justify-between max-w-3xl mx-auto">
@@ -411,60 +393,31 @@ const PricingCalculator = () => {
         </div>
       </div>
       
-      {/* Mobile view toggle for quote basket */}
+      {/* Mobile view quote basket - always visible */}
       <div className="md:hidden sticky top-0 z-10 py-2 bg-white border-b">
-        <button
-          onClick={toggleMobileBasket}
-          className="w-full py-2 px-4 rounded-lg bg-blue-50 text-blue-600 font-medium flex items-center justify-between"
-        >
-          <span>Your Quote: £{totalPrice.toLocaleString()}</span>
-          <span className="flex items-center">
-            {showBasketOnMobile ? 'Hide Details' : 'Show Details'}
-            <svg 
-              className={`ml-1 w-5 h-5 transition-transform ${showBasketOnMobile ? 'rotate-180' : ''}`} 
-              fill="none" 
-              viewBox="0 0 24 24" 
-              stroke="currentColor"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </span>
-        </button>
-        
-        <AnimatePresence>
-          {showBasketOnMobile && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              className="overflow-hidden"
-            >
-              <div className="pt-4 pb-2">
-                <QuoteBasket 
-                  items={basketItems} 
-                  total={totalPrice} 
-                  onRemoveItem={handleRemoveItem}
-                  calendlyUrl="https://calendly.com/waynekuvi"
-                />
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <div className="pt-4 pb-2">
+          <QuoteBasket 
+            items={basketItems} 
+            total={totalPrice} 
+            onRemoveItem={handleRemoveItem}
+            calendlyUrl="https://calendly.com/waynekuvi"
+          />
+        </div>
       </div>
       
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
         {/* Configuration Panel */}
-        <div className="lg:col-span-2 space-y-12">
+        <div className="lg:col-span-2 space-y-8 md:space-y-12">
           {/* Platform Selection */}
           <section className="bg-white rounded-xl p-6 shadow-sm border border-gray-100" id="platform-section">
             <h3 className="text-xl font-medium text-gray-900 mb-2">1. What are you building?</h3>
             <p className="text-gray-600 mb-6">Choose the type of digital product you need</p>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
               {platformOptions.map(platform => (
                 <motion.div 
                   key={platform.id}
-                  className={`border rounded-xl p-5 cursor-pointer transition-all hover:shadow-md ${
+                  className={`border rounded-xl p-4 md:p-5 cursor-pointer transition-all hover:shadow-md ${
                     selectedPlatform === platform.id 
                       ? 'border-blue-500 bg-blue-50/50 ring-1 ring-blue-500/20' 
                       : 'border-gray-200 hover:border-blue-300'
@@ -587,7 +540,7 @@ const PricingCalculator = () => {
           </section>
           
           {/* Complexity and Timeline */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
             {/* Complexity Selection */}
             <section 
               ref={complexityRef}
@@ -701,7 +654,7 @@ const PricingCalculator = () => {
             <h3 className="text-xl font-medium text-gray-900 mb-2">5. Any additional enhancements?</h3>
             <p className="text-gray-600 mb-6">Optimize your project with these valuable extras</p>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
               {enhancementOptions.map(enhancement => (
                 <motion.div 
                   key={enhancement.id}
@@ -743,24 +696,14 @@ const PricingCalculator = () => {
         
         {/* Quote Basket - Desktop */}
         <div className="lg:col-span-1 hidden lg:block">
-          <AnimatePresence>
-            {basketVisible && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: fadeIn ? 1 : 0, y: fadeIn ? 0 : 20 }}
-                exit={{ opacity: 0, y: 20 }}
-                transition={{ duration: 0.3 }}
-                className="sticky top-24"
-              >
-                <QuoteBasket 
-                  items={basketItems} 
-                  total={totalPrice} 
-                  onRemoveItem={handleRemoveItem}
-                  calendlyUrl="https://calendly.com/waynekuvi"
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
+          <div className="sticky top-24">
+            <QuoteBasket 
+              items={basketItems} 
+              total={totalPrice} 
+              onRemoveItem={handleRemoveItem}
+              calendlyUrl="https://calendly.com/waynekuvi"
+            />
+          </div>
         </div>
       </div>
     </div>

@@ -37,7 +37,7 @@ const ProcessTimeline = () => {
             </div>
 
             {/* Heading */}
-            <h2 className={`text-5xl text-center leading-tight font-light text-gray-900 mb-24 transition-all duration-700 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            <h2 className={`text-2xl sm:text-3xl md:text-5xl text-center leading-tight font-light text-gray-900 mb-24 transition-all duration-700 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
                 }`}>
                 Transforming ideas into<br />
                 digital excellence

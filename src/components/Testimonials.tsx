@@ -190,7 +190,7 @@ const Testimonials = () => {
             <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
             <span className="text-sm text-gray-600">Testimonials</span>
           </div>
-          <h2 className="text-[42px] leading-tight font-light mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl leading-tight font-light mb-4 text-center">
             What our happy clients say about our services
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto text-base">

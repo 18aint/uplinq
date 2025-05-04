@@ -207,11 +207,11 @@ const AvailabilityBar = ({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="flex flex-col sm:flex-row items-center justify-between p-4 gap-4">
-        <div className="flex items-center">
-          <div className="flex-shrink-0 mr-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 sm:p-4 gap-3 sm:gap-4">
+        <div className="flex items-center w-full sm:w-auto">
+          <div className="flex-shrink-0 mr-3 sm:mr-4">
             <svg 
-              className="w-8 h-8 text-blue-500" 
+              className="w-7 h-7 sm:w-8 sm:h-8 text-blue-500" 
               fill="none" 
               viewBox="0 0 24 24" 
               stroke="currentColor"
@@ -224,21 +224,19 @@ const AvailabilityBar = ({
               />
             </svg>
           </div>
-          <div>
-            <div className="text-sm text-gray-500 font-medium">Next Project Slot</div>
-            <div className="font-semibold text-gray-900">{getAvailabilityText()}</div>
+          <div className="min-w-0">
+            <div className="text-xs sm:text-sm text-gray-500 font-medium truncate">Next Project Slot</div>
+            <div className="font-semibold text-gray-900 text-sm sm:text-base truncate">{getAvailabilityText()}</div>
           </div>
         </div>
-        
-        <div className="flex items-center space-x-4">
-          <div className="flex items-center">
-            <div className={`w-3 h-3 rounded-full ${getStatusColor()} mr-2`}></div>
-            <span className="text-sm font-medium text-gray-700">{availabilityStatus}</span>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center w-full sm:w-auto gap-3 sm:gap-4">
+          <div className="flex items-center mb-1 sm:mb-0">
+            <div className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full ${getStatusColor()} mr-2`}></div>
+            <span className="text-xs sm:text-sm font-medium text-gray-700">{availabilityStatus}</span>
           </div>
-          
           <motion.button 
             onClick={openCalendly}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors whitespace-nowrap"
+            className="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors whitespace-nowrap text-sm sm:text-base mt-2 mb-[100px] sm:mt-0 sm:mb-0"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >

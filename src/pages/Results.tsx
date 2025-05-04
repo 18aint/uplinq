@@ -286,7 +286,7 @@ export default function Results() {
         {/* Featured Project Section with Parallax */}
         <motion.section 
           ref={featuredRef}
-          className="relative mb-24 z-10 mt-24 bg-transparent"
+          className="relative mb-12 sm:mb-24 z-10 mt-10 sm:mt-24 bg-transparent"
           style={{ 
             opacity: featuredOpacity,
             scale: featuredScale
@@ -295,11 +295,11 @@ export default function Results() {
           {/* Background Gradient Overlay */}
           {/* Removed background overlay */}
 
-          <div className="container mx-auto px-4 bg-transparent">
-            <div className="flex flex-col md:flex-row gap-8 lg:gap-16 items-center">
+          <div className="w-full px-4 sm:container sm:mx-auto sm:px-4 bg-transparent">
+            <div className="flex flex-col md:flex-row gap-4 sm:gap-8 lg:gap-16 items-center">
               {/* Featured Project Image */}
               <motion.div 
-                className="w-full md:w-7/12 rounded-2xl overflow-hidden mockup-hover bg-transparent"
+                className="w-full md:w-7/12 rounded-2xl overflow-hidden mockup-hover bg-transparent mb-4 md:mb-0"
                 style={{ y: featuredParallax }}
                 onMouseEnter={() => setIsCursorVisible(true)}
                 onMouseLeave={() => setIsCursorVisible(false)}
@@ -313,14 +313,14 @@ export default function Results() {
                       <div className="w-2.5 h-2.5 rounded-full bg-yellow-500"></div>
                       <div className="w-2.5 h-2.5 rounded-full bg-green-500"></div>
                     </div>
-                    <div className="ml-4 h-3 bg-gray-700 rounded-full w-48 max-w-[70%]"></div>
+                    <div className="ml-4 h-3 bg-gray-700 rounded-full w-32 sm:w-48 max-w-[70%]"></div>
                   </div>
                   
                   <motion.img 
                     src={featuredProject.image} 
                     alt={featuredProject.title} 
                     className="w-full h-full object-cover object-left-top rounded-b-2xl"
-                    style={{ marginTop: '24px' }}
+                    style={{ marginTop: '20px' }}
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.8 }}
                   />
@@ -360,17 +360,17 @@ export default function Results() {
               {/* Featured Project Content */}
               <div className="w-full md:w-5/12">
                 <motion.div 
-                  className="flex items-center mb-3"
+                  className="flex items-center mb-2 sm:mb-3"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5 }}
                 >
-                  <div className="h-0.5 w-6 bg-blue-500 mr-3"></div>
-                  <span className="text-blue-500 uppercase tracking-wide text-sm font-medium">Featured Project</span>
+                  <div className="h-0.5 w-4 sm:w-6 bg-blue-500 mr-2 sm:mr-3"></div>
+                  <span className="text-blue-500 uppercase tracking-wide text-xs sm:text-sm font-medium">Featured Project</span>
                 </motion.div>
                 
                 <motion.h2 
-                  className="text-3xl md:text-4xl font-medium text-gray-900 mb-3"
+                  className="text-xl sm:text-2xl md:text-4xl font-medium text-gray-900 mb-2 sm:mb-3"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: 0.1 }}
@@ -379,7 +379,7 @@ export default function Results() {
                 </motion.h2>
                 
                 <motion.p 
-                  className="text-gray-600 mb-6 text-lg"
+                  className="text-gray-600 mb-4 sm:mb-6 text-base sm:text-lg"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: 0.2 }}
@@ -388,7 +388,7 @@ export default function Results() {
                 </motion.p>
                 
                 <motion.div 
-                  className="grid grid-cols-2 gap-4 mb-8"
+                  className="grid grid-cols-2 gap-2 sm:gap-4 mb-4 sm:mb-8"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.3 }}
@@ -396,7 +396,7 @@ export default function Results() {
                   {featuredProject.stats.slice(0, 4).map((stat, index) => (
                     <motion.div 
                       key={index} 
-                      className="bg-white/80 backdrop-blur-sm rounded-lg p-4 shadow-sm border border-gray-100"
+                      className="bg-white/80 backdrop-blur-sm rounded-lg p-2 sm:p-4 shadow-sm border border-gray-100"
                       whileHover={{ 
                         scale: 1.05, 
                         backgroundColor: "rgba(255, 255, 255, 1)",
@@ -404,7 +404,7 @@ export default function Results() {
                       }}
                       transition={{ type: "spring", stiffness: 400 }}
                     >
-                      <p className="text-blue-600 font-medium text-lg">{stat}</p>
+                      <p className="text-blue-600 font-medium text-sm sm:text-lg">{stat}</p>
                     </motion.div>
                   ))}
                 </motion.div>
@@ -412,13 +412,13 @@ export default function Results() {
                 {/* Client Testimonial */}
                 {featuredProject.testimonial && (
                   <motion.blockquote 
-                    className="relative border-l-4 border-blue-500 pl-4 mb-8"
+                    className="relative border-l-4 border-blue-500 pl-3 sm:pl-4 mb-4 sm:mb-8"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.4 }}
                   >
-                    <p className="text-gray-700 italic mb-2">{featuredProject.testimonial}</p>
-                    <footer className="text-sm text-gray-600">
+                    <p className="text-gray-700 italic mb-1 sm:mb-2 text-sm sm:text-base">{featuredProject.testimonial}</p>
+                    <footer className="text-xs sm:text-sm text-gray-600">
                       <strong>{featuredProject.clientName}</strong> - {featuredProject.clientTitle}
                     </footer>
                   </motion.blockquote>
@@ -428,13 +428,13 @@ export default function Results() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => openModal(featuredProject)}
-                  className="inline-flex items-center px-5 py-2.5 bg-blue-600 text-white rounded-full font-medium hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg"
+                  className="inline-flex items-center px-4 sm:px-5 py-2 sm:py-2.5 bg-blue-600 text-white rounded-full font-medium hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg text-sm sm:text-base"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.5 }}
                 >
                   Explore Case Study
-                  <svg className="ml-2 w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="ml-2 w-4 sm:w-5 h-4 sm:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                   </svg>
                 </motion.button>
@@ -623,7 +623,7 @@ export default function Results() {
               </svg>
             </Link>
           </div>
-        </section>
+      </section>
 
         {/* Project Detail Modal */}
         <AnimatePresence>
@@ -925,7 +925,7 @@ export default function Results() {
             </motion.div>
           )}
         </AnimatePresence>
-      </main>
+    </main>
       
       <Footer />
       <FloatingChatButton />

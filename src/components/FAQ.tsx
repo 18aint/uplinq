@@ -93,7 +93,7 @@ const FAQ = () => {
         </div>
 
         {/* Heading */}
-        <h2 className="text-[42px] leading-tight font-light text-gray-900 mb-4">
+        <h2 className="text-2xl sm:text-3xl md:text-5xl font-light text-center leading-tight text-gray-900 mb-4">
           Answers to your common<br />website questions
         </h2>
 

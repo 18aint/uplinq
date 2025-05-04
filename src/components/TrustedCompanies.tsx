@@ -53,7 +53,7 @@ const TrustedCompanies = () => {
         </div>
 
         {/* Heading */}
-        <h2 className={`text-4xl text-center leading-tight font-light text-gray-900 mb-6 transition-all duration-700 delay-200 ${
+        <h2 className={`text-2xl sm:text-3xl md:text-5xl text-left md:text-center leading-tight font-light text-gray-900 mb-6 transition-all duration-700 delay-200 ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
         }`}>
           Trusted By Forward-Thinking Teams
@@ -70,11 +70,11 @@ const TrustedCompanies = () => {
         <div className={`hidden md:flex justify-center items-center transition-all duration-1000 delay-400 ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}>
-          <div className="w-[70%] grid grid-cols-3 lg:grid-cols-5 gap-6">
+          <div className="w-full max-w-4xl grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 md:gap-6">
             {brandLogos.map((logo, index) => (
               <div 
                 key={index}
-                className="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:opacity-100 flex items-center justify-center"
+                className="bg-white rounded-lg p-4 md:p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:opacity-100 flex items-center justify-center"
               >
                 <img
                   src={logo.src}
@@ -90,13 +90,13 @@ const TrustedCompanies = () => {
         <div className={`md:hidden relative w-full overflow-hidden transition-all duration-1000 delay-400 ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}>
-          <div className="absolute left-0 top-0 w-16 h-full bg-gradient-to-r from-white to-transparent z-10"></div>
-          <div className="absolute right-0 top-0 w-16 h-full bg-gradient-to-l from-white to-transparent z-10"></div>
+          <div className="absolute left-0 top-0 w-12 sm:w-16 h-full bg-gradient-to-r from-white to-transparent z-10"></div>
+          <div className="absolute right-0 top-0 w-12 sm:w-16 h-full bg-gradient-to-l from-white to-transparent z-10"></div>
 
           <Swiper
             modules={[Autoplay]}
-            spaceBetween={16}
-            slidesPerView={1.5}
+            spaceBetween={12}
+            slidesPerView={1.2}
             loop={true}
             centeredSlides={true}
             speed={2000}
@@ -108,7 +108,7 @@ const TrustedCompanies = () => {
           >
             {brandLogos.map((logo, index) => (
               <SwiperSlide key={index} className="flex items-center justify-center">
-                <div className="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-center w-full">
+                <div className="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-center w-full">
                   <img
                     src={logo.src}
                     alt={logo.alt}

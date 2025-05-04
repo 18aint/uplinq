@@ -183,7 +183,7 @@ const Contact = () => {
               <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
               <span className="text-sm text-gray-600">Enquire Project</span>
             </div>
-            <h2 className="text-[42px] leading-tight font-light text-gray-900">
+            <h2 className="text-2xl sm:text-3xl md:text-5xl font-light text-center leading-tight text-gray-900">
               {source === 'hero' ? 'Get Your Free Quote' : 
                source === 'why-uplinq' ? 'Let\'s Start Working Together' :
                source === 'portfolio' ? 'Start Your Project' :

@@ -707,7 +707,7 @@ const Services = () => {
         </div>
 
         {/* Heading */}
-        <h2 className={`text-[42px] leading-tight font-light text-gray-900 mb-20 transition-all duration-700 delay-200 ${
+        <h2 className={`text-xl sm:text-3xl md:text-5xl leading-tight font-light text-gray-900 mb-20 transition-all duration-700 delay-200 text-center ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
         }`}>
           Web services tailored for<br />your business goals

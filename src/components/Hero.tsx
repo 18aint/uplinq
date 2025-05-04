@@ -144,7 +144,7 @@ const Hero = () => {
         <div className={`max-w-4xl mx-auto mb-12 transition-all duration-1000 delay-300 ease-out transform ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         }`}>
-          <h1 className="text-5xl md:text-6xl font-light text-gray-900 mb-6 leading-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light text-gray-900 mb-6 leading-tight tracking-tight max-w-full break-words">
             Digital UX{" "}
             <span className="inline-flex items-center bg-white px-3 py-1 rounded-full shadow-sm mx-2">
               <BoltIcon className="h-8 w-8 text-blue-500 bg-transparent" />
@@ -153,12 +153,13 @@ const Hero = () => {
             <br />
             elevating your reach
           </h1>
-          <p className="text-xl font-thin text-gray-600 mb-8 max-w-[60%] mx-auto">
+          <p className="text-base sm:text-lg md:text-xl font-thin text-gray-600 mb-8 max-w-xl sm:max-w-2xl md:max-w-[60%] mx-auto">
             Automate workflows, streamline processes, and drive growth with intelligent solutions built for the future
           </p>
           <Link
             to="/quote"
-            className="hidden font-light md:inline-flex items-center px-4 py-2 rounded-full bg-blue-500 text-white hover:bg-blue-600 hover:scale-105 transition-all duration-300"
+            className="w-full sm:w-auto font-light inline-flex items-center justify-center px-4 py-3 rounded-full bg-blue-500 text-white hover:bg-blue-600 hover:scale-105 transition-all duration-300 text-base sm:text-lg mb-4 sm:mb-0"
+            style={{ maxWidth: '100%', minWidth: 0 }}
           >
             Get Free Quote
             <span className="ml-2 bg-white rounded-full text-blue-500 ml-3 mr-[-10px] px-2 py-1">→</span>

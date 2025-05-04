@@ -35,7 +35,7 @@ const ChatCTA = () => {
           </div>
 
           {/* Text Content */}
-          <h2 className="text-3xl md:text-5xl font-thin text-white mb-3">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-thin text-white mb-3 text-center">
             Still don't know?
           </h2>
           <p className="text-white/90 text-lg mb-8">
