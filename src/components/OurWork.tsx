@@ -1,35 +1,6 @@
 import Lottie from 'lottie-react';
 import animationData from '../assets/Web-gallery-[remix].json';
 import { Link } from 'react-router-dom';
-const projects = [
-  {
-    id: 1,
-    title: "Regroup Coffee + Bicycles",
-    metaLabel: "01 Featured Project",
-    tags: ["Web Design", "UI/UX"],
-    description:
-      "We partnered to create a conversion-optimized eCommerce site blending specialty coffee with cycling.",
-    image: "/work/work1.png",
-  },
-  {
-    id: 2,
-    title: "AI-Powered Analytics Dashboard",
-    metaLabel: "02 Featured Project",
-    tags: ["AI Integration", "Next.js", "D3.js"],
-    description:
-      "A comprehensive analytics platform with real-time data visualization, custom reporting, and AI-driven insights.",
-    image: "/work/work2.png",
-  },
-  {
-    id: 3,
-    title: "E-commerce Mobile App",
-    metaLabel: "03 Featured Project",
-    tags: ["React Native", "AR", "Stripe"],
-    description:
-      "Modern e-commerce experience with AR try-on features, personalized recommendations, and seamless checkout flow.",
-    image: "/work/work3.png",
-  },
-];
 
 const OurWork = () => {
   return (

@@ -151,7 +151,6 @@ const StartProject = () => {
   
   const [errors, setErrors] = useState<FormErrors>({});
   const [focused, setFocused] = useState<string | null>(null);
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
   
   // Text area character limit
@@ -354,7 +353,6 @@ const StartProject = () => {
     });
     setErrors({});
     setCurrentStep(FormStep.Details);
-    setIsSubmitted(false);
   };
 
   return (

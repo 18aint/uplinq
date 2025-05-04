@@ -1,5 +1,4 @@
 import { BoltIcon } from '@heroicons/react/24/solid';
-import { Link } from "react-router-dom";
 import { useState } from 'react';
 import ChatModal from './ChatModal';
 

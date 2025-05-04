@@ -5,7 +5,6 @@ import { motion } from 'framer-motion';
 import Navbar from '../components/NavbarContact';
 import Footer from '../components/FooterContact';
 import FloatingChatButton from '../components/FloatingChatButton';
-import ChatModal from '../components/ChatModal';
 import AvailabilityBar from '../components/AvailabilityBar';
 
 const servicesDetails = [

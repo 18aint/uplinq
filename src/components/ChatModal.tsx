@@ -138,7 +138,6 @@ const ChatModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [isAnalyzingProject, setIsAnalyzingProject] = useState(false);
-  const [projectDescription, setProjectDescription] = useState('');
   const [waitingForProjectDescription, setWaitingForProjectDescription] = useState(false);
 
   // Auto-scroll to bottom when new messages arrive
@@ -161,7 +160,6 @@ const ChatModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }
   // Analyze project description
   const analyzeProject = (description: string): ProjectAnalysis => {
     // Reset project description state
-    setProjectDescription('');
     setWaitingForProjectDescription(false);
     
     // Project type detection logic
@@ -319,7 +317,7 @@ const ChatModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }
     
     // Store project description if waiting for it
     if (waitingForProjectDescription) {
-      setProjectDescription(input);
+      setWaitingForProjectDescription(true);
     }
     
     setInput('');
@@ -630,7 +628,7 @@ const ChatModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }
     }, 1000 + Math.random() * 1000);
   };
 
-  const handleContactSubmit = (e: React.FormEvent, messageId: string) => {
+  const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
     // Validate form
@@ -743,7 +741,7 @@ const ChatModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }
                   {/* Contact Form */}
                   {message.sender === 'assistant' && message.showContactForm && !formSubmitted && (
                     <div className="mt-4 pt-3 border-t border-gray-200">
-                      <form onSubmit={(e) => handleContactSubmit(e, message.id)} className="space-y-3">
+                      <form onSubmit={handleContactSubmit} className="space-y-3">
                         <div>
                           <label htmlFor="name" className="block text-xs font-medium text-gray-700 mb-1">
                             Name

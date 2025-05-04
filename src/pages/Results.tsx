@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import Navbar from '../components/NavbarContact';
 import Footer from '../components/FooterContact';
 import FloatingChatButton from '../components/FloatingChatButton';
-import ChatModal from '../components/ChatModal';
 
 // CSS for custom cursor
 const customCursorStyle = `

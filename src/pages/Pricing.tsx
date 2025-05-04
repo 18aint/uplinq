@@ -219,6 +219,10 @@ const Pricing = () => {
         <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-12">
+              <div className="flex items-center justify-center gap-2 mb-3">
+                <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                <span className="text-sm text-gray-600">Custom Quote</span>
+              </div>
               <h2 className="text-3xl font-light text-gray-900 mb-4">
                 Build Your Custom Project
               </h2>
@@ -230,10 +234,19 @@ const Pricing = () => {
           <PricingCalculator />
         </section>
 
+        {/* Section divider */}
+        <div className="relative h-8 bg-white">
+          <div className="absolute inset-x-0 bottom-0 h-8 bg-gray-50"></div>
+        </div>
+
         {/* FAQ Section */}
         <section className="bg-gray-50 py-20">
           <div className="max-w-4xl mx-auto px-6">
             <div className="text-center mb-12">
+              <div className="flex items-center justify-center gap-2 mb-3">
+                <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                <span className="text-sm text-gray-600">FAQ</span>
+              </div>
               <h2 className="text-3xl font-light text-gray-900 mb-4">
                 Frequently Asked Questions
               </h2>

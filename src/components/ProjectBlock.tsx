@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 
 interface ProjectBlockProps {
-  index: number;
   title: string;
   description: string;
   image: string;
@@ -11,7 +10,6 @@ interface ProjectBlockProps {
 }
 
 const ProjectBlock = ({
-  index,
   title,
   description,
   image,

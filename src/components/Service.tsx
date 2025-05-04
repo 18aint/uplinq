@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 interface Service {
   id: number;
@@ -23,42 +23,6 @@ const phrases = [
   "Top-rated SaaS design agency",
   "AI marketing tool for startups"
 ];
-
-// Mockup components for each service
-const WebsiteMockup = () => (
-  <div className="relative w-full h-full bg-gray-50 rounded-xl p-4 overflow-hidden">
-    <motion.div 
-      initial={{ width: "0%" }}
-      animate={{ width: "100%" }}
-      transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 2 }}
-      className="h-4 bg-gradient-to-r from-blue-200 via-blue-100 to-gray-100 rounded mb-3"
-    />
-    <div className="grid grid-cols-2 gap-2">
-      {[...Array(4)].map((_, i) => (
-        <motion.div
-          key={i}
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: i * 0.1 }}
-          className="bg-gradient-to-br from-blue-100/50 to-blue-50 rounded-lg h-16 relative overflow-hidden"
-        >
-          <motion.div
-            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-            animate={{
-              x: ['-100%', '100%'],
-            }}
-            transition={{
-              duration: 1.5,
-              repeat: Infinity,
-              repeatDelay: 1,
-              delay: i * 0.2,
-            }}
-          />
-        </motion.div>
-      ))}
-    </div>
-  </div>
-);
 
 const ConversionRateOptimization = () => {
   const [step, setStep] = useState(0);
@@ -514,7 +478,6 @@ const ChatBotMockup = () => {
 
 const MaintenanceMockup = () => {
   const [state, setState] = useState<'error' | 'fixing' | 'restored'>('error');
-  const [showTerminal, setShowTerminal] = useState(false);
 
   useEffect(() => {
     const sequence = async () => {
@@ -522,8 +485,7 @@ const MaintenanceMockup = () => {
       setState('error');
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // Show terminal and fixing state
-      setShowTerminal(true);
+      // Show fixing state
       setState('fixing');
       await new Promise(resolve => setTimeout(resolve, 3000));
       
@@ -532,177 +494,57 @@ const MaintenanceMockup = () => {
       await new Promise(resolve => setTimeout(resolve, 4000));
       
       // Reset sequence
-      setShowTerminal(false);
       setState('error');
     };
-
+    
     sequence();
     const interval = setInterval(sequence, 10000);
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <div className="relative w-full h-full bg-white rounded-xl overflow-hidden shadow-lg border">
-      {/* Browser Chrome */}
-      <div className="flex flex-col">
-        {/* Tab Bar */}
-        <div className="flex items-center px-4 py-2 bg-gray-100 border-b">
-          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white rounded-t-lg border border-b-0">
-            <div className="w-2 h-2 rounded-full bg-blue-500" />
-            <span className="text-xs text-gray-600">Portfolio Page</span>
-          </div>
-        </div>
-        
-        {/* URL Bar */}
-        <div className="flex items-center gap-3 px-4 py-2 bg-white border-b">
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-red-400 rounded-full" />
-            <div className="w-3 h-3 bg-yellow-400 rounded-full" />
-            <div className="w-3 h-3 bg-green-400 rounded-full" />
-          </div>
-          <div className="flex-1 flex items-center gap-2 px-3 py-1 bg-gray-50 rounded text-sm text-gray-600">
-            <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-            </svg>
-            uplinq.ai/portfolio
-          </div>
-        </div>
-      </div>
+    <div className="relative w-full h-full bg-gray-50 rounded-xl p-4 overflow-hidden">
+      {/* Error State */}
+      <motion.div
+        className="absolute inset-0 flex flex-col items-center justify-center p-6"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: state === 'error' ? 1 : 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <svg className="w-16 h-16 text-red-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+        <h3 className="text-lg font-medium text-gray-900 mb-2">Site Down Detected</h3>
+        <p className="text-gray-600 text-center">Critical error detected in production environment</p>
+      </motion.div>
 
-      {/* Content Area */}
-      <div className="relative h-[420px] md:h-[480px] bg-gradient-to-br from-gray-50 to-white">
-        {/* Error State */}
-        <motion.div
-          className="absolute inset-0 flex flex-col items-center justify-center p-6"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: state === 'error' ? 1 : 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <motion.div
-            initial={{ scale: 0.9 }}
-            animate={{ scale: 1 }}
-            className="w-24 h-24 mb-6 text-red-500"
-          >
-            <svg className="w-full h-full" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-            </svg>
-          </motion.div>
-          <motion.h3
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            className="text-2xl font-medium text-gray-900 mb-2"
-          >
-            404 - Page Not Found
-          </motion.h3>
-          <motion.p
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.1 }}
-            className="text-gray-600 text-center max-w-sm"
-          >
-            The page you're looking for doesn't exist or has been moved.
-          </motion.p>
-        </motion.div>
+      {/* Fixing State */}
+      <motion.div
+        className="absolute inset-0 flex flex-col items-center justify-center p-6"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: state === 'fixing' ? 1 : 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <svg className="w-16 h-16 text-blue-500 mb-4 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+        </svg>
+        <h3 className="text-lg font-medium text-gray-900 mb-2">Fixing Issue</h3>
+        <p className="text-gray-600 text-center">Automated recovery process initiated</p>
+      </motion.div>
 
-        {/* Terminal/Fixing State */}
-        <motion.div
-          className="absolute inset-0 flex flex-col items-center justify-center p-6"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: state === 'fixing' ? 1 : 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <div className="w-full max-w-md bg-gray-900 rounded-lg overflow-hidden shadow-xl">
-            <div className="flex items-center justify-between px-4 py-2 bg-gray-800">
-              <div className="flex items-center gap-1.5">
-                <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
-                <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
-                <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
-              </div>
-              <div className="text-xs text-gray-400">maintenance.sh</div>
-              <div className="w-12" />
-            </div>
-            <div className="p-4 font-mono text-sm">
-              <div className="text-green-400">$ Running maintenance script...</div>
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
-                className="text-gray-300 mt-2"
-              >
-                {'>'}  Checking file system...
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1 }}
-                className="text-gray-300 mt-1"
-              >
-                {'>'}  Repairing broken links...
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1.5 }}
-                className="text-gray-300 mt-1"
-              >
-                {'>'}  Restoring page content...
-              </motion.div>
-              <motion.div
-                className="w-full h-1 bg-gray-800 rounded-full mt-4 overflow-hidden"
-              >
-                <motion.div
-                  className="h-full bg-green-500"
-                  initial={{ width: "0%" }}
-                  animate={{ width: "100%" }}
-                  transition={{ duration: 2 }}
-                />
-              </motion.div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Restored State */}
-        <motion.div
-          className="absolute inset-0 flex flex-col items-center justify-center p-6"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: state === 'restored' ? 1 : 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <motion.div
-            initial={{ scale: 0.9 }}
-            animate={{ scale: 1 }}
-            className="w-24 h-24 mb-6 text-green-500"
-          >
-            <svg className="w-full h-full" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          </motion.div>
-          <motion.h3
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            className="text-2xl font-medium text-gray-900 mb-2"
-          >
-            Page Restored Successfully
-          </motion.h3>
-          <motion.p
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.1 }}
-            className="text-gray-600 text-center max-w-sm mb-4"
-          >
-            Your page has been automatically restored and is now accessible.
-          </motion.p>
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-50 text-green-700 text-sm font-medium rounded-full"
-          >
-            <div className="w-1.5 h-1.5 bg-green-500 rounded-full" />
-            Resolved via VitalFlow Plan
-          </motion.div>
-        </motion.div>
-      </div>
+      {/* Restored State */}
+      <motion.div
+        className="absolute inset-0 flex flex-col items-center justify-center p-6"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: state === 'restored' ? 1 : 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <svg className="w-16 h-16 text-green-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+        </svg>
+        <h3 className="text-lg font-medium text-gray-900 mb-2">Site Restored</h3>
+        <p className="text-gray-600 text-center">All systems operational</p>
+      </motion.div>
     </div>
   );
 };
@@ -874,7 +716,7 @@ const Services = () => {
 
         {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 w-full">
-          {services.map((service, index) => (
+          {services.map((service) => (
             <ServiceCard
               key={service.id}
               {...service}

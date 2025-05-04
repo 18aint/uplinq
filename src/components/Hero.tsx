@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react';
-import { FaArrowRight } from "react-icons/fa";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from 'swiper/modules';
 import { BoltIcon } from '@heroicons/react/24/solid';
-import type { SwiperOptions } from 'swiper/types';
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/autoplay';
@@ -34,9 +32,6 @@ const LogoCarousel = () => {
   // Duplicate logos for seamless infinite loop
   const duplicatedLogos = [...brandLogos, ...brandLogos, ...brandLogos];
   
-  // Reversed logos for second carousel
-  const reversedLogos = [...duplicatedLogos].reverse();
-
   return (
     <div className="relative w-full py-8 overflow-hidden">
       {/* Container with max width and center alignment */}
