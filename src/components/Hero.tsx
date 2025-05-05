@@ -103,7 +103,7 @@ const Hero = () => {
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
       }`}>
         {/* Rating and Social Proof */}
-        <div className="flex flex-col items-center gap-2 mb-8">
+        <div className="flex flex-col items-center gap-2 mb-8 sm:mt-[100px]">
           <div className="flex items-center">
             <div className="flex -space-x-2 mb-3">
               {avatars.map((avatar, i) => (
