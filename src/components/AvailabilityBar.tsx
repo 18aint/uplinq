@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 interface AvailabilityBarProps {
   calendlyUrl?: string;
   variant?: 'default' | 'sticky' | 'floating';
+  contactId?: string;
 }
 
 // Mock Calendly event type for simulation
@@ -65,7 +66,8 @@ const mockCalendlyClient = {
 
 const AvailabilityBar = ({ 
   calendlyUrl = 'https://calendly.com/waynekuvi', 
-  variant = 'default' 
+  variant = 'default',
+  contactId = 'contact-section'
 }: AvailabilityBarProps) => {
   // State for availability data
   const [nextAvailableDate, setNextAvailableDate] = useState<string>('');
@@ -149,6 +151,17 @@ const AvailabilityBar = ({
     window.open(calendlyUrl, '_blank');
   };
   
+  // Function to scroll to contact form
+  const scrollToContact = () => {
+    const contactSection = document.getElementById(contactId);
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      // Fallback to open Calendly if contact section not found
+      openCalendly();
+    }
+  };
+  
   // Determine status color
   const getStatusColor = () => {
     switch (availabilityStatus) {
@@ -208,7 +221,10 @@ const AvailabilityBar = ({
       transition={{ duration: 0.5 }}
     >
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 sm:p-4 gap-3 sm:gap-4">
-        <div className="flex items-center w-full sm:w-auto">
+        <div 
+          className="flex items-center w-full sm:w-auto cursor-pointer hover:opacity-80 transition-opacity"
+          onClick={scrollToContact}
+        >
           <div className="flex-shrink-0 mr-3 sm:mr-4">
             <svg 
               className="w-7 h-7 sm:w-8 sm:h-8 text-blue-500" 

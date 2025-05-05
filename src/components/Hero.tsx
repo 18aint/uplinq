@@ -79,7 +79,7 @@ const LogoCarousel = () => {
                   src={logo}
                   alt={`Partner logo ${index % brandLogos.length + 1}`}
                   className="h-8 w-auto object-contain transition-all duration-300 filter grayscale hover:grayscale-0"
-                  style={{ opacity: 0.7 }}
+                  style={{ opacity: 0.85 }}
                 />
               </div>
             </SwiperSlide>
@@ -103,20 +103,20 @@ const Hero = () => {
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
       }`}>
         {/* Rating and Social Proof */}
-        <div className="flex flex-col items-center gap-2 mb-8 sm:mt-[100px]">
+        <div className="flex flex-col items-center gap-2 mb-8 sm:mt-[100px] mt-[60px]">
           <div className="flex items-center">
-            <div className="flex -space-x-2 mb-3">
+            <div className="flex -space-x-1.5 sm:-space-x-2 mb-3">
               {avatars.map((avatar, i) => (
                 <img
                   key={i}
                   src={avatar}
                   alt=""
-                  className="w-10 h-10 rounded-full border-2 border-white"
+                  className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-white"
                 />
               ))}
             </div>
           </div>
-          <div className="flex flex-col items-center gap-1">
+          <div className="flex flex-col items-center gap-1 mt-2">
             <div className="flex items-center gap-2">
               <div className="flex">
                 {[...Array(5)].map((_, i) => (

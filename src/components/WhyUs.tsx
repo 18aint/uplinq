@@ -8,14 +8,14 @@ interface Expert {
 
 const experts: Expert[] = [
   {
-    name: 'Jordan Kim',
-    role: 'Frontend Developer',
-    avatar: '/avatars/avatar1.avif'
+    name: 'Wayne Kuvi',
+    role: 'Lead Developer | Founder',
+    avatar: '/founder.png'
   },
   {
     name: 'Alex Rivera',
     role: 'UX Designer',
-    avatar: '/avatars/avatar2.avif'
+    avatar: '/team-avatar2.jpg'
   }
 ];
 
@@ -109,13 +109,6 @@ const WhyUs = () => {
                 ))}
               </div>
 
-              {/* Card CTA */}
-              <a
-                href="/team"
-                className="text-sm text-blue-500 hover:text-blue-600 font-medium truncate inline-block text-center"
-              >
-                Meet Our Team
-              </a>
             </div>
           </div>
         </div>

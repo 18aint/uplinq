@@ -35,10 +35,6 @@ const Contact = () => {
   
   // Auto-focus on first field and handle source-based behavior
   useEffect(() => {
-    if (step === FormStep.Contact && nameInputRef.current) {
-      nameInputRef.current.focus();
-    }
-
     // Get source from URL
     const urlParams = new URLSearchParams(window.location.search);
     const sourceParam = urlParams.get('source');

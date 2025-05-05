@@ -111,11 +111,11 @@ const Navbar = () => {
         {menuOpen && (
           <motion.div
             key="mobile-menu"
-            initial={{ x: '100%', opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: '100%', opacity: 0 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            className="fixed inset-0 z-50 md:hidden bg-black/40"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-50 md:hidden backdrop-blur-sm bg-black/30"
             aria-modal="true"
             role="dialog"
             tabIndex={-1}
@@ -130,7 +130,18 @@ const Navbar = () => {
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
               onClick={e => e.stopPropagation()}
             >
-              <nav className="flex flex-col gap-4 mt-8" aria-label="Mobile Navigation">
+              <div className="flex justify-end mb-6">
+                <button
+                  className="p-2 rounded-full hover:bg-gray-100 text-gray-600"
+                  onClick={() => setMenuOpen(false)}
+                  aria-label="Close menu"
+                >
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+              <nav className="flex flex-col gap-4 mt-2" aria-label="Mobile Navigation">
                 {navLinks.map((link, i) => (
                   <Link
                     key={link.to}

@@ -213,7 +213,7 @@ const Process = () => {
               </p>
               
               <Link
-                to="/start-project"
+                to="/pricing"
                 className="inline-flex items-center px-6 py-3 rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition-colors"
               >
                 Start Your Project
@@ -270,6 +270,7 @@ const Process = () => {
         
         {/* Final CTA */}
         <section className="w-full py-20 bg-white">
+          
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
@@ -285,15 +286,13 @@ const Process = () => {
               <p className="text-gray-600 max-w-2xl mx-auto mb-8">
                 Let's discuss how our proven process can help bring your digital vision to life. Our team is ready to understand your goals and create a tailored solution.
               </p>
-              
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => setShowChat(true)}
-                className="inline-flex items-center px-6 py-3 rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition-colors"
-              >
-                Book a Free Consultation
-              </motion.button>
+              <Link
+              to="/pricing"
+              className="w-full inline-flex items-center justify-center px-4 py-3 rounded-full bg-blue-500 text-white hover:bg-blue-600 hover:scale-105 transition-all duration-300 text-base"
+            >
+              Get started
+              <span className="ml-2 bg-white rounded-full text-blue-500 ml-3 mr-[-10px] px-2 py-1">→</span>
+            </Link>
             </motion.div>
           </div>
         </section>

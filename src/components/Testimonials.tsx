@@ -12,44 +12,44 @@ interface Testimonial {
 const testimonials: Testimonial[] = [
   {
     id: 1,
-    text: "Neurova transformed our workflow with AI automation, saving us countless hours! The platform's intuitive interface and powerful features have revolutionized how we handle our daily tasks. Our team productivity has increased significantly since implementation.",
-    author: "Ryan Carter",
-    handle: "@ryanc_ai",
+    text: "Uplinq transformed our digital presence with a stunning website and ongoing SEO maintenance. Their retainer program ensures our site stays updated and secure. The monthly analytics reports have been invaluable for tracking our growth and ROI.",
+    author: "Michael Thorpe",
+    handle: "CMO at Warx",
     image: "/avatars/avatar1.avif"
   },
   {
     id: 2,
-    text: "From automating tasks to optimizing workflows, Neurova made our business more efficient than ever by eliminating manual work and reducing errors significantly. The AI-powered automation has streamlined our processes and improved accuracy across all departments.",
-    author: "Ethan James",
-    handle: "@ethanj",
+    text: "The virtual assistant bot Uplinq developed for our customer support has reduced response times by 75%. Their development team seamlessly integrated it with our existing systems, and the ongoing maintenance package means we never worry about technical issues.",
+    author: "Sarah Jenson",
+    handle: "Head of Digital at FATHOM",
     image: "/avatars/avatar2.avif"
   },
   {
     id: 3,
-    text: "Neurova is our daily tool to bypass averages and reveal true insights, for the whole team! The detailed analytics and AI-driven recommendations have transformed our decision-making process. We're now able to spot trends and opportunities we previously missed.",
-    author: "Jake Mitchell",
-    handle: "@jakem",
+    text: "Uplinq's web development expertise helped us create a robust financial platform that handles thousands of daily transactions. Their monthly retainer service provides peace of mind - when issues arise, they're resolved immediately, often before we even notice them.",
+    author: "Thomas Werner",
+    handle: "CTO at Hausbank",
     image: "/avatars/avatar3.avif"
   },
   {
     id: 4,
-    text: "Smart, fast, and intuitive—Neurova simplifies AI automation like no other platform, enhancing scalability, reducing costs, and optimizing everyday operations with ease. The customizable workflows and integration capabilities have made it an essential part of our tech stack.",
-    author: "Daniel Brooks",
-    handle: "@dbrooks",
+    text: "Our enterprise-scale web application developed by Uplinq has been crucial for our digital transformation. Their technical solutions and ongoing maintenance have significantly reduced our operational costs while improving customer engagement metrics by 43%.",
+    author: "Elena Kowalski",
+    handle: "Digital Director at ASSECO",
     image: "/avatars/avatar4.jpg"
   },
   {
     id: 5,
-    text: "The AI chatbot integration is a game-changer—it feels like having a 24/7 assistant! It handles customer inquiries instantly and learns from each interaction, continuously improving its responses. Our customer satisfaction scores have never been higher.",
-    author: "Liam Foster",
-    handle: "@liamf",
+    text: "Uplinq's SEO retainer program has delivered exceptional results - our organic traffic increased by 210% in just six months. Their team consistently provides data-driven recommendations and implements changes that keep us ahead of competitors.",
+    author: "James Ritter",
+    handle: "VP Marketing at Warx",
     image: "/avatars/avatar5.jpg"
   },
   {
     id: 6,
-    text: "Neurova transformed our workflow with AI automation, saving us countless hours every week and improving overall team efficiency effortlessly. The platform's machine learning capabilities adapt to our specific needs, making it an invaluable asset to our operations.",
-    author: "Sophia Reed",
-    handle: "@sophiareed",
+    text: "The booking platform Uplinq built for us has revolutionized our customer experience. Their 24/7 maintenance support and quarterly UX improvements through their retainer program ensure our digital touchpoints remain world-class, directly impacting our revenue growth.",
+    author: "Maria Santiago",
+    handle: "Digital Innovation at RoyalCaribbean",
     image: "/avatars/avatar6.jpg"
   }
 ];

@@ -12,6 +12,7 @@ import ChatCTA from "./components/ChatCTA";
 import FloatingChatButton from "./components/FloatingChatButton";
 import Contact from "./components/Contact";
 import AvailabilityBar from "./components/AvailabilityBar";
+import StickyCTA from "./components/StickyCTA";
 
 function App() {
   // Force scroll to top when component mounts
@@ -34,7 +35,7 @@ function App() {
       <main className="flex-1">
         <Hero />
         <div className="container mx-auto px-4 my-8">
-          <AvailabilityBar />
+          <AvailabilityBar contactId="contact-section" />
         </div>
         <Services />
         <ProcessTimeline />
@@ -43,10 +44,13 @@ function App() {
         <Testimonials />
         <FAQ />
         <ChatCTA />
-        <Contact />
+        <div id="contact-section">
+          <Contact />
+        </div>
       </main>
       <Footer />
       <FloatingChatButton />
+      <StickyCTA />
     </div>
   );
 }
