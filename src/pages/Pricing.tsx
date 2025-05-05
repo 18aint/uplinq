@@ -98,6 +98,17 @@ const handleCheckout = async (
   title: string,
   description: string
 ) => {
+  // Determine mode based on plan title or priceId
+  let mode = 'payment';
+  if (
+    title.toLowerCase().includes('retainer') ||
+    priceId === 'price_1RLMFeI1AqaCg5XBQNH6WmDE' ||
+    priceId === 'price_1RLMFeI1AqaCg5XBKvhLte18'
+  ) {
+    mode = 'subscription';
+  }
+  console.log('Sending checkout:', { priceId, title, mode });
+  console.log('Checkout mode:', mode);
   const response = await fetch('https://uplinq-backend-1.onrender.com/api/create-checkout-session', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -105,9 +116,16 @@ const handleCheckout = async (
       priceId,
       productName: title,
       productDescription: description,
+      mode,
     }),
   });
   const data = await response.json();
+
+  if (!response.ok) {
+    alert(data.error || 'Failed to create checkout session.');
+    return;
+  }
+
   const stripe = await stripePromise;
   if (!stripe) {
     alert('Stripe failed to load. Please try again later.');
