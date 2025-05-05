@@ -98,7 +98,7 @@ const handleCheckout = async (
   title: string,
   description: string
 ) => {
-  const response = await fetch('/api/create-checkout-session', {
+  const response = await fetch('https://uplinq-backend-1.onrender.com/api/create-checkout-session', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
