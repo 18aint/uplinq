@@ -1,7 +1,5 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { stripePromise } from '../lib/stripe';
 
 interface PricingCardProps {
   title: string;
@@ -28,11 +26,7 @@ const PricingCard = ({
 }: PricingCardProps) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  // Extract numeric value from price string (e.g., "$950" -> 95000 cents)
-  const getAmountInCents = () => {
-    const numericValue = price.replace(/[^0-9.]/g, '');
-    return Math.round(parseFloat(numericValue) * 100);
-  };
+
 
   const handleClick = async () => {
     if (onCheckout) {
