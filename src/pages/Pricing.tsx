@@ -9,6 +9,7 @@ import PricingCalculator from '../components/PricingCalculator';
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from 'swiper/modules';
 import { useEffect } from 'react';
+import { loadStripe } from '@stripe/stripe-js';
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/autoplay';
@@ -21,7 +22,6 @@ const brandLogos = [
   "/logos/Hausbank.png", // Fourth logo
   "/logos/logo5.svg", // Fifth logo
 ];
-
 // Logo Carousel Component
 const LogoCarousel = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -89,6 +89,31 @@ const LogoCarousel = () => {
       </div>
     </div>
   );
+};
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+console.log('Stripe key:', import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+const handleCheckout = async (
+  priceId: string,
+  title: string,
+  description: string
+) => {
+  const response = await fetch('/api/create-checkout-session', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      priceId,
+      productName: title,
+      productDescription: description,
+    }),
+  });
+  const data = await response.json();
+  const stripe = await stripePromise;
+  if (!stripe) {
+    alert('Stripe failed to load. Please try again later.');
+    return;
+  }
+  await stripe.redirectToCheckout({ sessionId: data.id });
 };
 
 const Pricing = () => {
@@ -167,7 +192,7 @@ const Pricing = () => {
             {/* LaunchPad Plan */}
             <PricingCard
               title="Uplinq LaunchPad"
-              price="$950"
+              price="£950"
               description="Built for startups and solopreneurs."
               features={[
                 "5 responsive pages",
@@ -178,12 +203,14 @@ const Pricing = () => {
               ]}
               cta="Get Started"
               plan="launchpad"
+              priceId="price_1RLMBFI1AqaCg5XBk1mzngNC"
+              onCheckout={handleCheckout}
             />
 
             {/* Growth Engine Plan */}
             <PricingCard
               title="VitaFlow Growth Engine"
-              price="$2,200"
+              price="£2,200"
               description="Your website's full-stack upgrade."
               features={[
                 "CRO audit & redesign",
@@ -195,12 +222,14 @@ const Pricing = () => {
               highlight
               cta="Start My Project"
               plan="growth"
+              priceId="price_1RLMBuI1AqaCg5XBjnBmy44P"
+              onCheckout={handleCheckout}
             />
 
             {/* Orbit Retainer Plan */}
             <PricingCard
               title="Uplinq Orbit Retainer"
-              price={billingPeriod === 'monthly' ? "$749/mo" : "$7,490/yr"}
+              price={billingPeriod === 'monthly' ? "£749/mo" : "£7,490/yr"}
               description="Set it and scale it package."
               features={[
                 "Monthly site speed optimization",
@@ -211,6 +240,10 @@ const Pricing = () => {
               ]}
               cta="Book Retainer"
               plan={`orbit-${billingPeriod}`}
+              priceId={billingPeriod === 'monthly'
+                ? "price_1RLMFeI1AqaCg5XBQNH6WmDE"
+                : "price_1RLMFeI1AqaCg5XBKvhLte18"}
+              onCheckout={handleCheckout}
             />
           </div>
         </section>

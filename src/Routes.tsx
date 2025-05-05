@@ -7,6 +7,7 @@ import Pricing from './pages/Pricing';
 import Process from './pages/Process';
 import Results from './pages/Results';
 import ServicesPage from './pages/Services';
+import PaymentSuccess from './pages/PaymentSuccess';
 import ScrollToTop from './components/ScrollToTop';
 
 const AppRoutes = () => {
@@ -22,6 +23,7 @@ const AppRoutes = () => {
         <Route path="/process" element={<Process />} />
         <Route path="/results" element={<Results />} />
         <Route path="/services" element={<ServicesPage />} />
+        <Route path="/payment-success" element={<PaymentSuccess />} />
       </Routes>
     </>
   );

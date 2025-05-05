@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { stripePromise } from '../lib/stripe';
 
 interface PricingCardProps {
   title: string;
@@ -9,9 +11,42 @@ interface PricingCardProps {
   cta: string;
   highlight?: boolean;
   plan?: string;
+  priceId?: string; // Stripe price ID
+  onCheckout?: (priceId: string, title: string, description: string) => void;
 }
 
-const PricingCard = ({ title, price, description, features, cta, highlight = false, plan = "" }: PricingCardProps) => {
+const PricingCard = ({ 
+  title, 
+  price, 
+  description, 
+  features, 
+  cta, 
+  highlight = false, 
+  plan = "", 
+  priceId = "",
+  onCheckout
+}: PricingCardProps) => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Extract numeric value from price string (e.g., "$950" -> 95000 cents)
+  const getAmountInCents = () => {
+    const numericValue = price.replace(/[^0-9.]/g, '');
+    return Math.round(parseFloat(numericValue) * 100);
+  };
+
+  const handleClick = async () => {
+    if (onCheckout) {
+      setIsLoading(true);
+      try {
+        await onCheckout(priceId, title, description);
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      window.location.href = `/start-project?plan=${encodeURIComponent(plan || title)}&price=${encodeURIComponent(price)}`;
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -41,19 +76,29 @@ const PricingCard = ({ title, price, description, features, cta, highlight = fal
         ))}
       </ul>
       
-      <Link to={`/start-project?plan=${encodeURIComponent(plan || title)}&price=${encodeURIComponent(price)}`}>
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className={`w-full py-3 rounded-lg transition-colors ${
-            highlight
-              ? "bg-blue-500 text-white hover:bg-blue-600"
-              : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-          }`}
-        >
-          {cta}
-        </motion.button>
-      </Link>
+      <motion.button
+        onClick={handleClick}
+        disabled={isLoading}
+        whileHover={{ scale: isLoading ? 1 : 1.02 }}
+        whileTap={{ scale: isLoading ? 1 : 0.98 }}
+        className={`w-full py-3 rounded-lg transition-colors ${
+          highlight
+            ? "bg-blue-500 text-white hover:bg-blue-600"
+            : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+        } ${isLoading ? 'cursor-not-allowed opacity-80' : ''}`}
+      >
+        {isLoading ? (
+          <span className="flex items-center justify-center">
+            <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Processing...
+          </span>
+        ) : (
+          cta
+        )}
+      </motion.button>
     </motion.div>
   );
 };
