@@ -11,7 +11,6 @@ import {
   SparklesIcon,
   BoltIcon,
   ShieldCheckIcon,
-  ClockIcon
 } from '@heroicons/react/24/outline';
 import Navbar from '../components/NavbarContact';
 import Footer from '../components/FooterContact';
