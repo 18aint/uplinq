@@ -8,7 +8,12 @@ import Process from './pages/Process';
 import Results from './pages/Results';
 import ServicesPage from './pages/Services';
 import PaymentSuccess from './pages/PaymentSuccess';
+import WebsiteAudit from './pages/WebsiteAudit';
+import BookingConfirmation from './pages/BookingConfirmation';
 import ScrollToTop from './components/ScrollToTop';
+import WebsiteGrowthCalculator from './pages/WebsiteGrowthCalculator';
+import PerformanceStarterKit from './pages/PerformanceStarterKit';
+import StarterKitSuccess from './pages/StarterKitSuccess';
 
 const AppRoutes = () => {
   return (
@@ -23,7 +28,12 @@ const AppRoutes = () => {
         <Route path="/process" element={<Process />} />
         <Route path="/results" element={<Results />} />
         <Route path="/services" element={<ServicesPage />} />
+        <Route path="/website-audit" element={<WebsiteAudit />} />
         <Route path="/payment-success" element={<PaymentSuccess />} />
+        <Route path="/thank-you" element={<BookingConfirmation />} />
+        <Route path="/growth-calculator" element={<WebsiteGrowthCalculator />} />
+        <Route path="/starter-kit" element={<PerformanceStarterKit />} />
+        <Route path="/starter-kit-success" element={<StarterKitSuccess />} />
       </Routes>
     </>
   );

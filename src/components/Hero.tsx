@@ -156,14 +156,15 @@ const Hero = () => {
           <p className="text-base sm:text-lg md:text-xl font-thin text-gray-600 mb-8 max-w-xl sm:max-w-2xl md:max-w-[60%] mx-auto">
             Automate workflows, streamline processes, and drive growth with intelligent solutions built for the future
           </p>
-          <Link
-            to="/quote"
-            className="w-full sm:w-auto font-light inline-flex items-center justify-center px-4 py-3 rounded-full bg-blue-500 text-white hover:bg-blue-600 hover:scale-105 transition-all duration-300 text-base sm:text-lg mb-4 sm:mb-0"
-            style={{ maxWidth: '100%', minWidth: 0 }}
-          >
-            Get Free Quote
-            <span className="ml-2 bg-white rounded-full text-blue-500 ml-3 mr-[-10px] px-2 py-1">→</span>
-          </Link>
+          <div className="flex justify-center">
+            <Link
+              to="/starter-kit"
+              className="inline-flex items-center gap-3 px-8 py-4 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+            >
+              <span>Try UplinqPro</span>
+              <span className="bg-white/20 text-xs px-2 py-1 rounded-full font-light">£19</span>
+            </Link>
+          </div>
         </div>
 
         {/* Logo Carousel */}

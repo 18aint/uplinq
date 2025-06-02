@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
-import { BoltIcon } from '@heroicons/react/24/solid';
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const navLinks = [
@@ -64,18 +64,31 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo and Brand */}
-          <Link to="/" className="flex items-center space-x-2" tabIndex={0}>
-            <BoltIcon className="h-6 w-6 text-blue-500" />
-            <span className="text-xl font-medium text-gray-900">Uplinq</span>
+          <Link to="/" className="flex items-center">
+            <img 
+              src="/logo-uplinq.png" 
+              alt="Uplinq Digital" 
+              className="h-6 w-auto"
+            />
+            <span className="ml-2 text-xl font-medium text-gray-900">
+              Uplinq Digital
+            </span>
           </Link>
 
           {/* Navigation Links - Desktop */}
-          <div className="hidden md:flex font-light items-center space-x-8">
-            {navLinks.map(link => (
-              <Link key={link.to} to={link.to} className="text-gray-600 hover:text-gray-900 transition-colors" tabIndex={0}>
-                {link.label}
-              </Link>
-            ))}
+          <div className="hidden md:flex space-x-8">
+            <Link to="/services" className="text-gray-700 hover:text-blue-600 transition-colors">
+              Services
+            </Link>
+            <Link to="/pricing" className="text-gray-700 hover:text-blue-600 transition-colors">
+              Pricing
+            </Link>
+            <Link to="/results" className="text-gray-700 hover:text-blue-600 transition-colors">
+              Results
+            </Link>
+            <Link to="/process" className="text-gray-700 hover:text-blue-600 transition-colors">
+              Process
+            </Link>
           </div>
 
           {/* CTA Button */}

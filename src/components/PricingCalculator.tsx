@@ -400,7 +400,7 @@ const PricingCalculator = () => {
             items={basketItems} 
             total={totalPrice} 
             onRemoveItem={handleRemoveItem}
-            calendlyUrl="https://calendly.com/waynekuvi"
+            calendlyUrl="https://calendly.com/wayne-uplinq"
           />
         </div>
       </div>
@@ -701,7 +701,7 @@ const PricingCalculator = () => {
               items={basketItems} 
               total={totalPrice} 
               onRemoveItem={handleRemoveItem}
-              calendlyUrl="https://calendly.com/waynekuvi"
+              calendlyUrl="https://calendly.com/wayne-uplinq"
             />
           </div>
         </div>

@@ -1,0 +1,33 @@
+User-agent: *
+Allow: /
+
+# Important pages to prioritize
+Allow: /quote
+Allow: /pricing
+Allow: /services
+Allow: /results
+Allow: /process
+Allow: /contact
+
+# Block unnecessary crawling of internal files
+Disallow: /src/
+Disallow: /node_modules/
+Disallow: /_next/
+Disallow: /api/
+Disallow: /.env*
+
+# Allow all common crawlers
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+# Sitemap location
+Sitemap: https://uplinq.digital/sitemap.xml
+
+# Crawl delay (optional, helps prevent server overload)
+Crawl-delay: 1 

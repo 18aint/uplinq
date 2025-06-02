@@ -115,7 +115,7 @@ const Contact = () => {
   };
 
   // Form submission
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (step === FormStep.Contact) {
@@ -124,8 +124,45 @@ const Contact = () => {
       }
     } else if (step === FormStep.Project) {
       if (validateStep(step)) {
-        console.log("Form submitted:", { name, email, details, file });
-        setStep(FormStep.Complete);
+        try {
+          // Prepare file data if present
+          let fileData = null;
+          if (file) {
+            const reader = new FileReader();
+            fileData = await new Promise((resolve) => {
+              reader.onload = () => resolve(reader.result);
+              reader.readAsDataURL(file);
+            });
+          }
+          
+          // Send form data to backend
+          const response = await fetch('/api/contact', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              name,
+              email,
+              details,
+              file: fileData,
+            }),
+          });
+          
+          const data = await response.json();
+          
+          if (!response.ok) {
+            throw new Error(data.error || 'Something went wrong');
+          }
+          
+          console.log("Form submitted successfully:", data);
+          // Form submission was successful, move to completion step
+          setStep(FormStep.Complete);
+        } catch (error) {
+          console.error("Error submitting form:", error);
+          // Show error to user (you could add error state and display it in the UI)
+          alert("There was an error submitting your form. Please try again later.");
+        }
       }
     }
   };

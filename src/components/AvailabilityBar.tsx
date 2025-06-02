@@ -65,7 +65,7 @@ const mockCalendlyClient = {
 };
 
 const AvailabilityBar = ({ 
-  calendlyUrl = 'https://calendly.com/waynekuvi', 
+  calendlyUrl = 'https://calendly.com/wayne-uplinq', 
   variant = 'default',
   contactId = 'contact-section'
 }: AvailabilityBarProps) => {

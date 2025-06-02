@@ -3,7 +3,7 @@ import { useSearchParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Navbar from '../components/NavbarContact';
 import Footer from '../components/FooterContact';
-import { BoltIcon } from '@heroicons/react/24/solid';
+import { CheckCircleIcon } from '@heroicons/react/24/solid';
 
 const PaymentSuccess = () => {
   const [searchParams] = useSearchParams();
@@ -59,12 +59,12 @@ const PaymentSuccess = () => {
             ) : (
               <>
                 <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6">
-                  <svg className="w-10 h-10 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
+                  <CheckCircleIcon className="w-10 h-10 text-green-500" />
                 </div>
                 
-                <h1 className="text-3xl font-light text-gray-900 mb-4">Payment Successful!</h1>
+                <h1 className="text-3xl font-bold text-gray-900 mb-4">
+                  Payment Successful!
+                </h1>
                 
                 <p className="text-gray-600 mb-8 max-w-lg mx-auto">
                   Thank you for your purchase. Your payment has been processed successfully and our team will be in touch with you shortly to get started on your project.
@@ -72,8 +72,12 @@ const PaymentSuccess = () => {
 
                 <div className="border border-gray-100 rounded-xl p-6 mb-8 bg-gray-50 max-w-md mx-auto">
                   <div className="flex items-center justify-center mb-4">
-                    <BoltIcon className="h-8 w-8 text-blue-500 mr-2" />
-                    <span className="text-xl font-medium text-gray-900">Uplinq</span>
+                    <img 
+                      src="/logo-uplinq.png" 
+                      alt="Uplinq Digital" 
+                      className="h-8 w-auto mr-2"
+                    />
+                    <span className="text-xl font-medium text-gray-900">Uplinq Digital</span>
                   </div>
                   
                   <div className="space-y-3 text-sm text-gray-700 text-left">

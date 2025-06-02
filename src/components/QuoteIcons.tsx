@@ -141,4 +141,12 @@ export const EmailIcon: FC<{className?: string}> = ({ className = 'w-5 h-5' }) =
     <rect x="3" y="5" width="18" height="14" rx="2" strokeWidth={2} stroke="currentColor" />
     <path d="M3 7l9 6 9-6" strokeWidth={2} stroke="currentColor" />
   </svg>
+);
+
+export const DownloadIcon: FC<{className?: string}> = ({ className = 'w-6 h-6' }) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path d="M12 4v12" strokeWidth={2} stroke="currentColor" />
+    <path d="M8 12l4 4 4-4" strokeWidth={2} stroke="currentColor" />
+    <rect x="4" y="20" width="16" height="2" rx="1" strokeWidth={2} stroke="currentColor" />
+  </svg>
 ); 

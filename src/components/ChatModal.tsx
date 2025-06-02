@@ -90,7 +90,7 @@ const knowledgeBase: Record<string, string> = {
   
   timeline_details: "Our project timelines are broken down into these phases:\n\n1. **Discovery & Planning** (1-2 weeks): Requirements gathering, wireframing\n2. **Design** (1-3 weeks): UI/UX design, prototyping\n3. **Development** (4-12 weeks): Frontend and backend implementation\n4. **Testing** (1-2 weeks): QA, bug fixes, performance testing\n5. **Deployment** (1 week): Launch preparation and go-live\n\nWe also offer ongoing maintenance and support packages.",
   
-  book_call: "I'd be happy to set up a discovery call with our team! You can book a convenient time directly through our calendar:\n\n[**Book a Discovery Call**](https://calendly.com/waynekuvi)\n\nDuring this call, we'll discuss your project in detail, answer any questions, and outline next steps."
+  book_call: "I'd be happy to help you plan your project! For complex builds or custom requirements, I recommend booking a discovery call where we can discuss your specific needs in detail.\n\n[**Book a Discovery Call**](https://calendly.com/wayne-uplinq)\n\nDuring this call, we'll discuss your project in detail, answer any questions, and outline next steps."
 };
 
 // Guide content

@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import Navbar from "../components/NavbarContact";
 import Footer from "../components/FooterContact";
 import FloatingChatButton from "../components/FloatingChatButton";
+import SEO from "../components/SEO";
+import { Analytics } from "../components/Analytics";
 
 // Form states
 enum FormState {
@@ -98,21 +100,46 @@ const Quote = () => {
   };
 
   // Form submission
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (validateForm()) {
-      console.log("Quote form submitted:", { 
-        name, 
-        company, 
-        email, 
-        website, 
-        projectType, 
-        budget, 
-        timeline, 
-        goals 
-      });
-      setFormState(FormState.Complete);
+      try {
+        // Send form data to backend
+        const response = await fetch('/api/quote', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ 
+            name, 
+            company, 
+            email, 
+            website, 
+            projectType, 
+            budget, 
+            timeline, 
+            goals 
+          }),
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(data.error || 'Something went wrong');
+        }
+        
+        console.log("Quote form submitted successfully:", data);
+        
+        // Track successful quote submission
+        Analytics.trackQuoteSubmission(projectType, budget, timeline);
+        
+        setFormState(FormState.Complete);
+      } catch (error) {
+        console.error("Error submitting quote form:", error);
+        // Show error to user
+        alert("There was an error submitting your quote. Please try again later.");
+      }
     }
   };
 
@@ -130,8 +157,35 @@ const Quote = () => {
     setFormState(FormState.Form);
   };
 
+  const quoteStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Free Web Development Quote",
+    "description": "Get a personalized quote for your web development, SEO optimization, or automation project. Expert consultation within 24 hours.",
+    "provider": {
+      "@type": "WebDesignCompany",
+      "name": "Uplinq Digital",
+      "url": "https://uplinq.digital",
+      "email": "wayne@uplinq.digital"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "GBP",
+      "description": "Free project consultation and quote",
+      "availability": "https://schema.org/InStock"
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#f9fbfd]">
+      <SEO
+        title="Get Free Web Development Quote | Custom Websites & SEO | Uplinq Digital"
+        description="Get your free custom web development quote in 24 hours. Expert website design, SEO optimization, conversion rate optimization, and automation services. No commitment required."
+        keywords="free web development quote, website quote calculator, custom website cost, SEO quote, web design pricing, development estimate, UK web agency quote"
+        canonicalUrl="https://uplinq.digital/quote"
+        structuredData={quoteStructuredData}
+      />
       <Navbar />
       <section className="w-full py-24 bg-gradient-to-b from-[#f0f9ff] via-[#f9fbfd] to-white">
         {/* Section Label */}

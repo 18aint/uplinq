@@ -1,4 +1,4 @@
-import { BoltIcon } from '@heroicons/react/24/solid';
+import { Link } from "react-router-dom";
 import { useState } from 'react';
 import ChatModal from './ChatModal';
 
@@ -33,12 +33,14 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
           {/* Branding Section */}
           <div className="md:col-span-3">
-            <a href="/" className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8">
-              <BoltIcon className="h-6 w-6 text-blue-500" />
-              </div>
-              <span className="text-2xl font-medium tracking-tight">Uplinq</span>
-            </a>
+            <div className="flex items-center">
+              <img 
+                src="/logo-uplinq.png" 
+                alt="Uplinq Digital" 
+                className="h-6 w-auto"
+              />
+              <span className="ml-2 text-xl font-medium text-gray-900">Uplinq Digital</span>
+            </div>
             <p className="text-gray-600 mb-6">
               AI powered solutions for automation and growth
             </p>
@@ -110,7 +112,7 @@ const Footer = () => {
 
         {/* Bottom Section */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-gray-600">@Uplinq 2025</p>
+          <p className="text-gray-600">@Uplinq Digital 2025</p>
           <div className="flex items-center gap-4">
             <a href="/privacy-policy" className="text-gray-600 hover:text-gray-900">Privacy Policy</a>
             <a href="/terms-of-service" className="text-gray-600 hover:text-gray-900">Terms of Service</a>

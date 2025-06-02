@@ -13,6 +13,7 @@ import { loadStripe } from '@stripe/stripe-js';
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/autoplay';
+import SEO from '../components/SEO';
 
 // Shared brand logos - same as in Hero component
 const brandLogos = [
@@ -162,8 +163,57 @@ const Pricing = () => {
     }
   ];
 
+  const pricingStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebDesignCompany",
+    "name": "Uplinq Digital",
+    "url": "https://uplinq.digital",
+    "offers": [
+      {
+        "@type": "Offer",
+        "name": "Uplinq LaunchPad",
+        "description": "Built for startups and solopreneurs. 5 responsive pages, contact form, mobile-ready, delivered in 7 days.",
+        "price": "950",
+        "priceCurrency": "GBP",
+        "availability": "https://schema.org/InStock",
+        "validFrom": "2024-01-01"
+      },
+      {
+        "@type": "Offer", 
+        "name": "VitaFlow Growth Engine",
+        "description": "Your website's full-stack upgrade. CRO audit, LLM-powered copy, speed optimization, analytics setup.",
+        "price": "2200",
+        "priceCurrency": "GBP",
+        "availability": "https://schema.org/InStock",
+        "validFrom": "2024-01-01"
+      },
+      {
+        "@type": "Offer",
+        "name": "Uplinq Orbit Retainer",
+        "description": "Set it and scale it package. Monthly optimization, 24/7 monitoring, A/B testing, growth reports.",
+        "price": "749",
+        "priceCurrency": "GBP",
+        "priceSpecification": {
+          "@type": "UnitPriceSpecification",
+          "price": "749",
+          "priceCurrency": "GBP",
+          "unitText": "MONTH"
+        },
+        "availability": "https://schema.org/InStock",
+        "validFrom": "2024-01-01"
+      }
+    ]
+  };
+
   return (
     <div className="min-h-screen bg-[#f9fbfd] flex flex-col">
+      <SEO
+        title="Web Development Pricing | Transparent Rates | Uplinq Digital"
+        description="Simple, transparent pricing for web development, SEO optimization, and automation services. LaunchPad from £950, Growth Engine £2,200, Orbit Retainer £749/month. No hidden fees."
+        keywords="web development pricing, website design cost, SEO pricing, UK web agency rates, custom website price, conversion optimization cost, retainer web services"
+        canonicalUrl="https://uplinq.digital/pricing"
+        structuredData={pricingStructuredData}
+      />
       <Navbar />
       <main className="flex-1 pt-16">
         {/* Hero Section */}

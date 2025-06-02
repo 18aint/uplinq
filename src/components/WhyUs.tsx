@@ -9,8 +9,8 @@ interface Expert {
 const experts: Expert[] = [
   {
     name: 'Wayne Kuvi',
-    role: 'Lead Developer | Founder',
-    avatar: '/founder.png'
+    role: 'Lead Developer',
+    avatar: '/founder.jpg'
   },
   {
     name: 'Alex Rivera',
@@ -38,7 +38,7 @@ const WhyUs = () => {
             </h2>
 
             {/* Points */}
-            <div className="space-y-8 mt-[-100px]">
+            <div className="space-y-8">
               {/* Point 01 */}
               <div className="flex flex-col items-center text-center gap-2 sm:flex-row sm:items-start sm:text-left sm:gap-6">
                 <div className="flex-shrink-0 w-12 h-12 border-2 border-gray-200 rounded-full flex items-center justify-center mb-2 sm:mb-0">
