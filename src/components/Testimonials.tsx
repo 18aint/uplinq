@@ -15,42 +15,42 @@ const testimonials: Testimonial[] = [
     text: "Uplinq transformed our digital presence with a stunning website and ongoing SEO maintenance. Their retainer program ensures our site stays updated and secure. The monthly analytics reports have been invaluable for tracking our growth and ROI.",
     author: "Michael Thorpe",
     handle: "CMO at Warx",
-    image: "/avatars/avatar1.avif"
+    image: "/CFO2.jpeg"
   },
   {
     id: 2,
     text: "The virtual assistant bot Uplinq developed for our customer support has reduced response times by 75%. Their development team seamlessly integrated it with our existing systems, and the ongoing maintenance package means we never worry about technical issues.",
     author: "Sarah Jenson",
     handle: "Head of Digital at FATHOM",
-    image: "/avatars/avatar2.avif"
+    image: "/CFO3.jpeg"
   },
   {
     id: 3,
     text: "Uplinq's web development expertise helped us create a robust financial platform that handles thousands of daily transactions. Their monthly retainer service provides peace of mind - when issues arise, they're resolved immediately, often before we even notice them.",
     author: "Thomas Werner",
     handle: "CTO at Hausbank",
-    image: "/avatars/avatar3.avif"
+    image: "/CFO9.jpeg"
   },
   {
     id: 4,
     text: "Our enterprise-scale web application developed by Uplinq has been crucial for our digital transformation. Their technical solutions and ongoing maintenance have significantly reduced our operational costs while improving customer engagement metrics by 43%.",
     author: "Elena Kowalski",
     handle: "Digital Director at ASSECO",
-    image: "/avatars/avatar4.jpg"
+    image: "/CFO1.jpeg"
   },
   {
     id: 5,
     text: "Uplinq's SEO retainer program has delivered exceptional results - our organic traffic increased by 210% in just six months. Their team consistently provides data-driven recommendations and implements changes that keep us ahead of competitors.",
     author: "James Ritter",
     handle: "VP Marketing at Warx",
-    image: "/avatars/avatar5.jpg"
+    image: "/CFO5.jpeg"
   },
   {
     id: 6,
     text: "The booking platform Uplinq built for us has revolutionized our customer experience. Their 24/7 maintenance support and quarterly UX improvements through their retainer program ensure our digital touchpoints remain world-class, directly impacting our revenue growth.",
     author: "Maria Santiago",
     handle: "Digital Innovation at RoyalCaribbean",
-    image: "/avatars/avatar6.jpg"
+    image: "/CFO10.jpeg"
   }
 ];
 

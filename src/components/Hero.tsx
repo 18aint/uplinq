@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from 'swiper/modules';
-import { BoltIcon } from '@heroicons/react/24/solid';
+import { BoltIcon, SparklesIcon } from '@heroicons/react/24/solid';
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/autoplay';
@@ -18,8 +18,8 @@ const brandLogos = [
 
 const avatars = [
   "/avatars/avatar1.avif",
-  "/avatars/avatar2.avif",
-  "/avatars/avatar3.avif",
+  "/CFO2.jpeg",
+  "/CFO12.jpeg",
 ];
 
 const LogoCarousel = () => {
@@ -159,10 +159,14 @@ const Hero = () => {
           <div className="flex justify-center">
             <Link
               to="/starter-kit"
-              className="inline-flex items-center gap-3 px-8 py-4 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+              className="group inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl hover:shadow-lg transition-all duration-300 transform hover:scale-[1.02]"
             >
-              <span>Try UplinqPro</span>
-              <span className="bg-white/20 text-xs px-2 py-1 rounded-full font-light">£19</span>
+              <SparklesIcon className="h-5 w-5 text-white bg-transparent" />
+              {/* Clean Text */}
+              <span className="font-medium">Experience Uplinq</span>
+              <span className="bg-white/20 text-xs px-2 py-1 rounded-full font-medium">
+                Pro
+              </span>
             </Link>
           </div>
         </div>

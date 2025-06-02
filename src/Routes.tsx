@@ -14,6 +14,8 @@ import ScrollToTop from './components/ScrollToTop';
 import WebsiteGrowthCalculator from './pages/WebsiteGrowthCalculator';
 import PerformanceStarterKit from './pages/PerformanceStarterKit';
 import StarterKitSuccess from './pages/StarterKitSuccess';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
 
 const AppRoutes = () => {
   return (
@@ -34,6 +36,8 @@ const AppRoutes = () => {
         <Route path="/growth-calculator" element={<WebsiteGrowthCalculator />} />
         <Route path="/starter-kit" element={<PerformanceStarterKit />} />
         <Route path="/starter-kit-success" element={<StarterKitSuccess />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms-of-service" element={<TermsOfService />} />
       </Routes>
     </>
   );

@@ -15,7 +15,7 @@ const experts: Expert[] = [
   {
     name: 'Alex Rivera',
     role: 'UX Designer',
-    avatar: '/team-avatar2.jpg'
+    avatar: 'public/ux.jpeg'
   }
 ];
 

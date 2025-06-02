@@ -1102,8 +1102,8 @@ const StartProject = () => {
               <div className="flex flex-col md:flex-row gap-6">
                 <div className="flex-shrink-0 flex justify-center md:justify-start">
                   <img 
-                    src="/avatars/avatar2.avif" 
-                    alt="Sarah Johnson" 
+                    src="public/CF013.jpeg" 
+                    alt="Sarah Price" 
                     className="w-16 h-16 rounded-full object-cover"
                   />
                 </div>
@@ -1112,7 +1112,7 @@ const StartProject = () => {
                     "Working with Uplinq was a game-changer for our business. They delivered a stunning website that's helped us increase conversions by 45%. Their process was smooth and they were responsive throughout."
                   </p>
                   <div className="text-center md:text-left">
-                    <p className="font-medium text-gray-900">Sarah Johnson</p>
+                    <p className="font-medium text-gray-900">Sarah Price</p>
                     <p className="text-sm text-gray-600">CMO, TechStart Inc.</p>
                   </div>
                 </div>

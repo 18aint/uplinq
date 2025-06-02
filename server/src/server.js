@@ -180,13 +180,219 @@ app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, 
     switch (event.type) {
       case 'checkout.session.completed':
         const session = event.data.object;
-        // Handle successful payment
         console.log('Payment successful for session:', session.id);
-        // Here you would typically:
-        // 1. Update your database
-        // 2. Send confirmation email
-        // 3. Provision the product/service
+        
+        // Send payment notification email to Wayne
+        if (process.env.SENDGRID_API_KEY) {
+          try {
+            const msg = {
+              to: RECIPIENT_EMAIL,
+              from: process.env.SENDGRID_FROM_EMAIL || 'noreply@uplinq.digital',
+              subject: `💰 New Payment Received - ${session.amount_total / 100} ${session.currency.toUpperCase()}`,
+              text: `New payment received!
+
+Payment Details:
+Session ID: ${session.id}
+Amount: ${session.amount_total / 100} ${session.currency.toUpperCase()}
+Customer Email: ${session.customer_details?.email || 'Not provided'}
+Payment Status: ${session.payment_status}
+Customer Name: ${session.customer_details?.name || 'Not provided'}
+
+Metadata:
+${Object.entries(session.metadata || {}).map(([key, value]) => `${key}: ${value}`).join('\n') || 'None'}
+
+This payment has been successfully processed through Stripe.`,
+              html: `
+<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+  <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 12px;">
+    <h1 style="color: white; text-align: center; margin: 0;">💰 New Payment Received!</h1>
+  </div>
+  
+  <div style="background: white; padding: 30px; border: 1px solid #e1e5e9; border-radius: 8px; margin-top: 20px;">
+    <h2 style="color: #333; margin-top: 0;">Payment Details</h2>
+    
+    <table style="width: 100%; border-collapse: collapse;">
+      <tr style="background: #f8f9fa;">
+        <td style="padding: 12px; border: 1px solid #dee2e6; font-weight: bold;">Session ID:</td>
+        <td style="padding: 12px; border: 1px solid #dee2e6;">${session.id}</td>
+      </tr>
+      <tr>
+        <td style="padding: 12px; border: 1px solid #dee2e6; font-weight: bold;">Amount:</td>
+        <td style="padding: 12px; border: 1px solid #dee2e6; color: #28a745; font-size: 18px; font-weight: bold;">${session.amount_total / 100} ${session.currency.toUpperCase()}</td>
+      </tr>
+      <tr style="background: #f8f9fa;">
+        <td style="padding: 12px; border: 1px solid #dee2e6; font-weight: bold;">Customer Email:</td>
+        <td style="padding: 12px; border: 1px solid #dee2e6;">${session.customer_details?.email || 'Not provided'}</td>
+      </tr>
+      <tr>
+        <td style="padding: 12px; border: 1px solid #dee2e6; font-weight: bold;">Customer Name:</td>
+        <td style="padding: 12px; border: 1px solid #dee2e6;">${session.customer_details?.name || 'Not provided'}</td>
+      </tr>
+      <tr style="background: #f8f9fa;">
+        <td style="padding: 12px; border: 1px solid #dee2e6; font-weight: bold;">Payment Status:</td>
+        <td style="padding: 12px; border: 1px solid #dee2e6; color: #28a745; font-weight: bold;">${session.payment_status}</td>
+      </tr>
+    </table>
+    
+    ${Object.keys(session.metadata || {}).length > 0 ? `
+    <h3 style="color: #333; margin-top: 20px;">Additional Information:</h3>
+    <ul>
+      ${Object.entries(session.metadata || {}).map(([key, value]) => `<li><strong>${key}:</strong> ${value}</li>`).join('')}
+    </ul>
+    ` : ''}
+    
+    <div style="background: #d4edda; border: 1px solid #c3e6cb; color: #155724; padding: 15px; border-radius: 8px; margin-top: 20px;">
+      <strong>✅ This payment has been successfully processed through Stripe.</strong>
+    </div>
+  </div>
+</div>
+`,
+            };
+            
+            await sgMail.send(msg);
+            console.log('Payment notification email sent to', RECIPIENT_EMAIL);
+          } catch (emailError) {
+            console.error('Error sending payment notification email:', emailError);
+          }
+        }
         break;
+        
+      case 'payment_intent.payment_failed':
+        const failedPayment = event.data.object;
+        console.log('Payment failed for payment intent:', failedPayment.id);
+        
+        // Send failed payment notification email to Wayne
+        if (process.env.SENDGRID_API_KEY) {
+          try {
+            const msg = {
+              to: RECIPIENT_EMAIL,
+              from: process.env.SENDGRID_FROM_EMAIL || 'noreply@uplinq.digital',
+              subject: `⚠️ Payment Failed - ${failedPayment.amount / 100} ${failedPayment.currency.toUpperCase()}`,
+              text: `Payment failed notification:
+
+Payment Intent ID: ${failedPayment.id}
+Amount: ${failedPayment.amount / 100} ${failedPayment.currency.toUpperCase()}
+Customer Email: ${failedPayment.receipt_email || 'Not provided'}
+Failure Code: ${failedPayment.last_payment_error?.code || 'Unknown'}
+Failure Message: ${failedPayment.last_payment_error?.message || 'No specific error message'}
+
+You may want to follow up with the customer to resolve the payment issue.`,
+              html: `
+<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+  <div style="background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); padding: 20px; border-radius: 12px;">
+    <h1 style="color: white; text-align: center; margin: 0;">⚠️ Payment Failed</h1>
+  </div>
+  
+  <div style="background: white; padding: 30px; border: 1px solid #e1e5e9; border-radius: 8px; margin-top: 20px;">
+    <h2 style="color: #333; margin-top: 0;">Failed Payment Details</h2>
+    
+    <table style="width: 100%; border-collapse: collapse;">
+      <tr style="background: #f8f9fa;">
+        <td style="padding: 12px; border: 1px solid #dee2e6; font-weight: bold;">Payment Intent ID:</td>
+        <td style="padding: 12px; border: 1px solid #dee2e6;">${failedPayment.id}</td>
+      </tr>
+      <tr>
+        <td style="padding: 12px; border: 1px solid #dee2e6; font-weight: bold;">Amount:</td>
+        <td style="padding: 12px; border: 1px solid #dee2e6; color: #dc3545; font-size: 18px; font-weight: bold;">${failedPayment.amount / 100} ${failedPayment.currency.toUpperCase()}</td>
+      </tr>
+      <tr style="background: #f8f9fa;">
+        <td style="padding: 12px; border: 1px solid #dee2e6; font-weight: bold;">Customer Email:</td>
+        <td style="padding: 12px; border: 1px solid #dee2e6;">${failedPayment.receipt_email || 'Not provided'}</td>
+      </tr>
+      <tr>
+        <td style="padding: 12px; border: 1px solid #dee2e6; font-weight: bold;">Failure Code:</td>
+        <td style="padding: 12px; border: 1px solid #dee2e6; color: #dc3545;">${failedPayment.last_payment_error?.code || 'Unknown'}</td>
+      </tr>
+      <tr style="background: #f8f9fa;">
+        <td style="padding: 12px; border: 1px solid #dee2e6; font-weight: bold;">Failure Message:</td>
+        <td style="padding: 12px; border: 1px solid #dee2e6;">${failedPayment.last_payment_error?.message || 'No specific error message'}</td>
+      </tr>
+    </table>
+    
+    <div style="background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; padding: 15px; border-radius: 8px; margin-top: 20px;">
+      <strong>⚠️ You may want to follow up with the customer to resolve the payment issue.</strong>
+    </div>
+  </div>
+</div>
+`,
+            };
+            
+            await sgMail.send(msg);
+            console.log('Failed payment notification email sent to', RECIPIENT_EMAIL);
+          } catch (emailError) {
+            console.error('Error sending failed payment notification email:', emailError);
+          }
+        }
+        break;
+        
+      case 'invoice.payment_succeeded':
+        const invoice = event.data.object;
+        console.log('Invoice payment succeeded:', invoice.id);
+        
+        // Send invoice payment notification email to Wayne
+        if (process.env.SENDGRID_API_KEY) {
+          try {
+            const msg = {
+              to: RECIPIENT_EMAIL,
+              from: process.env.SENDGRID_FROM_EMAIL || 'noreply@uplinq.digital',
+              subject: `📄 Invoice Payment Received - ${invoice.amount_paid / 100} ${invoice.currency.toUpperCase()}`,
+              text: `Invoice payment received:
+
+Invoice ID: ${invoice.id}
+Amount Paid: ${invoice.amount_paid / 100} ${invoice.currency.toUpperCase()}
+Customer Email: ${invoice.customer_email || 'Not provided'}
+Subscription: ${invoice.subscription || 'N/A'}
+Period: ${new Date(invoice.period_start * 1000).toLocaleDateString()} - ${new Date(invoice.period_end * 1000).toLocaleDateString()}
+
+This indicates a successful recurring payment.`,
+              html: `
+<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+  <div style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); padding: 20px; border-radius: 12px;">
+    <h1 style="color: white; text-align: center; margin: 0;">📄 Invoice Payment Received</h1>
+  </div>
+  
+  <div style="background: white; padding: 30px; border: 1px solid #e1e5e9; border-radius: 8px; margin-top: 20px;">
+    <h2 style="color: #333; margin-top: 0;">Invoice Payment Details</h2>
+    
+    <table style="width: 100%; border-collapse: collapse;">
+      <tr style="background: #f8f9fa;">
+        <td style="padding: 12px; border: 1px solid #dee2e6; font-weight: bold;">Invoice ID:</td>
+        <td style="padding: 12px; border: 1px solid #dee2e6;">${invoice.id}</td>
+      </tr>
+      <tr>
+        <td style="padding: 12px; border: 1px solid #dee2e6; font-weight: bold;">Amount Paid:</td>
+        <td style="padding: 12px; border: 1px solid #dee2e6; color: #28a745; font-size: 18px; font-weight: bold;">${invoice.amount_paid / 100} ${invoice.currency.toUpperCase()}</td>
+      </tr>
+      <tr style="background: #f8f9fa;">
+        <td style="padding: 12px; border: 1px solid #dee2e6; font-weight: bold;">Customer Email:</td>
+        <td style="padding: 12px; border: 1px solid #dee2e6;">${invoice.customer_email || 'Not provided'}</td>
+      </tr>
+      <tr>
+        <td style="padding: 12px; border: 1px solid #dee2e6; font-weight: bold;">Subscription:</td>
+        <td style="padding: 12px; border: 1px solid #dee2e6;">${invoice.subscription || 'N/A'}</td>
+      </tr>
+      <tr style="background: #f8f9fa;">
+        <td style="padding: 12px; border: 1px solid #dee2e6; font-weight: bold;">Period:</td>
+        <td style="padding: 12px; border: 1px solid #dee2e6;">${new Date(invoice.period_start * 1000).toLocaleDateString()} - ${new Date(invoice.period_end * 1000).toLocaleDateString()}</td>
+      </tr>
+    </table>
+    
+    <div style="background: #d4edda; border: 1px solid #c3e6cb; color: #155724; padding: 15px; border-radius: 8px; margin-top: 20px;">
+      <strong>✅ This indicates a successful recurring payment.</strong>
+    </div>
+  </div>
+</div>
+`,
+            };
+            
+            await sgMail.send(msg);
+            console.log('Invoice payment notification email sent to', RECIPIENT_EMAIL);
+          } catch (emailError) {
+            console.error('Error sending invoice payment notification email:', emailError);
+          }
+        }
+        break;
+        
       default:
         console.log(`Unhandled event type: ${event.type}`);
     }
@@ -201,13 +407,22 @@ app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, 
 // Handle contact form submissions
 app.post('/api/contact', async (req, res) => {
   try {
-    const { name, email, details, file } = req.body;
+    const { name, email, details, file, source } = req.body;
+    
+    // Validate required fields
+    if (!name || !email || !details) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Name, email, and details are required' 
+      });
+    }
     
     // Log the submission
     console.log('Contact form submission received:', { 
-      name, email, details, 
+      name, email, details: details.substring(0, 100) + '...', 
       // Don't log the entire file for privacy reasons
       hasFile: !!file,
+      source: source || 'unknown',
       // Always sent to our designated recipient
       sentTo: RECIPIENT_EMAIL
     });
@@ -218,58 +433,103 @@ app.post('/api/contact', async (req, res) => {
         const msg = {
           to: RECIPIENT_EMAIL,
           from: process.env.SENDGRID_FROM_EMAIL || 'noreply@uplinq.digital',
-          subject: `New Contact Form Submission from ${name}`,
+          subject: `New Contact Form Submission from ${name}${source ? ` (${source})` : ''}`,
           text: `Contact details:
   Name: ${name}
   Email: ${email}
+  Source: ${source || 'Direct contact form'}
   Details: ${details}`,
           html: `
   <h2>New Contact Form Submission</h2>
   <p><strong>Name:</strong> ${name}</p>
   <p><strong>Email:</strong> ${email}</p>
+  <p><strong>Source:</strong> ${source || 'Direct contact form'}</p>
   <p><strong>Details:</strong></p>
   <p>${details.replace(/\n/g, '<br>')}</p>
   `,
         };
         
         // Add attachment if file is provided
-        if (file) {
-          // Remove the data:image/... prefix to get just the base64 content
-          const fileContent = file.split(',')[1];
-          const fileType = file.match(/data:(.*);base64/)?.[1] || 'application/octet-stream';
-          const fileName = 'attachment' + (fileType.includes('image') ? '.jpg' : '.pdf');
-          
-          msg.attachments = [
-            {
-              content: fileContent,
-              filename: fileName,
-              type: fileType,
-              disposition: 'attachment'
+        if (file && typeof file === 'string') {
+          try {
+            // Validate file format
+            if (file.includes(',') && file.includes('data:')) {
+              const fileContent = file.split(',')[1];
+              const fileTypeMatch = file.match(/data:(.*?);base64/);
+              const fileType = fileTypeMatch ? fileTypeMatch[1] : 'application/octet-stream';
+              
+              // Determine file extension
+              let fileExtension = '.txt';
+              if (fileType.includes('image/jpeg') || fileType.includes('image/jpg')) {
+                fileExtension = '.jpg';
+              } else if (fileType.includes('image/png')) {
+                fileExtension = '.png';
+              } else if (fileType.includes('application/pdf')) {
+                fileExtension = '.pdf';
+              } else if (fileType.includes('image/')) {
+                fileExtension = '.jpg';
+              }
+              
+              const fileName = `attachment_${Date.now()}${fileExtension}`;
+              
+              // Validate base64 content
+              if (fileContent && fileContent.length > 0) {
+                msg.attachments = [
+                  {
+                    content: fileContent,
+                    filename: fileName,
+                    type: fileType,
+                    disposition: 'attachment'
+                  }
+                ];
+                console.log('File attachment added:', fileName, fileType);
+              }
             }
-          ];
+          } catch (fileError) {
+            console.error('Error processing file attachment:', fileError);
+            // Continue without attachment rather than failing completely
+          }
         }
         
         await sgMail.send(msg);
-        console.log('Email sent to', RECIPIENT_EMAIL);
+        console.log('Email sent successfully to', RECIPIENT_EMAIL);
       } catch (emailError) {
         console.error('Error sending email:', emailError);
-        // Continue with response even if email fails
+        console.error('SendGrid error details:', emailError.response?.body || emailError.message);
+        
+        // Return success but note the email issue
+        return res.status(200).json({ 
+          success: true, 
+          message: 'Contact form submitted successfully, but there was an issue with email delivery. Our team has been notified.',
+          recipient: RECIPIENT_EMAIL,
+          emailError: true
+        });
       }
     } else {
       console.log('SendGrid API key not set - email not sent');
+      return res.status(200).json({ 
+        success: true, 
+        message: 'Contact form submitted successfully (email service not configured)',
+        recipient: RECIPIENT_EMAIL,
+        emailError: true
+      });
     }
     
     res.status(200).json({ 
       success: true, 
-      message: 'Contact form submitted successfully',
-      recipient: RECIPIENT_EMAIL // Confirm where it would be sent
+      message: 'Contact form submitted and email sent successfully',
+      recipient: RECIPIENT_EMAIL
     });
     
   } catch (error) {
     console.error('Error processing contact form:', error);
+    console.error('Error stack:', error.stack);
+    
+    // Always return a valid JSON response, even on error
     res.status(500).json({ 
       success: false, 
-      error: 'Failed to process contact form submission. Please try again later.' 
+      error: 'Failed to process contact form submission. Please try again later.',
+      details: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error'
     });
   }
 });

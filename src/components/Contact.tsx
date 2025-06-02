@@ -128,11 +128,18 @@ const Contact = () => {
           // Prepare file data if present
           let fileData = null;
           if (file) {
-            const reader = new FileReader();
-            fileData = await new Promise((resolve) => {
-              reader.onload = () => resolve(reader.result);
-              reader.readAsDataURL(file);
-            });
+            try {
+              const reader = new FileReader();
+              fileData = await new Promise((resolve, reject) => {
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = () => reject(new Error('Failed to read file'));
+                reader.readAsDataURL(file);
+              });
+            } catch (fileError) {
+              console.error("Error reading file:", fileError);
+              // Continue without file rather than failing completely
+              fileData = null;
+            }
           }
           
           // Send form data to backend
@@ -146,22 +153,52 @@ const Contact = () => {
               email,
               details,
               file: fileData,
+              source: 'contact_form'
             }),
           });
           
-          const data = await response.json();
+          let data;
+          try {
+            data = await response.json();
+          } catch (jsonError) {
+            console.error("Error parsing response:", jsonError);
+            throw new Error('Server returned invalid response. Please try again later.');
+          }
           
           if (!response.ok) {
-            throw new Error(data.error || 'Something went wrong');
+            throw new Error(data.error || `Server error: ${response.status}`);
           }
           
           console.log("Form submitted successfully:", data);
+          
+          // Show warning if email had issues but form was submitted
+          if (data.emailError) {
+            console.warn("Email delivery issue:", data.message);
+          }
+          
           // Form submission was successful, move to completion step
           setStep(FormStep.Complete);
         } catch (error) {
           console.error("Error submitting form:", error);
-          // Show error to user (you could add error state and display it in the UI)
-          alert("There was an error submitting your form. Please try again later.");
+          
+          // Show more specific error messages
+          let errorMessage = "There was an error submitting your form. Please try again later.";
+          
+          if (error instanceof Error) {
+            if (error.message.includes('Failed to fetch')) {
+              errorMessage = "Unable to connect to our server. Please check your internet connection and try again.";
+            } else if (error.message.includes('Server returned invalid response')) {
+              errorMessage = "Our server is experiencing issues. Please try again in a few minutes.";
+            } else {
+              errorMessage = error.message;
+            }
+          }
+          
+          // Set error in the UI
+          setErrors({ submit: errorMessage });
+          
+          // Also show browser alert as fallback
+          alert(errorMessage);
         }
       }
     }
@@ -216,7 +253,7 @@ const Contact = () => {
               <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
               <span className="text-sm text-gray-600">Enquire Project</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl md:text-5xl font-light text-center leading-tight text-gray-900">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-light text-center leading-tight text-gray-900">
               {source === 'hero' ? 'Get Your Free Quote' : 
                source === 'why-uplinq' ? 'Let\'s Start Working Together' :
                source === 'portfolio' ? 'Start Your Project' :
