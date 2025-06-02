@@ -25,7 +25,6 @@ const WebsiteGrowthCalculator = () => {
   
   // Results state
   const [results, setResults] = useState<CalculatorResults | null>(null);
-  const [showEmailCapture, setShowEmailCapture] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   
@@ -93,7 +92,6 @@ const WebsiteGrowthCalculator = () => {
     };
     
     setResults(calculatedResults);
-    setShowEmailCapture(true);
     
     // Track calculation
     Analytics.trackConversion('growth_calculator_used', {

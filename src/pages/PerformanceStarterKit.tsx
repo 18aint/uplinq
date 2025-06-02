@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, useAnimation, useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { Link } from 'react-router-dom';
 import { 
   RocketLaunchIcon, 
   DocumentCheckIcon, 
