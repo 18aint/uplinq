@@ -17,7 +17,7 @@ const brandLogos = [
 ];
 
 const avatars = [
-  "/avatars/avatar1.avif",
+  "/CFO1.jpeg",
   "/CFO2.jpeg",
   "/CFO12.jpeg",
 ];

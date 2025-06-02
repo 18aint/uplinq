@@ -401,7 +401,7 @@ const Pricing = () => {
               <div className="flex flex-col md:flex-row gap-6">
                 <div className="flex-shrink-0 flex justify-center md:justify-start">
                   <img 
-                    src="public/CF013.jpeg" 
+                    src="/CFO6.jpeg" 
                     alt="Sarah Johnson" 
                     className="w-16 h-16 rounded-full object-cover"
                   />
