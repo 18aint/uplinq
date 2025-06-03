@@ -177,102 +177,219 @@ const ClientLogin = () => {
         </motion.div>
       </div>
 
-      {/* Right Column - Promotional Content */}
-      <div className="hidden lg:flex flex-1 flex-col items-center justify-center px-8 py-12 bg-white/50 backdrop-blur-sm">
-        <div className="w-full max-w-lg space-y-6">
+      {/* Right Column - Product Design Showcase */}
+      <div className="hidden lg:flex flex-1 flex-col items-center justify-center px-8 py-12 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
+        
+        {/* Floating Shapes */}
+        <motion.img
+          src="/shape1.avif"
+          alt=""
+          className="absolute top-20 right-20 w-24 h-24 opacity-60"
+          initial={{ y: 0, rotate: 0 }}
+          animate={{ 
+            y: [-10, 10, -10],
+            rotate: [0, 180, 360]
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        
+        <motion.img
+          src="/shape2.avif"
+          alt=""
+          className="absolute top-1/3 left-8 w-16 h-16 opacity-40"
+          initial={{ y: 0, rotate: 0 }}
+          animate={{ 
+            y: [15, -15, 15],
+            rotate: [0, -180, -360]
+          }}
+          transition={{
+            duration: 6,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 1
+          }}
+        />
+        
+        <motion.img
+          src="/shape3.avif"
+          alt=""
+          className="absolute bottom-32 right-12 w-20 h-20 opacity-50"
+          initial={{ y: 0, rotate: 0 }}
+          animate={{ 
+            y: [-12, 12, -12],
+            rotate: [0, 90, 180]
+          }}
+          transition={{
+            duration: 7,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 2
+          }}
+        />
+
+        <div className="w-full max-w-lg space-y-8 relative z-10">
           
-          {/* Uplinq Pro Announcement */}
+          {/* Main Product Hero */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-center mb-12"
+          >
+            <div className="relative">
+              <motion.img
+                src="/shape1.avif"
+                alt=""
+                className="w-32 h-32 mx-auto mb-6 opacity-80"
+                initial={{ scale: 0.8, rotate: 0 }}
+                animate={{ 
+                  scale: [0.8, 1, 0.8],
+                  rotate: [0, 360]
+                }}
+                transition={{
+                  duration: 10,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full blur-3xl"></div>
+            </div>
+            
+            <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent mb-4">
+              Pathway to productivity
+            </h2>
+            <p className="text-gray-600 text-lg leading-relaxed max-w-md mx-auto">
+              Accelerate your web presence with our advanced development tools and intelligent automation solutions
+            </p>
+          </motion.div>
+
+          {/* Uplinq Pro Feature Card */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-2xl p-8 shadow-xl"
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/50 relative overflow-hidden"
           >
-            <div className="flex items-center mb-4">
-              <div className="w-2 h-2 bg-white rounded-full mr-2"></div>
-              <span className="text-sm font-medium uppercase tracking-wide">New Launch</span>
+            <div className="absolute top-4 right-4">
+              <motion.img
+                src="/shape2.avif"
+                alt=""
+                className="w-12 h-12 opacity-60"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              />
             </div>
-            <h2 className="text-2xl font-bold mb-3">Uplinq Pro is now here</h2>
-            <p className="text-blue-100 mb-6 leading-relaxed">
-              Advanced enterprise solutions with AI-powered automation, 
-              custom integrations, and dedicated support for scaling businesses.
+            
+            <div className="flex items-center mb-4">
+              <div className="w-3 h-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mr-3"></div>
+              <span className="text-sm font-semibold text-gray-500 uppercase tracking-wider">New Launch</span>
+            </div>
+            
+            <h3 className="text-2xl font-bold text-gray-900 mb-3">Uplinq Pro</h3>
+            <p className="text-gray-600 mb-6 leading-relaxed">
+              Enterprise-grade solutions with AI-powered automation, custom integrations, and dedicated support for scaling businesses.
             </p>
+            
             <div className="flex items-center justify-between">
-              <span className="text-sm text-blue-200">Starting February 2025</span>
+              <span className="text-sm text-gray-500">Starting February 2025</span>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-white text-blue-600 px-6 py-2 rounded-lg font-medium hover:bg-blue-50 transition-colors"
+                className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-2 rounded-xl font-medium shadow-lg hover:shadow-xl transition-all duration-200"
               >
                 Learn more
               </motion.button>
             </div>
           </motion.div>
 
-          {/* Webinar Announcement */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100"
-          >
-            <div className="flex items-start">
-              <div className="flex-1">
-                <div className="flex items-center mb-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-                  <span className="text-xs text-gray-500 uppercase tracking-wide font-medium">Webinar Series</span>
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  Advanced Web Performance Optimization
-                </h3>
-                <p className="text-sm text-gray-600 mb-3">
-                  Tuesday, January 15, 2025<br />
-                  2:00 p.m. – 3:00 p.m. GMT
-                </p>
-                <p className="text-gray-700 text-sm mb-4">
-                  Learn cutting-edge techniques for improving Core Web Vitals, 
-                  implementing effective caching strategies, and boosting conversion rates.
-                </p>
-                <button className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition-colors">
-                  Register now
-                </button>
-              </div>
-              <div className="ml-4 w-20 h-20 bg-gradient-to-br from-green-100 to-green-200 rounded-lg flex items-center justify-center">
-                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                </svg>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* AI Assistant Feature */}
+          {/* Feature Highlights */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
-            className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100"
+            className="grid grid-cols-2 gap-4"
           >
-            <div className="flex items-start">
-              <div className="flex-1">
-                <div className="flex items-center mb-2">
-                  <div className="w-2 h-2 bg-purple-500 rounded-full mr-2"></div>
-                  <span className="text-xs text-gray-500 uppercase tracking-wide font-medium">New Feature</span>
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  AI Chat Assistant
-                </h3>
-                <p className="text-gray-700 text-sm mb-4">
-                  Our AI assistant integrates smart chatbots, lead qualification, 
-                  and customer support automation to boost your website engagement.
-                </p>
-                <button className="bg-purple-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors">
-                  Learn more
-                </button>
+            <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-white/50 relative">
+              <div className="absolute top-3 right-3">
+                <motion.img
+                  src="/shape3.avif"
+                  alt=""
+                  className="w-8 h-8 opacity-50"
+                  animate={{ 
+                    y: [-5, 5, -5],
+                    rotate: [0, 180, 360]
+                  }}
+                  transition={{
+                    duration: 5,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                />
               </div>
-              <div className="ml-4 w-20 h-20 bg-gradient-to-br from-purple-100 to-purple-200 rounded-lg flex items-center justify-center">
-                <svg className="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+              
+              <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-emerald-500 rounded-lg flex items-center justify-center mb-3">
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
+              </div>
+              
+              <h4 className="font-semibold text-gray-900 mb-2">Performance</h4>
+              <p className="text-sm text-gray-600">Lightning-fast load times and optimized Core Web Vitals</p>
+            </div>
+
+            <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-white/50 relative">
+              <div className="absolute top-3 right-3">
+                <motion.img
+                  src="/shape1.avif"
+                  alt=""
+                  className="w-8 h-8 opacity-50"
+                  animate={{ 
+                    scale: [0.8, 1.2, 0.8],
+                    rotate: [0, -180, -360]
+                  }}
+                  transition={{
+                    duration: 6,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 1
+                  }}
+                />
+              </div>
+              
+              <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-violet-500 rounded-lg flex items-center justify-center mb-3">
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                </svg>
+              </div>
+              
+              <h4 className="font-semibold text-gray-900 mb-2">Innovation</h4>
+              <p className="text-sm text-gray-600">Cutting-edge AI and automation technologies</p>
+            </div>
+          </motion.div>
+
+          {/* Stats Section */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.8 }}
+            className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-2xl p-6 backdrop-blur-sm border border-white/30"
+          >
+            <div className="grid grid-cols-3 gap-4 text-center">
+              <div>
+                <div className="text-2xl font-bold text-gray-900">200+</div>
+                <div className="text-xs text-gray-600 uppercase tracking-wide">Projects</div>
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-gray-900">4.9★</div>
+                <div className="text-xs text-gray-600 uppercase tracking-wide">Rating</div>
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-gray-900">99%</div>
+                <div className="text-xs text-gray-600 uppercase tracking-wide">Uptime</div>
               </div>
             </div>
           </motion.div>
