@@ -90,14 +90,25 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* CTA Button */}
-          <Link
-            to="/pricing"
-            className="hidden font-light md:inline-flex items-center px-4 py-2 rounded-full bg-blue-500 text-white hover:bg-blue-600 transition-colors duration-200"
-          >
-            Get started
-            <span className="ml-2 bg-white rounded-full text-blue-500 ml-3 mr-[-10px] px-2 py-1">→</span>
-          </Link>
+          {/* Right side buttons */}
+          <div className="hidden md:flex items-center space-x-4">
+            {/* Client Login Link */}
+            <Link
+              to="/client-login"
+              className="text-gray-600 hover:text-blue-600 transition-colors font-medium text-sm"
+            >
+              Client Login
+            </Link>
+
+            {/* CTA Button */}
+            <Link
+              to="/pricing"
+              className="font-light inline-flex items-center px-4 py-2 rounded-full bg-blue-500 text-white hover:bg-blue-600 transition-colors duration-200"
+            >
+              Get started
+              <span className="ml-2 bg-white rounded-full text-blue-500 ml-3 mr-[-10px] px-2 py-1">→</span>
+            </Link>
+          </div>
 
           {/* Mobile Menu Button */}
           <button
@@ -166,6 +177,16 @@ const Navbar = () => {
                     {link.label}
                   </Link>
                 ))}
+                
+                {/* Client Login Link */}
+                <Link
+                  to="/client-login"
+                  className="text-lg font-medium text-gray-600 hover:text-blue-600 transition-colors py-2 px-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 border-t border-gray-100 pt-4 mt-2"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Client Login
+                </Link>
+                
                 <Link
                   to="/pricing"
                   className="mt-4 w-full inline-flex items-center justify-center px-4 py-3 rounded-full bg-blue-500 text-white hover:bg-blue-600 transition-colors font-thin text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
