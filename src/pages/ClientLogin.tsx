@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 
 const ClientLogin = () => {
@@ -33,7 +33,7 @@ const ClientLogin = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-100 flex">
+    <div className="min-h-screen bg-white flex">
       <SEO
         title="Client Access Portal | Uplinq Digital"
         description="Secure login portal for Uplinq Digital clients to access project dashboard and updates"
@@ -42,7 +42,7 @@ const ClientLogin = () => {
       />
       
       {/* Left Column - Login Form */}
-      <div className="flex-1 flex items-center justify-center px-8 py-12 lg:px-8 md:px-6 sm:px-4">
+      <div className="flex-1 flex items-center justify-center px-8 py-12 lg:px-8 md:px-6 sm:px-4 bg-white">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -51,7 +51,7 @@ const ClientLogin = () => {
         >
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="flex items-center justify-center mb-6">
+            <Link to="/" className="flex items-center justify-center mb-6 hover:opacity-80 transition-opacity">
               <img 
                 src="/logo-uplinq.png" 
                 alt="Uplinq Digital" 
@@ -60,7 +60,7 @@ const ClientLogin = () => {
               <span className="ml-2 text-2xl font-medium text-gray-900">
                 Uplinq Digital
               </span>
-            </div>
+            </Link>
             <h1 className="text-3xl font-light text-gray-900 mb-2">
               Log In
             </h1>
@@ -74,7 +74,7 @@ const ClientLogin = () => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100"
+            className="bg-gray-50 p-8 rounded-2xl shadow-lg border border-gray-100"
           >
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Email Input */}
