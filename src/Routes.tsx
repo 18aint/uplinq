@@ -17,6 +17,8 @@ import StarterKitSuccess from './pages/StarterKitSuccess';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import LoomConfirmation from './pages/LoomConfirmation';
+import ClientLogin from './pages/ClientLogin';
+import ClientDashboard from './pages/ClientDashboard';
 
 const AppRoutes = () => {
   return (
@@ -40,6 +42,8 @@ const AppRoutes = () => {
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-of-service" element={<TermsOfService />} />
         <Route path="/loom-confirmation" element={<LoomConfirmation />} />
+        <Route path="/client-login" element={<ClientLogin />} />
+        <Route path="/client-dashboard" element={<ClientDashboard />} />
       </Routes>
     </>
   );
