@@ -88,9 +88,12 @@ const Navbar = () => {
             {/* Client Login Link */}
             <Link
               to="/client-login"
-              className="text-gray-600 hover:text-blue-600 transition-colors font-medium text-sm"
+              className="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:text-blue-600 bg-gray-50 hover:bg-blue-50 rounded-lg border border-gray-200 hover:border-blue-200 transition-all duration-200 font-medium text-sm group"
             >
-              Client Login
+              <svg className="w-4 h-4 text-gray-500 group-hover:text-blue-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+              <span>Client Access</span>
             </Link>
 
             {/* CTA Button */}
@@ -163,10 +166,13 @@ const Navbar = () => {
                 {/* Client Login Link */}
                 <Link
                   to="/client-login"
-                  className="text-lg font-medium text-gray-600 hover:text-blue-600 transition-colors py-2 px-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 border-t border-gray-100 pt-4 mt-2"
+                  className="flex items-center space-x-3 text-lg font-medium text-gray-700 hover:text-blue-600 bg-gray-50 hover:bg-blue-50 px-4 py-3 rounded-lg border border-gray-200 hover:border-blue-200 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 border-t-0 mt-4 group"
                   onClick={() => setMenuOpen(false)}
                 >
-                  Client Login
+                  <svg className="w-5 h-5 text-gray-500 group-hover:text-blue-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                  <span>Client Access</span>
                 </Link>
                 
                 <Link
