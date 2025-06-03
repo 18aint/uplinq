@@ -478,18 +478,18 @@ app.post('/api/contact', async (req, res) => {
               
               <!-- Main Content -->
               <div style="background: #ffffff; padding: 50px 40px;">
-                <h1 style="color: #111827; margin: 0 0 30px 0; font-size: 28px; font-weight: 300; line-height: 1.2; text-align: center;">Hi there! 👋</h1>
+                <h1 style="color: #111827; margin: 0 0 30px 0; font-size: 28px; font-weight: 300; line-height: 1.2; text-align: center;">Hello there! 👋</h1>
                 
                 <p style="color: #6b7280; line-height: 1.6; margin: 0 0 40px 0; font-size: 16px; text-align: center;">
-                  Thank you for requesting your personalized website audit video. We're excited to help you unlock your website's potential.
+                  Thank you for requesting your personalised website audit video. We're excited to help you unlock your website's potential.
                 </p>
                 
                 <!-- What happens next section -->
                 <div style="border-left: 3px solid #3b82f6; padding: 25px 30px; margin: 40px 0; background: #f9fafb;">
                   <h2 style="color: #374151; margin: 0 0 20px 0; font-size: 18px; font-weight: 500;">What happens next:</h2>
                   <div style="color: #6b7280; line-height: 1.7; font-size: 15px;">
-                    <p style="margin: 0 0 12px 0;">• Our team will analyze your website thoroughly</p>
-                    <p style="margin: 0 0 12px 0;">• We'll create a personalized video review</p>
+                    <p style="margin: 0 0 12px 0;">• Our team will analyse your website thoroughly</p>
+                    <p style="margin: 0 0 12px 0;">• We'll create a personalised video review</p>
                     <p style="margin: 0; font-weight: 500; color: #374151;">• You'll receive your video within 24 hours</p>
                   </div>
                 </div>
@@ -498,10 +498,10 @@ app.post('/api/contact', async (req, res) => {
                 <div style="border-left: 3px solid #e5e7eb; padding: 25px 30px; margin: 40px 0; background: #f9fafb;">
                   <h2 style="color: #374151; margin: 0 0 20px 0; font-size: 18px; font-weight: 500;">Your audit will include:</h2>
                   <div style="color: #6b7280; line-height: 1.7; font-size: 15px;">
-                    <p style="margin: 0 0 12px 0;">• Performance optimization opportunities</p>
+                    <p style="margin: 0 0 12px 0;">• Performance optimisation opportunities</p>
                     <p style="margin: 0 0 12px 0;">• SEO improvement recommendations</p>
                     <p style="margin: 0 0 12px 0;">• User experience enhancement tips</p>
-                    <p style="margin: 0;">• Conversion rate optimization insights</p>
+                    <p style="margin: 0;">• Conversion rate optimisation insights</p>
                   </div>
                 </div>
                 
