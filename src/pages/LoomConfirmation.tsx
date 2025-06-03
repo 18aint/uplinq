@@ -31,12 +31,47 @@ const LoomConfirmation = () => {
 
     setIsSubmitting(true);
 
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      // Send to backend API 
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: 'Loom Audit Request',
+          email: email,
+          details: 'User has requested their personalized website audit video from the Apollo campaign.',
+          source: 'loom_confirmation',
+          requestType: 'audit_video'
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to submit request');
+      }
+
+      const data = await response.json();
+      console.log('Loom confirmation submitted successfully:', data);
+      
       setIsSubmitting(false);
       setIsSubmitted(true);
-      console.log('Email submitted:', email);
-    }, 1000);
+    } catch (error) {
+      console.error('Error submitting loom confirmation:', error);
+      setIsSubmitting(false);
+      
+      let errorMessage = 'There was an error submitting your request. Please try again.';
+      if (error instanceof Error) {
+        if (error.message.includes('Failed to fetch')) {
+          errorMessage = 'Unable to connect. Please check your internet connection and try again.';
+        } else {
+          errorMessage = error.message;
+        }
+      }
+      
+      setError(errorMessage);
+    }
   };
 
   const loomStructuredData = {

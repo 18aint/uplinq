@@ -407,7 +407,7 @@ This indicates a successful recurring payment.`,
 // Handle contact form submissions
 app.post('/api/contact', async (req, res) => {
   try {
-    const { name, email, details, file, source } = req.body;
+    const { name, email, details, file, source, requestType } = req.body;
     
     // Validate required fields
     if (!name || !email || !details) {
@@ -423,113 +423,180 @@ app.post('/api/contact', async (req, res) => {
       // Don't log the entire file for privacy reasons
       hasFile: !!file,
       source: source || 'unknown',
+      requestType: requestType || 'general',
       // Always sent to our designated recipient
       sentTo: RECIPIENT_EMAIL
     });
     
-    // Send email using SendGrid
+    // Send email notification if SendGrid is configured
     if (process.env.SENDGRID_API_KEY) {
       try {
-        const msg = {
-          to: RECIPIENT_EMAIL,
-          from: process.env.SENDGRID_FROM_EMAIL || 'noreply@uplinq.digital',
-          subject: `New Contact Form Submission from ${name}${source ? ` (${source})` : ''}`,
-          text: `Contact details:
-  Name: ${name}
-  Email: ${email}
-  Source: ${source || 'Direct contact form'}
-  Details: ${details}`,
-          html: `
-  <h2>New Contact Form Submission</h2>
-  <p><strong>Name:</strong> ${name}</p>
-  <p><strong>Email:</strong> ${email}</p>
-  <p><strong>Source:</strong> ${source || 'Direct contact form'}</p>
-  <p><strong>Details:</strong></p>
-  <p>${details.replace(/\n/g, '<br>')}</p>
-  `,
-        };
+        let notificationSubject, notificationHtml, userConfirmationSubject, userConfirmationHtml;
         
-        // Add attachment if file is provided
-        if (file && typeof file === 'string') {
-          try {
-            // Validate file format
-            if (file.includes(',') && file.includes('data:')) {
-              const fileContent = file.split(',')[1];
-              const fileTypeMatch = file.match(/data:(.*?);base64/);
-              const fileType = fileTypeMatch ? fileTypeMatch[1] : 'application/octet-stream';
+        // Handle different request types
+        if (requestType === 'audit_video') {
+          // Notification email to Wayne for audit requests
+          notificationSubject = '🎯 New Video Audit Request - Apollo Campaign Lead';
+          notificationHtml = `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+              <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; text-align: center;">
+                <h1 style="color: white; margin: 0; font-size: 24px;">🎯 New Video Audit Request</h1>
+                <p style="color: #e2e8f0; margin: 10px 0 0 0;">Apollo Campaign Lead</p>
+              </div>
               
-              // Determine file extension
-              let fileExtension = '.txt';
-              if (fileType.includes('image/jpeg') || fileType.includes('image/jpg')) {
-                fileExtension = '.jpg';
-              } else if (fileType.includes('image/png')) {
-                fileExtension = '.png';
-              } else if (fileType.includes('application/pdf')) {
-                fileExtension = '.pdf';
-              } else if (fileType.includes('image/')) {
-                fileExtension = '.jpg';
-              }
+              <div style="padding: 30px; background: #f8fafc;">
+                <div style="background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                  <h3 style="color: #2d3748; margin-top: 0;">📧 Lead Details:</h3>
+                  <p><strong>Email:</strong> ${email}</p>
+                  <p><strong>Source:</strong> ${source}</p>
+                  <p><strong>Request:</strong> Personalized website audit video</p>
+                  <p><strong>Time:</strong> ${new Date().toLocaleString()}</p>
+                  
+                  <div style="background: #fef2e7; border-left: 4px solid #f6ad55; padding: 15px; margin: 20px 0; border-radius: 4px;">
+                    <p style="margin: 0; color: #744210;"><strong>⏰ Action Required:</strong></p>
+                    <p style="margin: 5px 0 0 0; color: #744210;">Create and send personalized audit video within 24 hours to maintain trust.</p>
+                  </div>
+                  
+                  <div style="margin-top: 25px; padding-top: 20px; border-top: 1px solid #e2e8f0;">
+                    <p style="color: #4a5568; font-size: 14px; margin: 0;">
+                      This lead came from your Apollo campaign. Respond quickly to maximize conversion potential.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+          
+          // Confirmation email to the user
+          userConfirmationSubject = '🎬 Your Uplinq Audit Video is Being Prepared';
+          userConfirmationHtml = `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+              <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; text-align: center;">
+                <h1 style="color: white; margin: 0; font-size: 24px;">🎬 Your Audit is Being Prepared</h1>
+                <p style="color: #e2e8f0; margin: 10px 0 0 0;">Uplinq Digital</p>
+              </div>
               
-              const fileName = `attachment_${Date.now()}${fileExtension}`;
+              <div style="padding: 30px; background: #f8fafc;">
+                <div style="background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                  <h2 style="color: #2d3748; margin-top: 0;">Hi there! 👋</h2>
+                  
+                  <p style="color: #4a5568; line-height: 1.6;">
+                    Thank you for requesting your personalized website audit video. We're excited to help you unlock your website's potential!
+                  </p>
+                  
+                  <div style="background: #f0fff4; border-left: 4px solid #38a169; padding: 20px; margin: 25px 0; border-radius: 4px;">
+                    <h3 style="color: #2f855a; margin: 0 0 10px 0;">✅ What happens next:</h3>
+                    <ul style="color: #2f855a; margin: 0; padding-left: 20px;">
+                      <li>Our team will analyze your website thoroughly</li>
+                      <li>We'll create a personalized video review</li>
+                      <li><strong>You'll receive your video within 24 hours</strong></li>
+                    </ul>
+                  </div>
+                  
+                  <div style="background: #ebf8ff; border-left: 4px solid #4299e1; padding: 20px; margin: 25px 0; border-radius: 4px;">
+                    <h3 style="color: #2b6cb0; margin: 0 0 10px 0;">🎯 Your audit will include:</h3>
+                    <ul style="color: #2b6cb0; margin: 0; padding-left: 20px;">
+                      <li>Performance optimization opportunities</li>
+                      <li>SEO improvement recommendations</li>
+                      <li>User experience enhancement tips</li>
+                      <li>Conversion rate optimization insights</li>
+                    </ul>
+                  </div>
+                  
+                  <div style="text-align: center; margin: 30px 0;">
+                    <a href="https://uplinq.digital/contact" style="background: #4299e1; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">
+                      📞 Book a Free Consultation
+                    </a>
+                  </div>
+                  
+                  <div style="margin-top: 25px; padding-top: 20px; border-top: 1px solid #e2e8f0; text-align: center;">
+                    <p style="color: #718096; font-size: 14px; margin: 0;">
+                      Questions? Just reply to this email or visit <a href="https://uplinq.digital" style="color: #4299e1;">uplinq.digital</a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        } else {
+          // Default contact form emails (existing logic)
+          notificationSubject = `New Contact Form Submission from ${name}`;
+          notificationHtml = `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+              <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; text-align: center;">
+                <h1 style="color: white; margin: 0; font-size: 24px;">📩 New Contact Form Submission</h1>
+              </div>
               
-              // Validate base64 content
-              if (fileContent && fileContent.length > 0) {
-                msg.attachments = [
-                  {
-                    content: fileContent,
-                    filename: fileName,
-                    type: fileType,
-                    disposition: 'attachment'
-                  }
-                ];
-                console.log('File attachment added:', fileName, fileType);
-              }
-            }
-          } catch (fileError) {
-            console.error('Error processing file attachment:', fileError);
-            // Continue without attachment rather than failing completely
-          }
+              <div style="padding: 30px; background: #f8fafc;">
+                <div style="background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                  <h3 style="color: #2d3748; margin-top: 0;">Contact Details:</h3>
+                  <p><strong>Name:</strong> ${name}</p>
+                  <p><strong>Email:</strong> ${email}</p>
+                  <p><strong>Source:</strong> ${source}</p>
+                  <p><strong>Message:</strong></p>
+                  <div style="background: #f7fafc; padding: 15px; border-radius: 4px; margin-top: 10px;">
+                    <p style="margin: 0; white-space: pre-wrap;">${details}</p>
+                  </div>
+                  
+                  ${file ? '<p><strong>File attached:</strong> Yes</p>' : ''}
+                  
+                  <div style="margin-top: 25px; padding-top: 20px; border-top: 1px solid #e2e8f0;">
+                    <p style="color: #4a5568; font-size: 14px; margin: 0;">
+                      Submitted at: ${new Date().toLocaleString()}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
         }
         
-        await sgMail.send(msg);
-        console.log('Email sent successfully to', RECIPIENT_EMAIL);
+        // Send notification email to Wayne
+        const notificationMsg = {
+          to: RECIPIENT_EMAIL,
+          from: process.env.SENDGRID_FROM_EMAIL || 'noreply@uplinq.digital',
+          subject: notificationSubject,
+          html: notificationHtml
+        };
+        
+        await sgMail.send(notificationMsg);
+        console.log('Notification email sent successfully to:', RECIPIENT_EMAIL);
+        
+        // Send confirmation email to user for audit requests
+        if (requestType === 'audit_video') {
+          const userMsg = {
+            to: email,
+            from: process.env.SENDGRID_FROM_EMAIL || 'noreply@uplinq.digital',
+            subject: userConfirmationSubject,
+            html: userConfirmationHtml
+          };
+          
+          await sgMail.send(userMsg);
+          console.log('Confirmation email sent successfully to user:', email);
+        }
+        
       } catch (emailError) {
         console.error('Error sending email:', emailError);
-        console.error('SendGrid error details:', emailError.response?.body || emailError.message);
-        
-        // Return success but note the email issue
-        return res.status(200).json({ 
-          success: true, 
-          message: 'Contact form submitted successfully, but there was an issue with email delivery. Our team has been notified.',
-          recipient: RECIPIENT_EMAIL,
-          emailError: true
-        });
+        // Don't fail the whole request if email fails
+        // But log it for monitoring
       }
     } else {
-      console.log('SendGrid API key not set - email not sent');
-      return res.status(200).json({ 
-        success: true, 
-        message: 'Contact form submitted successfully (email service not configured)',
-        recipient: RECIPIENT_EMAIL,
-        emailError: true
-      });
+      console.log('SendGrid not configured, skipping email notification');
     }
     
+    // Return success response
     res.status(200).json({ 
       success: true, 
-      message: 'Contact form submitted and email sent successfully',
-      recipient: RECIPIENT_EMAIL
+      message: requestType === 'audit_video' 
+        ? 'Audit request submitted successfully. Check your email for confirmation!' 
+        : 'Message sent successfully. We\'ll get back to you soon!' 
     });
     
   } catch (error) {
-    console.error('Error processing contact form:', error);
-    console.error('Error stack:', error.stack);
-    
-    // Always return a valid JSON response, even on error
+    console.error('Contact form error:', error);
     res.status(500).json({ 
       success: false, 
-      error: 'Failed to process contact form submission. Please try again later.',
-      details: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error'
+      error: 'Internal server error. Please try again later.' 
     });
   }
 });
