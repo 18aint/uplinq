@@ -218,10 +218,11 @@ const ClientLogin = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="bg-white/20 top-[250px] backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/30 relative overflow-hidden"
+            className="bg-white/10 top-[250px] backdrop-blur-2xl rounded-3xl p-8 shadow-2xl border border-white/20 relative overflow-hidden"
           >
-            {/* Glassmorphism overlay */}
-            <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 rounded-3xl"></div>
+            {/* Enhanced Glassmorphism overlay */}
+            <div className="absolute inset-0 bg-gradient-to-br from-white/15 via-white/5 to-transparent rounded-3xl"></div>
+            <div className="absolute inset-0 bg-gradient-to-tl from-blue-500/5 via-transparent to-purple-500/5 rounded-3xl"></div>
             
             <div className="relative z-10">
               <div className="flex items-center mb-6">
@@ -232,14 +233,17 @@ const ClientLogin = () => {
                 <span className="text-sm font-medium text-gray-700 uppercase tracking-wider">BETA version 1.1.134</span>
               </div>
               
-              <h3 className="text-3xl font-light text-gray-900 mb-4">Uplinq Pro</h3>
+              <h3 className="text-4xl font-light bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700 bg-clip-text text-transparent mb-4">
+                UplinqPro
+              </h3>
               <p className="text-gray-700 text-lg leading-relaxed mb-8 font-light">
                 Enterprise-grade solutions with AI-powered automation, custom integrations, and dedicated support for scaling businesses.
               </p>
               
               <div className="flex items-center justify-between">
                 <span className="text-sm text-gray-600 font-medium">Starting February 2025</span>
-                <motion.button
+                <motion.a
+                  href="http://localhost:5173/starter-kit"
                   whileHover={{ scale: 1.02, y: -2 }}
                   whileTap={{ scale: 0.98 }}
                   className="bg-gradient-to-r from-purple-500 via-blue-500 to-blue-600 text-white px-8 py-3 rounded-2xl font-medium shadow-xl hover:shadow-2xl transition-all duration-300 flex items-center space-x-2"
@@ -249,7 +253,7 @@ const ClientLogin = () => {
                   </svg>
                   <span>Experience Uplinq</span>
                   <span className="bg-white/20 px-2 py-0.5 rounded-lg text-sm">Pro</span>
-                </motion.button>
+                </motion.a>
               </div>
             </div>
           </motion.div>
