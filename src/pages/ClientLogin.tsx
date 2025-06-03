@@ -184,14 +184,14 @@ const ClientLogin = () => {
         <img
           src="/shape2.avif"
           alt=""
-          className="absolute top-24 left-1/2 transform -translate-x-8 w-16 h-16 opacity-80"
+          className="absolute top-[50px] right-[650px] w-[150px] h-[150px] rotate-[30deg"
         />
         
         {/* Shape 3 - Curved Ring (Lower Right) */}
         <img
           src="/shape3.avif"
           alt=""
-          className="absolute bottom-32 right-1/3 w-20 h-20 opacity-70"
+          className="absolute top-[515px] right-[250px] w-[150px] h-[150px] rotate-[30deg]"
         />
 
         <div className="w-full max-w-lg space-y-8 relative z-10">
@@ -207,15 +207,10 @@ const ClientLogin = () => {
             <img
               src="/shape1.avif"
               alt=""
-              className="absolute top-4 -right-12 w-40 h-40 opacity-90"
+              className="absolute bottom-[-201px] w-[500px] h-[500px]"
             />
             
-            <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent mb-4 relative z-10">
-              Pathway to productivity
-            </h2>
-            <p className="text-gray-600 text-lg leading-relaxed max-w-md mx-auto relative z-10">
-              Accelerate your web presence with our advanced development tools and intelligent automation solutions
-            </p>
+        
           </motion.div>
 
           {/* Uplinq Pro Feature Card */}
@@ -223,27 +218,39 @@ const ClientLogin = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/50 relative overflow-hidden"
+            className="bg-white/20 top-[250px] backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/30 relative overflow-hidden"
           >
-            <div className="flex items-center mb-4">
-              <div className="w-3 h-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mr-3"></div>
-              <span className="text-sm font-semibold text-gray-500 uppercase tracking-wider">New Launch</span>
-            </div>
+            {/* Glassmorphism overlay */}
+            <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 rounded-3xl"></div>
             
-            <h3 className="text-2xl font-bold text-gray-900 mb-3">Uplinq Pro</h3>
-            <p className="text-gray-600 mb-6 leading-relaxed">
-              Enterprise-grade solutions with AI-powered automation, custom integrations, and dedicated support for scaling businesses.
-            </p>
-            
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-500">Starting February 2025</span>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-2 rounded-xl font-medium shadow-lg hover:shadow-xl transition-all duration-200"
-              >
-                Learn more
-              </motion.button>
+            <div className="relative z-10">
+              <div className="flex items-center mb-6">
+                <div className="relative flex items-center">
+                  <div className="w-2 h-2 bg-green-400 rounded-full mr-3 animate-pulse"></div>
+                  <div className="absolute -top-0.5 -left-0.5 w-3 h-3 bg-green-400/30 rounded-full animate-ping"></div>
+                </div>
+                <span className="text-sm font-medium text-gray-700 uppercase tracking-wider">BETA version 1.1.134</span>
+              </div>
+              
+              <h3 className="text-3xl font-light text-gray-900 mb-4">Uplinq Pro</h3>
+              <p className="text-gray-700 text-lg leading-relaxed mb-8 font-light">
+                Enterprise-grade solutions with AI-powered automation, custom integrations, and dedicated support for scaling businesses.
+              </p>
+              
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600 font-medium">Starting February 2025</span>
+                <motion.button
+                  whileHover={{ scale: 1.02, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="bg-gradient-to-r from-purple-500 via-blue-500 to-blue-600 text-white px-8 py-3 rounded-2xl font-medium shadow-xl hover:shadow-2xl transition-all duration-300 flex items-center space-x-2"
+                >
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                  <span>Experience Uplinq</span>
+                  <span className="bg-white/20 px-2 py-0.5 rounded-lg text-sm">Pro</span>
+                </motion.button>
+              </div>
             </div>
           </motion.div>
 
