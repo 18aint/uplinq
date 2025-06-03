@@ -180,14 +180,16 @@ const ClientLogin = () => {
       {/* Right Column - Product Design Showcase */}
       <div className="hidden lg:flex flex-1 flex-col items-center justify-center px-8 py-12 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
         
-        {/* Shape 2 - Cylindrical (Upper Center) */}
+        {/* Shape 2 - Cylindrical (Upper Center) with shadow */}
+        <div className="absolute top-[58px] right-[642px] w-[150px] h-[150px] bg-gradient-to-br from-purple-400/40 to-blue-500/40 rounded-full blur-2xl"></div>
         <img
           src="/shape2.avif"
           alt=""
           className="absolute top-[50px] right-[650px] w-[150px] h-[150px] rotate-[30deg"
         />
         
-        {/* Shape 3 - Curved Ring (Lower Right) */}
+        {/* Shape 3 - Curved Ring (Lower Right) with shadow */}
+        <div className="absolute top-[523px] right-[242px] w-[150px] h-[150px] bg-gradient-to-br from-blue-500/40 to-purple-600/40 rounded-full blur-2xl"></div>
         <img
           src="/shape3.avif"
           alt=""
@@ -203,6 +205,9 @@ const ClientLogin = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-center mb-12 relative"
           >
+            {/* Large Star Shape shadow */}
+            <div className="absolute bottom-[-193px] left-[8px] w-[500px] h-[500px] bg-gradient-to-br from-purple-500/30 via-blue-500/30 to-indigo-600/30 rounded-full blur-3xl"></div>
+            
             {/* Large Star Shape positioned center-right */}
             <motion.img
               src="/shape1.avif"
@@ -217,8 +222,7 @@ const ClientLogin = () => {
                 ease: "easeInOut"
               }}
             />
-            
-        
+         
           </motion.div>
 
           {/* Uplinq Pro Feature Card */}
