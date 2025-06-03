@@ -180,15 +180,15 @@ const ClientLogin = () => {
       {/* Right Column - Product Design Showcase */}
       <div className="hidden lg:flex flex-1 flex-col items-center justify-center px-8 py-12 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
         
-        {/* Floating Shapes */}
+        {/* Shape 2 - Cylindrical (Upper Left) */}
         <motion.img
-          src="/shape1.avif"
+          src="/shape2.avif"
           alt=""
-          className="absolute top-20 right-20 w-24 h-24 opacity-60"
+          className="absolute top-16 left-12 w-20 h-20 opacity-70"
           initial={{ y: 0, rotate: 0 }}
           animate={{ 
-            y: [-10, 10, -10],
-            rotate: [0, 180, 360]
+            y: [-8, 8, -8],
+            rotate: [0, 360]
           }}
           transition={{
             duration: 8,
@@ -197,34 +197,18 @@ const ClientLogin = () => {
           }}
         />
         
-        <motion.img
-          src="/shape2.avif"
-          alt=""
-          className="absolute top-1/3 left-8 w-16 h-16 opacity-40"
-          initial={{ y: 0, rotate: 0 }}
-          animate={{ 
-            y: [15, -15, 15],
-            rotate: [0, -180, -360]
-          }}
-          transition={{
-            duration: 6,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 1
-          }}
-        />
-        
+        {/* Shape 3 - Curved Ring (Lower Right) */}
         <motion.img
           src="/shape3.avif"
           alt=""
-          className="absolute bottom-32 right-12 w-20 h-20 opacity-50"
+          className="absolute bottom-20 right-16 w-24 h-24 opacity-60"
           initial={{ y: 0, rotate: 0 }}
           animate={{ 
-            y: [-12, 12, -12],
-            rotate: [0, 90, 180]
+            y: [-10, 10, -10],
+            rotate: [0, -180, -360]
           }}
           transition={{
-            duration: 7,
+            duration: 10,
             repeat: Infinity,
             ease: "easeInOut",
             delay: 2
@@ -233,7 +217,7 @@ const ClientLogin = () => {
 
         <div className="w-full max-w-lg space-y-8 relative z-10">
           
-          {/* Main Product Hero */}
+          {/* Main Product Hero with Shape 1 - Star/Flower (Center) */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -244,14 +228,14 @@ const ClientLogin = () => {
               <motion.img
                 src="/shape1.avif"
                 alt=""
-                className="w-32 h-32 mx-auto mb-6 opacity-80"
-                initial={{ scale: 0.8, rotate: 0 }}
+                className="w-48 h-48 mx-auto mb-6 opacity-80"
+                initial={{ scale: 0.9, rotate: 0 }}
                 animate={{ 
-                  scale: [0.8, 1, 0.8],
+                  scale: [0.9, 1.1, 0.9],
                   rotate: [0, 360]
                 }}
                 transition={{
-                  duration: 10,
+                  duration: 12,
                   repeat: Infinity,
                   ease: "easeInOut"
                 }}
@@ -274,16 +258,6 @@ const ClientLogin = () => {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/50 relative overflow-hidden"
           >
-            <div className="absolute top-4 right-4">
-              <motion.img
-                src="/shape2.avif"
-                alt=""
-                className="w-12 h-12 opacity-60"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-              />
-            </div>
-            
             <div className="flex items-center mb-4">
               <div className="w-3 h-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mr-3"></div>
               <span className="text-sm font-semibold text-gray-500 uppercase tracking-wider">New Launch</span>
@@ -303,94 +277,6 @@ const ClientLogin = () => {
               >
                 Learn more
               </motion.button>
-            </div>
-          </motion.div>
-
-          {/* Feature Highlights */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-            className="grid grid-cols-2 gap-4"
-          >
-            <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-white/50 relative">
-              <div className="absolute top-3 right-3">
-                <motion.img
-                  src="/shape3.avif"
-                  alt=""
-                  className="w-8 h-8 opacity-50"
-                  animate={{ 
-                    y: [-5, 5, -5],
-                    rotate: [0, 180, 360]
-                  }}
-                  transition={{
-                    duration: 5,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                />
-              </div>
-              
-              <div className="w-10 h-10 bg-gradient-to-br from-green-400 to-emerald-500 rounded-lg flex items-center justify-center mb-3">
-                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              
-              <h4 className="font-semibold text-gray-900 mb-2">Performance</h4>
-              <p className="text-sm text-gray-600">Lightning-fast load times and optimized Core Web Vitals</p>
-            </div>
-
-            <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-white/50 relative">
-              <div className="absolute top-3 right-3">
-                <motion.img
-                  src="/shape1.avif"
-                  alt=""
-                  className="w-8 h-8 opacity-50"
-                  animate={{ 
-                    scale: [0.8, 1.2, 0.8],
-                    rotate: [0, -180, -360]
-                  }}
-                  transition={{
-                    duration: 6,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: 1
-                  }}
-                />
-              </div>
-              
-              <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-violet-500 rounded-lg flex items-center justify-center mb-3">
-                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                </svg>
-              </div>
-              
-              <h4 className="font-semibold text-gray-900 mb-2">Innovation</h4>
-              <p className="text-sm text-gray-600">Cutting-edge AI and automation technologies</p>
-            </div>
-          </motion.div>
-
-          {/* Stats Section */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.8 }}
-            className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-2xl p-6 backdrop-blur-sm border border-white/30"
-          >
-            <div className="grid grid-cols-3 gap-4 text-center">
-              <div>
-                <div className="text-2xl font-bold text-gray-900">200+</div>
-                <div className="text-xs text-gray-600 uppercase tracking-wide">Projects</div>
-              </div>
-              <div>
-                <div className="text-2xl font-bold text-gray-900">4.9★</div>
-                <div className="text-xs text-gray-600 uppercase tracking-wide">Rating</div>
-              </div>
-              <div>
-                <div className="text-2xl font-bold text-gray-900">99%</div>
-                <div className="text-xs text-gray-600 uppercase tracking-wide">Uptime</div>
-              </div>
             </div>
           </motion.div>
 
