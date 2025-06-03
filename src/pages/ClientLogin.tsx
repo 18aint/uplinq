@@ -180,73 +180,40 @@ const ClientLogin = () => {
       {/* Right Column - Product Design Showcase */}
       <div className="hidden lg:flex flex-1 flex-col items-center justify-center px-8 py-12 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
         
-        {/* Shape 2 - Cylindrical (Upper Left) */}
-        <motion.img
+        {/* Shape 2 - Cylindrical (Upper Center) */}
+        <img
           src="/shape2.avif"
           alt=""
-          className="absolute top-16 left-12 w-20 h-20 opacity-70"
-          initial={{ y: 0, rotate: 0 }}
-          animate={{ 
-            y: [-8, 8, -8],
-            rotate: [0, 360]
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
+          className="absolute top-24 left-1/2 transform -translate-x-8 w-16 h-16 opacity-80"
         />
         
         {/* Shape 3 - Curved Ring (Lower Right) */}
-        <motion.img
+        <img
           src="/shape3.avif"
           alt=""
-          className="absolute bottom-20 right-16 w-24 h-24 opacity-60"
-          initial={{ y: 0, rotate: 0 }}
-          animate={{ 
-            y: [-10, 10, -10],
-            rotate: [0, -180, -360]
-          }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 2
-          }}
+          className="absolute bottom-32 right-1/3 w-20 h-20 opacity-70"
         />
 
         <div className="w-full max-w-lg space-y-8 relative z-10">
           
-          {/* Main Product Hero with Shape 1 - Star/Flower (Center) */}
+          {/* Main Product Hero with Shape 1 - Star/Flower (Center Right) */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-center mb-12"
+            className="text-center mb-12 relative"
           >
-            <div className="relative">
-              <motion.img
-                src="/shape1.avif"
-                alt=""
-                className="w-48 h-48 mx-auto mb-6 opacity-80"
-                initial={{ scale: 0.9, rotate: 0 }}
-                animate={{ 
-                  scale: [0.9, 1.1, 0.9],
-                  rotate: [0, 360]
-                }}
-                transition={{
-                  duration: 12,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full blur-3xl"></div>
-            </div>
+            {/* Large Star Shape positioned center-right */}
+            <img
+              src="/shape1.avif"
+              alt=""
+              className="absolute top-4 -right-12 w-40 h-40 opacity-90"
+            />
             
-            <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent mb-4">
+            <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent mb-4 relative z-10">
               Pathway to productivity
             </h2>
-            <p className="text-gray-600 text-lg leading-relaxed max-w-md mx-auto">
+            <p className="text-gray-600 text-lg leading-relaxed max-w-md mx-auto relative z-10">
               Accelerate your web presence with our advanced development tools and intelligent automation solutions
             </p>
           </motion.div>
