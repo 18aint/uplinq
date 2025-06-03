@@ -204,10 +204,18 @@ const ClientLogin = () => {
             className="text-center mb-12 relative"
           >
             {/* Large Star Shape positioned center-right */}
-            <img
+            <motion.img
               src="/shape1.avif"
               alt=""
               className="absolute bottom-[-201px] w-[500px] h-[500px]"
+              animate={{ 
+                y: [-8, 8, -8]
+              }}
+              transition={{
+                duration: 6,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
             />
             
         
