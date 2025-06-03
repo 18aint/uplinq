@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate, Link } from 'react-router-dom';
 import SEO from '../components/SEO';
@@ -7,7 +7,20 @@ const ClientLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [betaUsers, setBetaUsers] = useState(1247);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Simulate live beta user count updates
+    const interval = setInterval(() => {
+      setBetaUsers(prev => {
+        const increase = Math.floor(Math.random() * 3) + 1; // 1-3 users
+        return prev + increase;
+      });
+    }, 8000); // Update every 8 seconds
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -253,7 +266,12 @@ const ClientLogin = () => {
               </p>
               
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600 font-medium">Production deployment active</span>
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                  <span className="text-sm text-gray-600 font-medium">
+                    Beta users: {betaUsers.toLocaleString()}
+                  </span>
+                </div>
                 <motion.a
                   href="http://localhost:5173/starter-kit"
                   whileHover={{ scale: 1.02, y: -2 }}
