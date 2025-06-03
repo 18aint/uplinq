@@ -470,61 +470,57 @@ app.post('/api/contact', async (req, res) => {
           // Confirmation email to the user
           userConfirmationSubject = 'Your Uplinq Audit Video is Being Sent';
           userConfirmationHtml = `
-            <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; max-width: 600px; margin: 0 auto; background: #f9fbfd;">
+            <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff;">
               <!-- Banner Header -->
-              <div style="text-align: center; padding: 20px 0; background: #ffffff;">
-                <img src="https://uplinq.digital/banner.png" alt="Uplinq Digital" style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
+              <div style="text-align: center; padding: 30px 20px; background: #ffffff; border-bottom: 1px solid #f3f4f6;">
+                <img src="https://uplinq.digital/banner.png" alt="Uplinq Digital - Modern Web Solutions for Business Growth" style="max-width: 100%; max-height: 80px; height: auto; display: block; margin: 0 auto;">
               </div>
               
               <!-- Main Content -->
-              <div style="background: #ffffff; margin: 0; padding: 40px 30px;">
-                <h2 style="color: #1f2937; margin: 0 0 20px 0; font-size: 24px; font-weight: 500; line-height: 1.3;">Hi there! 👋</h2>
+              <div style="background: #ffffff; padding: 50px 40px;">
+                <h1 style="color: #111827; margin: 0 0 30px 0; font-size: 28px; font-weight: 300; line-height: 1.2; text-align: center;">Hi there! 👋</h1>
                 
-                <p style="color: #4b5563; line-height: 1.6; margin: 0 0 25px 0; font-size: 16px;">
-                  Thank you for requesting your personalized website audit video. We're excited to help you unlock your website's potential!
+                <p style="color: #6b7280; line-height: 1.6; margin: 0 0 40px 0; font-size: 16px; text-align: center;">
+                  Thank you for requesting your personalized website audit video. We're excited to help you unlock your website's potential.
                 </p>
                 
                 <!-- What happens next section -->
-                <div style="background: #f0fdf4; border-left: 4px solid #22c55e; padding: 20px; margin: 25px 0; border-radius: 6px;">
-                  <h3 style="color: #166534; margin: 0 0 15px 0; font-size: 18px; font-weight: 500;">✅ What happens next:</h3>
-                  <ul style="color: #166534; margin: 0; padding-left: 20px; line-height: 1.6;">
-                    <li style="margin-bottom: 8px;">Our team will analyze your website thoroughly</li>
-                    <li style="margin-bottom: 8px;">We'll create a personalized video review</li>
-                    <li style="margin-bottom: 0;"><strong>You'll receive your video within 24 hours</strong></li>
-                  </ul>
+                <div style="border-left: 3px solid #3b82f6; padding: 25px 30px; margin: 40px 0; background: #f9fafb;">
+                  <h2 style="color: #374151; margin: 0 0 20px 0; font-size: 18px; font-weight: 500;">What happens next:</h2>
+                  <div style="color: #6b7280; line-height: 1.7; font-size: 15px;">
+                    <p style="margin: 0 0 12px 0;">• Our team will analyze your website thoroughly</p>
+                    <p style="margin: 0 0 12px 0;">• We'll create a personalized video review</p>
+                    <p style="margin: 0; font-weight: 500; color: #374151;">• You'll receive your video within 24 hours</p>
+                  </div>
                 </div>
                 
                 <!-- What's included section -->
-                <div style="background: #eff6ff; border-left: 4px solid #3b82f6; padding: 20px; margin: 25px 0; border-radius: 6px;">
-                  <h3 style="color: #1e40af; margin: 0 0 15px 0; font-size: 18px; font-weight: 500;">🎯 Your audit will include:</h3>
-                  <ul style="color: #1e40af; margin: 0; padding-left: 20px; line-height: 1.6;">
-                    <li style="margin-bottom: 8px;">Performance optimization opportunities</li>
-                    <li style="margin-bottom: 8px;">SEO improvement recommendations</li>
-                    <li style="margin-bottom: 8px;">User experience enhancement tips</li>
-                    <li style="margin-bottom: 0;">Conversion rate optimization insights</li>
-                  </ul>
+                <div style="border-left: 3px solid #e5e7eb; padding: 25px 30px; margin: 40px 0; background: #f9fafb;">
+                  <h2 style="color: #374151; margin: 0 0 20px 0; font-size: 18px; font-weight: 500;">Your audit will include:</h2>
+                  <div style="color: #6b7280; line-height: 1.7; font-size: 15px;">
+                    <p style="margin: 0 0 12px 0;">• Performance optimization opportunities</p>
+                    <p style="margin: 0 0 12px 0;">• SEO improvement recommendations</p>
+                    <p style="margin: 0 0 12px 0;">• User experience enhancement tips</p>
+                    <p style="margin: 0;">• Conversion rate optimization insights</p>
+                  </div>
                 </div>
                 
                 <!-- CTA Button -->
-                <div style="text-align: center; margin: 35px 0;">
-                  <a href="https://uplinq.digital/contact" style="display: inline-block; background: #3b82f6; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 24px; font-weight: 500; font-size: 16px; transition: background-color 0.2s;">
-                    📞 Book a Free Consultation
+                <div style="text-align: center; margin: 50px 0;">
+                  <a href="https://uplinq.digital/contact" style="display: inline-block; background: #3b82f6; color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 6px; font-weight: 500; font-size: 16px; transition: background-color 0.2s;">
+                    Book a Free Consultation
                   </a>
                 </div>
                 
                 <!-- Footer -->
-                <div style="margin-top: 35px; padding-top: 25px; border-top: 1px solid #e5e7eb; text-align: center;">
-                  <p style="color: #6b7280; font-size: 14px; margin: 0; line-height: 1.5;">
+                <div style="margin-top: 50px; padding-top: 30px; border-top: 1px solid #f3f4f6; text-align: center;">
+                  <p style="color: #9ca3af; font-size: 14px; margin: 0; line-height: 1.5;">
                     Questions? Just reply to this email or visit <a href="https://uplinq.digital" style="color: #3b82f6; text-decoration: none;">uplinq.digital</a>
                   </p>
+                  <p style="color: #d1d5db; font-size: 12px; margin: 15px 0 0 0;">
+                    Modern Web Solutions for Business Growth
+                  </p>
                 </div>
-              </div>
-              
-              <!-- Footer Background -->
-              <div style="background: #f9fbfd; padding: 20px; text-align: center;">
-                <p style="color: #9ca3af; font-size: 12px; margin: 0;">
-                  Modern Web Solutions for Business Growth
-                </p>
               </div>
             </div>
           `;
