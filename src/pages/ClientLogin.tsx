@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate, Link } from 'react-router-dom';
 import SEO from '../components/SEO';
@@ -7,26 +7,7 @@ const ClientLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [liveDataIndex, setLiveDataIndex] = useState(0);
   const navigate = useNavigate();
-
-  // Dynamic live data that rotates
-  const liveData = [
-    { icon: "🌍", text: "Live in 47 regions", subtext: "Global availability" },
-    { icon: "⚡", text: "99.9% uptime", subtext: "Last 30 days" },
-    { icon: "🚀", text: "1,247 active users", subtext: "Real-time count" },
-    { icon: "📊", text: "API: Healthy", subtext: "All systems operational" },
-    { icon: "✨", text: "142 features deployed", subtext: "This month" },
-    { icon: "🔄", text: "v1.1.134 stable", subtext: "Latest build" }
-  ];
-
-  // Rotate through live data every 3 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setLiveDataIndex((prev) => (prev + 1) % liveData.length);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [liveData.length]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -272,20 +253,7 @@ const ClientLogin = () => {
               </p>
               
               <div className="flex items-center justify-between">
-                <motion.div
-                  key={liveDataIndex}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.5 }}
-                  className="flex items-center space-x-2"
-                >
-                  <span className="text-lg">{liveData[liveDataIndex].icon}</span>
-                  <div>
-                    <div className="text-sm font-medium text-gray-700">{liveData[liveDataIndex].text}</div>
-                    <div className="text-xs text-gray-500">{liveData[liveDataIndex].subtext}</div>
-                  </div>
-                </motion.div>
+                <span className="text-sm text-gray-600 font-medium">Production deployment active</span>
                 <motion.a
                   href="http://localhost:5173/starter-kit"
                   whileHover={{ scale: 1.02, y: -2 }}
