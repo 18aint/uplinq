@@ -16,6 +16,7 @@ import PerformanceStarterKit from './pages/PerformanceStarterKit';
 import StarterKitSuccess from './pages/StarterKitSuccess';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
+import LoomConfirmation from './pages/LoomConfirmation';
 
 const AppRoutes = () => {
   return (
@@ -38,6 +39,7 @@ const AppRoutes = () => {
         <Route path="/starter-kit-success" element={<StarterKitSuccess />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-of-service" element={<TermsOfService />} />
+        <Route path="/loom-confirmation" element={<LoomConfirmation />} />
       </Routes>
     </>
   );
