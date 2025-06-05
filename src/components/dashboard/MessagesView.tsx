@@ -203,28 +203,6 @@ const MessagesView = () => {
     ));
   };
 
-  const handleReply = (parentMessage: Message, replyContent: string) => {
-    const reply: Message = {
-      id: `${parentMessage.id}-${Date.now()}`,
-      subject: `Re: ${parentMessage.subject}`,
-      content: replyContent,
-      sender: 'You',
-      senderType: 'client',
-      category: 'question',
-      timestamp: new Date().toISOString(),
-      isRead: true,
-      priority: 'normal',
-      isReply: true,
-      parentId: parentMessage.id
-    };
-
-    setMessages(prev => prev.map(msg => 
-      msg.id === parentMessage.id 
-        ? { ...msg, replies: [...(msg.replies || []), reply] }
-        : msg
-    ));
-  };
-
   const filteredMessages = messages.filter(message => {
     const categoryMatch = !filterCategory || message.category === filterCategory;
     const readMatch = !showUnreadOnly || !message.isRead;

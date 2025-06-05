@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 
 interface ClientData {
@@ -22,7 +22,7 @@ interface ProjectMetrics {
 }
 
 const DashboardHome = ({ clientData }: DashboardHomeProps) => {
-  const [metrics, setMetrics] = useState<ProjectMetrics>({
+  const [metrics] = useState<ProjectMetrics>({
     performance: 94,
     uptime: 99.9,
     visitors: 2847,

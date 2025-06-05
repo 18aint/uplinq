@@ -201,10 +201,6 @@ const MeetingsView = () => {
     });
   };
 
-  const isUpcoming = (dateString: string) => {
-    return new Date(dateString) > new Date();
-  };
-
   const filteredMeetings = meetings.filter(meeting => {
     const statusMatch = !filterStatus || meeting.status === filterStatus;
     const typeMatch = !filterType || meeting.type === filterType;

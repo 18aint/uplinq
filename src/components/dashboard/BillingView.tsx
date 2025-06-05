@@ -102,7 +102,6 @@ const BillingView = () => {
 
   const [activeTab, setActiveTab] = useState<'overview' | 'invoices' | 'payment-methods' | 'plans'>('overview');
   const [showAddPayment, setShowAddPayment] = useState(false);
-  const [showPlanChange, setShowPlanChange] = useState(false);
 
   const plans = [
     {
@@ -356,7 +355,6 @@ const BillingView = () => {
 
               <div className="flex space-x-3 mt-6">
                 <button
-                  onClick={() => setShowPlanChange(true)}
                   className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-medium"
                 >
                   Change Plan

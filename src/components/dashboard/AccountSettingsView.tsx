@@ -42,7 +42,6 @@ const AccountSettingsView = () => {
   const [activeTab, setActiveTab] = useState<'profile' | 'security' | 'notifications' | 'team' | 'preferences'>('profile');
   const [showPasswordChange, setShowPasswordChange] = useState(false);
   const [showInviteModal, setShowInviteModal] = useState(false);
-  const [showDeleteAccount, setShowDeleteAccount] = useState(false);
 
   const [userProfile, setUserProfile] = useState<UserProfile>({
     id: '1',
@@ -697,7 +696,6 @@ const AccountSettingsView = () => {
                   <p className="text-sm text-red-700">Permanently delete your account and all data</p>
                 </div>
                 <button
-                  onClick={() => setShowDeleteAccount(true)}
                   className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
                 >
                   Delete Account
