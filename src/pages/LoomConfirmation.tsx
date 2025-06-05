@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
 import emailjs from '@emailjs/browser';
 import Navbar from '../components/Navbar';
 import Footer from '../components/FooterContact';
