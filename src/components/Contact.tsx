@@ -11,10 +11,6 @@ enum FormStep {
   Complete = 2
 }
 
-interface ContactProps {
-  onClose?: () => void;
-}
-
 const Contact = () => {
   const [source, setSource] = useState<string | null>(null);
   const [showChat, setShowChat] = useState(false);
