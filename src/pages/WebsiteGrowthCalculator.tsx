@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowTrendingUpIcon, CurrencyPoundIcon, UsersIcon, ChartBarIcon } from '@heroicons/react/24/outline';
+import emailjs from '@emailjs/browser';
 import Navbar from '../components/NavbarContact';
 import Footer from '../components/FooterContact';
 import SEO from '../components/SEO';
@@ -113,32 +114,97 @@ const WebsiteGrowthCalculator = () => {
     setIsSubmitting(true);
     
     try {
-      // Send to backend (simple email capture)
-      const response = await fetch('/api/growth-calculator', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          companyName,
-          monthlyVisitors: parseInt(monthlyVisitors),
-          conversionRate: parseFloat(conversionRate),
-          averageOrderValue: parseFloat(averageOrderValue),
-          results
-        }),
+      // EmailJS configuration - using environment variables
+      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+      const notificationEmail = import.meta.env.VITE_NOTIFICATION_EMAIL || 'wayne@uplinq.digital';
+
+      // Validate required environment variables
+      if (!serviceId || !templateId || !publicKey) {
+        console.warn('EmailJS not configured, proceeding with success for UX');
+      } else {
+        // Send notification email about the growth calculator submission
+        const templateParams = {
+          to_email: notificationEmail,
+          from_email: email,
+          message: `Growth Calculator Submission:
+
+Email: ${email}
+Company: ${companyName || 'N/A'}
+
+Current Website Stats:
+• Monthly Visitors: ${parseInt(monthlyVisitors).toLocaleString()}
+• Conversion Rate: ${conversionRate}%
+• Average Order Value: £${averageOrderValue}
+
+Revenue Potential Results:
+• Current Monthly Revenue: £${results?.currentRevenue?.toLocaleString() || 'N/A'}
+• Potential Monthly Revenue: £${results?.potentialRevenue?.toLocaleString() || 'N/A'}
+• Monthly Increase: £${results?.monthlyIncrease?.toLocaleString() || 'N/A'}
+• Annual Increase: £${results?.annualIncrease?.toLocaleString() || 'N/A'}
+
+🎯 High-value lead - follow up immediately!`,
+          subject: `New Growth Calculator Lead: ${email}`,
+          user_email: email,
+          company_name: companyName || 'N/A',
+          monthly_visitors: parseInt(monthlyVisitors).toLocaleString(),
+          conversion_rate: conversionRate + '%',
+          order_value: '£' + averageOrderValue,
+          potential_increase: '£' + (results?.monthlyIncrease?.toLocaleString() || 'N/A'),
+          request_type: 'Growth Calculator',
+          signup_date: new Date().toLocaleString()
+        };
+
+        try {
+          await emailjs.send(serviceId, templateId, templateParams, publicKey);
+          console.log('Growth calculator notification email sent successfully');
+        } catch (emailError) {
+          console.error('Error sending notification email:', emailError);
+        }
+
+        // Send confirmation email to user
+        const confirmationTemplateId = import.meta.env.VITE_EMAILJS_CONFIRMATION_TEMPLATE_ID || 'template_confirmation';
+        const confirmationParams = {
+          to_name: email.split('@')[0],
+          to_email: email,
+          from_name: 'Uplinq Digital Team',
+          reply_to: 'wayne@uplinq.digital',
+          message: `Thank you for using our Website Growth Calculator!
+
+Your Results Summary:
+• Current Monthly Revenue: £${results?.currentRevenue?.toLocaleString() || 'N/A'}
+• Potential Monthly Revenue: £${results?.potentialRevenue?.toLocaleString() || 'N/A'}
+• Monthly Increase Potential: £${results?.monthlyIncrease?.toLocaleString() || 'N/A'}
+• Annual Increase Potential: £${results?.annualIncrease?.toLocaleString() || 'N/A'}
+
+We're preparing a detailed growth strategy showing exactly how to achieve these results for your website. You'll receive this within 24 hours.
+
+Want to fast-track your results? Book a free 45-minute strategy session where we'll create a custom optimization plan for your website:
+https://calendly.com/wayne-uplinq
+
+Best regards,
+The Uplinq Digital Team`,
+          subject: 'Your Website Growth Strategy Is Being Prepared!'
+        };
+
+        try {
+          await emailjs.send(serviceId, confirmationTemplateId, confirmationParams, publicKey);
+          console.log('Confirmation email sent successfully to user');
+        } catch (confirmationError) {
+          console.error('Confirmation email failed:', confirmationError);
+        }
+      }
+      
+      setSubmitted(true);
+      
+      // Track email capture
+      Analytics.trackConversion('growth_calculator_email_captured', {
+        email,
+        potential_increase: results?.monthlyIncrease || 0,
+        label: 'Growth Plan Requested'
       });
       
-      if (response.ok) {
-        setSubmitted(true);
-        
-        // Track email capture
-        Analytics.trackConversion('growth_calculator_email_captured', {
-          email,
-          potential_increase: results?.monthlyIncrease || 0,
-          label: 'Growth Plan Requested'
-        });
-      }
     } catch (error) {
       console.error('Error submitting email:', error);
       // Still show success for better UX

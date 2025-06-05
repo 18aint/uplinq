@@ -1,60 +1,84 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import Navbar from '../components/NavbarContact';
+import { Link } from 'react-router-dom';
+import emailjs from '@emailjs/browser';
+import Navbar from '../components/Navbar';
 import Footer from '../components/FooterContact';
 import SEO from '../components/SEO';
 
 const LoomConfirmation = () => {
   const [email, setEmail] = useState('');
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState('');
-
-  const validateEmail = (email: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-
-    if (!email.trim()) {
-      setError('Email is required');
-      return;
-    }
-
-    if (!validateEmail(email)) {
+    
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
       setError('Please enter a valid email address');
       return;
     }
 
     setIsSubmitting(true);
+    setError('');
 
     try {
-      // Send to backend API 
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: 'Loom Audit Request',
-          email: email,
-          details: 'User has requested their personalized website audit video from the Apollo campaign.',
-          source: 'loom_confirmation',
-          requestType: 'audit_video'
-        }),
-      });
+      // EmailJS configuration - using environment variables
+      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+      const notificationEmail = import.meta.env.VITE_NOTIFICATION_EMAIL || 'wayne@uplinq.digital';
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to submit request');
+      // Validate required environment variables
+      if (!serviceId || !templateId || !publicKey) {
+        throw new Error('EmailJS configuration missing');
       }
 
-      const data = await response.json();
-      console.log('Loom confirmation submitted successfully:', data);
-      
+      const templateParams = {
+        to_email: notificationEmail,
+        from_email: email,
+        message: `Loom Audit Request from ${email}. User has requested their personalized website audit video from the Apollo campaign.`,
+        subject: 'New Loom Audit Video Request',
+        user_email: email,
+        request_type: 'Loom Audit Video',
+        source: 'loom_confirmation',
+        signup_date: new Date().toLocaleString()
+      };
+
+      // Send notification email
+      await emailjs.send(serviceId, templateId, templateParams, publicKey);
+
+      // Send confirmation email to user
+      const confirmationTemplateId = import.meta.env.VITE_EMAILJS_CONFIRMATION_TEMPLATE_ID || 'template_confirmation';
+      const confirmationParams = {
+        to_name: email.split('@')[0],
+        to_email: email,
+        from_name: 'Uplinq Digital Team',
+        reply_to: 'wayne@uplinq.digital',
+        message: `Thank you for requesting your personalized website audit video! We'll analyze your website and send you a detailed video review within 24-48 hours.
+
+What to expect:
+• Comprehensive website analysis
+• Personalized recommendations
+• Actionable improvement suggestions
+• Professional insights from our team
+
+We'll send your audit video directly to this email address.
+
+Best regards,
+The Uplinq Digital Team`,
+        subject: 'Your Website Audit Video Is Coming Soon!'
+      };
+
+      try {
+        await emailjs.send(serviceId, confirmationTemplateId, confirmationParams, publicKey);
+      } catch (confirmationError) {
+        console.error('Confirmation email failed:', confirmationError);
+      }
+
       setIsSubmitting(false);
       setIsSubmitted(true);
     } catch (error) {
@@ -63,10 +87,10 @@ const LoomConfirmation = () => {
       
       let errorMessage = 'There was an error submitting your request. Please try again.';
       if (error instanceof Error) {
-        if (error.message.includes('Failed to fetch')) {
+        if (error.message.includes('EmailJS configuration missing')) {
+          errorMessage = 'Service temporarily unavailable. Please contact us directly at wayne@uplinq.digital';
+        } else if (error.message.includes('Failed to fetch')) {
           errorMessage = 'Unable to connect. Please check your internet connection and try again.';
-        } else {
-          errorMessage = error.message;
         }
       }
       

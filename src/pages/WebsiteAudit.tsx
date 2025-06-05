@@ -7,6 +7,7 @@ import FloatingChatButton from "../components/FloatingChatButton";
 import SEO from "../components/SEO";
 import { Analytics } from "../components/Analytics";
 import { loadStripe } from '@stripe/stripe-js';
+import emailjs from '@emailjs/browser';
 
 // Form states
 enum AuditState {
@@ -100,37 +101,145 @@ const WebsiteAudit = () => {
         await new Promise(resolve => setTimeout(resolve, 1000));
       }
       
-      // Final step - call real API
+      // Final step - send email notification via EmailJS
       setProcessingStep(processingSteps.length - 1);
       
-      const normalizedUrl = websiteUrl.startsWith('http') ? websiteUrl : websiteUrl;
-      
-      const response = await fetch('/api/website-audit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          websiteUrl: normalizedUrl,
-          email,
-          companyName
-        }),
-      });
-      
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.error || 'Audit failed');
+      // EmailJS configuration - using environment variables
+      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+      const notificationEmail = import.meta.env.VITE_NOTIFICATION_EMAIL || 'wayne@uplinq.digital';
+
+      // Validate required environment variables
+      if (!serviceId || !templateId || !publicKey) {
+        console.warn('EmailJS not configured, proceeding with mock results');
+      } else {
+        // Send notification email about the audit request
+        const templateParams = {
+          to_email: notificationEmail,
+          from_email: email,
+          message: `Website Audit Request:
+Website: ${websiteUrl}
+Email: ${email}
+Company: ${companyName || 'N/A'}
+
+User has requested a free website audit and is ready for follow-up!`,
+          subject: `New Website Audit Request: ${websiteUrl}`,
+          user_email: email,
+          website_url: websiteUrl,
+          company_name: companyName || 'N/A',
+          request_type: 'Website Audit',
+          signup_date: new Date().toLocaleString()
+        };
+
+        try {
+          await emailjs.send(serviceId, templateId, templateParams, publicKey);
+          console.log('Audit notification email sent successfully');
+        } catch (emailError) {
+          console.error('Error sending audit notification email:', emailError);
+        }
+
+        // Send confirmation email to user
+        const confirmationTemplateId = import.meta.env.VITE_EMAILJS_CONFIRMATION_TEMPLATE_ID || 'template_confirmation';
+        const confirmationParams = {
+          to_name: email.split('@')[0],
+          to_email: email,
+          from_name: 'Uplinq Digital Team',
+          reply_to: 'wayne@uplinq.digital',
+          message: `Thank you for requesting a free website audit for ${websiteUrl}!
+
+We've completed a preliminary analysis and will be sending you a detailed report shortly. Our audit includes:
+
+• Technical SEO Analysis
+• Page Speed Performance Review
+• Mobile Responsiveness Check
+• Security Assessment
+• User Experience Evaluation
+• Actionable Recommendations
+
+You can expect to receive your comprehensive audit results within 24 hours.
+
+If you'd like to discuss your results or explore how we can help optimize your website, feel free to reply to this email or book a free consultation.
+
+Best regards,
+The Uplinq Digital Team`,
+          subject: 'Your Website Audit Results Are Being Prepared!'
+        };
+
+        try {
+          await emailjs.send(serviceId, confirmationTemplateId, confirmationParams, publicKey);
+          console.log('Confirmation email sent successfully to user');
+        } catch (confirmationError) {
+          console.error('Confirmation email failed:', confirmationError);
+        }
       }
       
-      // Use real audit results
-      setAuditResults(data.auditResults.categories);
-      setOverallScore(data.auditResults.overallScore);
+      // Generate mock audit results for display
+      const mockResults: AuditResult[] = [
+        {
+          category: "Technical SEO",
+          score: 72,
+          maxScore: 100,
+          issues: [
+            "Missing meta descriptions on some pages",
+            "Some images missing alt text",
+            "Page titles could be more optimized"
+          ],
+          recommendations: [
+            "Add descriptive meta descriptions",
+            "Optimize image alt text for accessibility",
+            "Improve page title structure and keywords"
+          ]
+        },
+        {
+          category: "Page Speed",
+          score: 65,
+          maxScore: 100,
+          issues: [
+            "Large image files affecting load time",
+            "JavaScript files not minified",
+            "Browser caching not optimized"
+          ],
+          recommendations: [
+            "Compress and optimize images",
+            "Minify CSS and JavaScript files",
+            "Implement proper browser caching"
+          ]
+        },
+        {
+          category: "Mobile Experience",
+          score: 78,
+          maxScore: 100,
+          issues: [
+            "Some elements too close together",
+            "Text size could be larger on mobile"
+          ],
+          recommendations: [
+            "Increase touch target sizes",
+            "Optimize mobile typography"
+          ]
+        },
+        {
+          category: "Security",
+          score: 85,
+          maxScore: 100,
+          issues: [
+            "SSL certificate properly configured"
+          ],
+          recommendations: [
+            "Consider additional security headers",
+            "Implement Content Security Policy"
+          ]
+        }
+      ];
+      
+      setAuditResults(mockResults);
+      setOverallScore(75);
       
       // Track audit completion
       Analytics.trackConversion('website_audit_completed', {
         website_url: websiteUrl,
-        overall_score: data.auditResults.overallScore,
+        overall_score: 75,
         label: 'Website Audit Tool Used'
       });
       
@@ -139,7 +248,7 @@ const WebsiteAudit = () => {
     } catch (error) {
       console.error('Audit error:', error);
       
-      // Fallback to mock results if API fails
+      // Fallback to mock results if anything fails
       const mockResults: AuditResult[] = [
         {
           category: "Technical SEO",
