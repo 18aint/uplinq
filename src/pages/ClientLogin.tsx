@@ -55,11 +55,29 @@ const ClientLogin = () => {
     setErrorMessage('');
 
     try {
-      // EmailJS configuration - using environment variables
-      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_uplinq';
-      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_notification';
-      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'your_emailjs_public_key';
-      const notificationEmail = import.meta.env.VITE_NOTIFICATION_EMAIL || 'notifications@uplinq.digital';
+      // EmailJS configuration - using environment variables with validation
+      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+      const notificationEmail = import.meta.env.VITE_NOTIFICATION_EMAIL || 'wayne@uplinq.digital';
+
+      // Debug logging for production (remove after fixing)
+      console.log('Environment check:', {
+        hasServiceId: !!serviceId,
+        hasTemplateId: !!templateId,
+        hasPublicKey: !!publicKey,
+        currentDomain: window.location.origin
+      });
+
+      // Validate required environment variables
+      if (!serviceId || !templateId || !publicKey) {
+        throw new Error(`Missing EmailJS configuration. Check environment variables in Vercel dashboard.`);
+      }
+
+      // Validate that we're not using placeholder values
+      if (serviceId === 'service_uplinq' || publicKey === 'your_emailjs_public_key_here') {
+        throw new Error('EmailJS credentials not properly configured. Please set up your actual EmailJS credentials in Vercel environment variables.');
+      }
 
       const templateParams = {
         to_email: notificationEmail,
@@ -101,7 +119,19 @@ The Uplinq Digital Team`,
     } catch (error) {
       console.error('EmailJS error:', error);
       setSubmitStatus('error');
-      setErrorMessage('Something went wrong. Please try again or contact us directly.');
+      
+      // More specific error messages
+      if (error instanceof Error) {
+        if (error.message.includes('Missing EmailJS configuration')) {
+          setErrorMessage('Service temporarily unavailable. Please contact us directly at wayne@uplinq.digital');
+        } else if (error.message.includes('not properly configured')) {
+          setErrorMessage('Service configuration issue. Please contact us directly at wayne@uplinq.digital');
+        } else {
+          setErrorMessage('Something went wrong. Please try again or contact us directly at wayne@uplinq.digital');
+        }
+      } else {
+        setErrorMessage('Network error. Please check your connection and try again.');
+      }
     } finally {
       setIsSubmitting(false);
     }
