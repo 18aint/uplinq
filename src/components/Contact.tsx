@@ -3,11 +3,16 @@ import { motion, AnimatePresence } from "framer-motion";
 import Lottie from "lottie-react";
 import checkmarkAnimation from "../assets/checkmark.json"; // Use your own Lottie file
 import ChatModal from "./ChatModal";
+import emailjs from '@emailjs/browser';
 // Form steps enum
 enum FormStep {
   Contact = 0,
   Project = 1,
   Complete = 2
+}
+
+interface ContactProps {
+  onClose?: () => void;
 }
 
 const Contact = () => {
@@ -125,56 +130,61 @@ const Contact = () => {
     } else if (step === FormStep.Project) {
       if (validateStep(step)) {
         try {
-          // Prepare file data if present
-          let fileData = null;
-          if (file) {
-            try {
-              const reader = new FileReader();
-              fileData = await new Promise((resolve, reject) => {
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = () => reject(new Error('Failed to read file'));
-                reader.readAsDataURL(file);
-              });
-            } catch (fileError) {
-              console.error("Error reading file:", fileError);
-              // Continue without file rather than failing completely
-              fileData = null;
-            }
+          // EmailJS configuration - using environment variables
+          const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+          const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+          const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+          const notificationEmail = import.meta.env.VITE_NOTIFICATION_EMAIL || 'wayne@uplinq.digital';
+
+          // Validate required environment variables
+          if (!serviceId || !templateId || !publicKey) {
+            throw new Error('EmailJS configuration missing');
           }
-          
-          // Send form data to backend
-          const response = await fetch('/api/contact', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              name,
-              email,
-              details,
-              file: fileData,
-              source: 'contact_form'
-            }),
-          });
-          
-          let data;
+
+          // Prepare file info for email (can't send actual file via EmailJS)
+          const fileInfo = file ? `\n\nFile attached: ${file.name} (${file.type}, ${(file.size / 1024).toFixed(1)}KB)` : '';
+
+          const templateParams = {
+            to_email: notificationEmail,
+            from_email: email,
+            message: `Contact Form Submission from ${name}:\n\n${details}${fileInfo}\n\nSource: ${source || 'contact_form'}`,
+            subject: `New Contact Form Submission from ${name}`,
+            user_email: email,
+            user_name: name,
+            request_type: 'contact_form',
+            source: source || 'contact_form',
+            signup_date: new Date().toLocaleString()
+          };
+
+          // Send notification email
+          await emailjs.send(serviceId, templateId, templateParams, publicKey);
+
+          // Send confirmation email to user
+          const confirmationTemplateId = import.meta.env.VITE_EMAILJS_CONFIRMATION_TEMPLATE_ID || 'template_confirmation';
+          const confirmationParams = {
+            to_name: name,
+            to_email: email,
+            from_name: 'Uplinq Digital Team',
+            reply_to: 'wayne@uplinq.digital',
+            message: `Thank you for reaching out to us! We've received your enquiry and will get back to you within 24 hours.
+
+Your message:
+${details}
+
+We'll review your requirements and provide you with a detailed response soon.
+
+Best regards,
+The Uplinq Digital Team`,
+            subject: 'Thanks for your enquiry - We\'ll be in touch soon!'
+          };
+
           try {
-            data = await response.json();
-          } catch (jsonError) {
-            console.error("Error parsing response:", jsonError);
-            throw new Error('Server returned invalid response. Please try again later.');
+            await emailjs.send(serviceId, confirmationTemplateId, confirmationParams, publicKey);
+          } catch (confirmationError) {
+            console.error('Confirmation email failed:', confirmationError);
           }
-          
-          if (!response.ok) {
-            throw new Error(data.error || `Server error: ${response.status}`);
-          }
-          
-          console.log("Form submitted successfully:", data);
-          
-          // Show warning if email had issues but form was submitted
-          if (data.emailError) {
-            console.warn("Email delivery issue:", data.message);
-          }
+
+          console.log("Form submitted successfully via EmailJS");
           
           // Form submission was successful, move to completion step
           setStep(FormStep.Complete);

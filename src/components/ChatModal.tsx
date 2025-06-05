@@ -1,7 +1,8 @@
-import { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Lottie from 'lottie-react';
 import botAnimation from '../assets/bot.json';
+import emailjs from '@emailjs/browser';
 
 interface Message {
   id: string;
@@ -639,27 +640,58 @@ const ChatModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }
     setIsSubmitting(true);
     
     try {
-      // Send to backend API (same as main contact form)
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: contactName,
-          email: contactEmail,
-          details: contactMessage,
-          source: 'chat_assistant'
-        }),
-      });
-      
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.error || 'Something went wrong');
+      // EmailJS configuration - using environment variables
+      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+      const notificationEmail = import.meta.env.VITE_NOTIFICATION_EMAIL || 'wayne@uplinq.digital';
+
+      // Validate required environment variables
+      if (!serviceId || !templateId || !publicKey) {
+        throw new Error('EmailJS configuration missing');
       }
-      
-      console.log("Chat form submitted successfully:", data);
+
+      const templateParams = {
+        to_email: notificationEmail,
+        from_email: contactEmail,
+        message: `Chat Assistant Form Submission from ${contactName}:\n\n${contactMessage}\n\nSource: chat_assistant`,
+        subject: `New Chat Assistant Submission from ${contactName}`,
+        user_email: contactEmail,
+        user_name: contactName,
+        request_type: 'chat_assistant',
+        source: 'chat_assistant',
+        signup_date: new Date().toLocaleString()
+      };
+
+      // Send notification email
+      await emailjs.send(serviceId, templateId, templateParams, publicKey);
+
+      // Send confirmation email to user
+      const confirmationTemplateId = import.meta.env.VITE_EMAILJS_CONFIRMATION_TEMPLATE_ID || 'template_confirmation';
+      const confirmationParams = {
+        to_name: contactName,
+        to_email: contactEmail,
+        from_name: 'Uplinq Digital Team',
+        reply_to: 'wayne@uplinq.digital',
+        message: `Thank you for reaching out through our chat assistant! We've received your message and will get back to you within 24 hours.
+
+Your message:
+${contactMessage}
+
+We'll review your requirements and provide you with a detailed response soon.
+
+Best regards,
+The Uplinq Digital Team`,
+        subject: 'Thanks for your chat message - We\'ll be in touch soon!'
+      };
+
+      try {
+        await emailjs.send(serviceId, confirmationTemplateId, confirmationParams, publicKey);
+      } catch (confirmationError) {
+        console.error('Confirmation email failed:', confirmationError);
+      }
+
+      console.log("Chat form submitted successfully via EmailJS");
       setIsSubmitting(false);
       setFormSubmitted(true);
       

@@ -8,6 +8,7 @@ import Footer from "../components/FooterContact";
 import FloatingChatButton from "../components/FloatingChatButton";
 import SEO from "../components/SEO";
 import { Analytics } from "../components/Analytics";
+import emailjs from '@emailjs/browser';
 
 // Form states
 enum FormState {
@@ -105,31 +106,75 @@ const Quote = () => {
     
     if (validateForm()) {
       try {
-        // Send form data to backend
-        const response = await fetch('/api/quote', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ 
-            name, 
-            company, 
-            email, 
-            website, 
-            projectType, 
-            budget, 
-            timeline, 
-            goals 
-          }),
-        });
-        
-        const data = await response.json();
-        
-        if (!response.ok) {
-          throw new Error(data.error || 'Something went wrong');
+        // EmailJS configuration - using environment variables
+        const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+        const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+        const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+        const notificationEmail = import.meta.env.VITE_NOTIFICATION_EMAIL || 'wayne@uplinq.digital';
+
+        // Validate required environment variables
+        if (!serviceId || !templateId || !publicKey) {
+          throw new Error('EmailJS configuration missing');
         }
-        
-        console.log("Quote form submitted successfully:", data);
+
+        const templateParams = {
+          to_email: notificationEmail,
+          from_email: email,
+          message: `Quote Request from ${name}:
+
+Company: ${company || 'N/A'}
+Email: ${email}
+Website: ${website || 'N/A'}
+Project Type: ${projectType}
+Budget: ${budget}
+Timeline: ${timeline}
+
+Project Goals:
+${goals}
+
+Source: quote_form`,
+          subject: `New Quote Request from ${name}${company ? ` at ${company}` : ''}`,
+          user_email: email,
+          user_name: name,
+          request_type: 'quote_request',
+          source: 'quote_form',
+          signup_date: new Date().toLocaleString(),
+          project_type: projectType,
+          budget_range: budget,
+          timeline: timeline
+        };
+
+        // Send notification email
+        await emailjs.send(serviceId, templateId, templateParams, publicKey);
+
+        // Send confirmation email to user
+        const confirmationTemplateId = import.meta.env.VITE_EMAILJS_CONFIRMATION_TEMPLATE_ID || 'template_confirmation';
+        const confirmationParams = {
+          to_name: name,
+          to_email: email,
+          from_name: 'Uplinq Digital Team',
+          reply_to: 'wayne@uplinq.digital',
+          message: `Thank you for your quote request! We've received your project details and will send you a personalized proposal within 24 hours.
+
+Your Project Details:
+• Project Type: ${projectType}
+• Budget: ${budget}
+• Timeline: ${timeline}
+
+We'll review your requirements and provide you with a detailed quote and project roadmap.
+
+Best regards,
+The Uplinq Digital Team`,
+          subject: 'Your Project Quote is Coming Soon!'
+        };
+
+        try {
+          await emailjs.send(serviceId, confirmationTemplateId, confirmationParams, publicKey);
+        } catch (confirmationError) {
+          console.error('Confirmation email failed:', confirmationError);
+        }
+
+        console.log("Quote form submitted successfully via EmailJS");
         
         // Track successful quote submission
         Analytics.trackQuoteSubmission(projectType, budget, timeline);
