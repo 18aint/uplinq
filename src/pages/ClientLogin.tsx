@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import emailjs from '@emailjs/browser';
+import { SparklesIcon } from '@heroicons/react/24/outline';
 import SEO from '../components/SEO';
 
 const ClientLogin = () => {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
   // Calculate dynamic metrics based on 60-day cycles
   const getMetrics = () => {
@@ -37,28 +39,87 @@ const ClientLogin = () => {
 
   const metrics = getMetrics();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
+    
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setSubmitStatus('error');
+      setErrorMessage('Please enter a valid email address');
+      return;
+    }
 
-    // Simulate login process
-    setTimeout(() => {
-      // Store client info in localStorage for MVP
-      const clientData = {
-        name: 'TechFlow Solutions', // Mock client name
-        email: email,
-        loginTime: new Date().toISOString(),
-        projectStatus: 'In Progress',
-        websiteUrl: 'https://techflow-demo.uplinq.digital'
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+    setErrorMessage('');
+
+    try {
+      // EmailJS configuration - using environment variables
+      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_uplinq';
+      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_notification';
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'your_emailjs_public_key';
+      const notificationEmail = import.meta.env.VITE_NOTIFICATION_EMAIL || 'notifications@uplinq.digital';
+
+      const templateParams = {
+        to_email: notificationEmail,
+        from_email: email,
+        message: `New user ${email} has signed up for client portal notifications.`,
+        subject: 'New Client Portal Notification Signup',
+        user_email: email,
+        signup_date: new Date().toLocaleString(),
+        portal_url: window.location.origin
       };
-      
-      localStorage.setItem('uplinq-client', JSON.stringify(clientData));
-      setIsLoading(false);
-      
-      // Redirect to dashboard
-      navigate('/client-dashboard');
-    }, 1500);
+
+      // Send notification email to Uplinq
+      await emailjs.send(serviceId, templateId, templateParams, publicKey);
+
+      // Also send confirmation email to user
+      const confirmationTemplateId = import.meta.env.VITE_EMAILJS_CONFIRMATION_TEMPLATE_ID || 'template_confirmation';
+      const confirmationParams = {
+        to_name: email.split('@')[0], // Extract name from email
+        to_email: email,
+        from_name: 'Uplinq Digital Team',
+        reply_to: 'wayne@uplinq.digital',
+        message: `Thank you for signing up for notifications about our client portal! We'll keep you updated on our progress and let you know as soon as it's ready.
+
+Best regards,
+The Uplinq Digital Team`,
+        subject: 'Thanks for your interest in Uplinq Client Portal!'
+      };
+
+      try {
+        await emailjs.send(serviceId, confirmationTemplateId, confirmationParams, publicKey);
+        console.log('Confirmation email sent successfully to:', email);
+      } catch (confirmationError) {
+        console.error('Confirmation email failed:', confirmationError);
+        // Still show success since the main notification was sent
+      }
+
+      setSubmitStatus('success');
+      setEmail(''); // Clear the form
+    } catch (error) {
+      console.error('EmailJS error:', error);
+      setSubmitStatus('error');
+      setErrorMessage('Something went wrong. Please try again or contact us directly.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
+  const resetStatus = () => {
+    if (submitStatus !== 'idle') {
+      setTimeout(() => {
+        setSubmitStatus('idle');
+        setErrorMessage('');
+      }, 5000); // Reset after 5 seconds
+    }
+  };
+
+  // Auto-reset status after showing success/error
+  if (submitStatus !== 'idle') {
+    resetStatus();
+  }
 
   return (
     <div className="min-h-screen bg-white flex">
@@ -69,16 +130,16 @@ const ClientLogin = () => {
         canonicalUrl="https://uplinq.digital/client-login"
       />
       
-      {/* Left Column - Login Form */}
+      {/* Left Column - Coming Soon */}
       <div className="flex-1 flex items-center justify-center px-8 py-12 lg:px-8 md:px-6 sm:px-4 bg-white">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6 }}
-          className="w-full max-w-md"
+          className="w-full max-w-md text-center"
         >
           {/* Header */}
-          <div className="text-center mb-8">
+          <div className="mb-8">
             <Link to="/" className="flex items-center justify-center mb-6 hover:opacity-80 transition-opacity">
               <img 
                 src="/logo-uplinq.png" 
@@ -89,122 +150,145 @@ const ClientLogin = () => {
                 Uplinq Digital
               </span>
             </Link>
-            <h1 className="text-3xl font-light text-gray-900 mb-2">
-              Log In
-            </h1>
-            <p className="text-gray-600">
-              Welcome back! Please sign in to view your project.
-            </p>
           </div>
 
-          {/* Login Form */}
+          {/* Coming Soon Content */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
             className="bg-gray-50 p-8 rounded-2xl shadow-lg border border-gray-100"
           >
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Email Input */}
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                  Email Address
-                </label>
+            {/* Icon */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="mx-auto w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mb-6"
+            >
+              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+            </motion.div>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="text-3xl font-light text-gray-900 mb-4"
+            >
+              Coming Soon
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              className="text-gray-600 mb-8 leading-relaxed"
+            >
+              We're putting the finishing touches on our exclusive client portal. 
+              Our development team is working hard to bring you an amazing project management experience.
+            </motion.p>
+
+            {/* Notification Signup */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.7 }}
+              className="space-y-4"
+            >
+              <p className="text-sm text-gray-600">Get notified when we launch:</p>
+              
+              {/* Success Message */}
+              {submitStatus === 'success' && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="p-3 bg-green-50 border border-green-200 rounded-lg"
+                >
+                  <div className="flex items-center">
+                    <svg className="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <p className="text-sm text-green-800 font-medium">Thanks! We'll notify you when we launch.</p>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Error Message */}
+              {submitStatus === 'error' && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="p-3 bg-red-50 border border-red-200 rounded-lg"
+                >
+                  <div className="flex items-center">
+                    <svg className="w-5 h-5 text-red-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    <p className="text-sm text-red-800">{errorMessage}</p>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Email Form */}
+              <form onSubmit={handleEmailSubmit} className="flex space-x-3">
                 <input
                   type="email"
-                  id="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                   placeholder="Enter your email"
+                  disabled={isSubmitting}
+                  className="flex-1 px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
                   required
                 />
-              </div>
-
-              {/* Password Input */}
-              <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-                  Password
-                </label>
-                <input
-                  type="password"
-                  id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                  placeholder="Enter your password"
-                  required
-                />
-              </div>
-
-              {/* Remember Me */}
-              <div className="flex items-center">
-                <input
-                  id="remember-me"
-                  name="remember-me"
-                  type="checkbox"
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
-                  Remember Me
-                </label>
-              </div>
-
-              {/* Login Button */}
-              <motion.button
-                whileHover={{ scale: 1.02, y: -1 }}
-                whileTap={{ scale: 0.98 }}
-                type="submit"
-                disabled={isLoading}
-                className="w-full py-4 px-6 bg-gradient-to-r from-blue-500 via-blue-600 to-indigo-600 text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center font-medium text-lg relative overflow-hidden group"
-              >
-                {/* Shine effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-                
-                {isLoading ? (
-                  <>
-                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    <span className="relative z-10">Signing in...</span>
-                  </>
-                ) : (
-                  <span className="relative z-10 flex items-center">
-                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-                    </svg>
-                    Log In
-                  </span>
-                )}
-              </motion.button>
-            </form>
-
-            {/* Forgot Password */}
-            <div className="mt-6 text-center">
-              <a href="#" className="text-sm text-blue-600 hover:text-blue-700">
-                Forgot your password?
-              </a>
-            </div>
+                <motion.button
+                  whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
+                  whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm font-medium disabled:opacity-70 disabled:cursor-not-allowed flex items-center"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Sending...
+                    </>
+                  ) : (
+                    'Notify Me'
+                  )}
+                </motion.button>
+              </form>
+            </motion.div>
           </motion.div>
 
-          {/* Demo Credentials */}
+          {/* Contact Information */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
+            transition={{ duration: 0.6, delay: 0.8 }}
             className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-100"
           >
-            <p className="text-sm text-blue-800 font-medium mb-2">Demo Access:</p>
+            <p className="text-sm text-blue-800 font-medium mb-2">Need immediate assistance?</p>
             <p className="text-xs text-blue-700">
-              Use any email and password to access the demo dashboard
+              Contact us at{' '}
+              <a href="mailto:support@uplinq.digital" className="underline hover:no-underline">
+                support@uplinq.digital
+              </a>
+              {' '}or call{' '}
+              <a href="tel:+44-20-1234-5678" className="underline hover:no-underline">
+                +44 20 1234 5678
+              </a>
             </p>
           </motion.div>
 
           {/* Footer Links */}
           <div className="mt-8 text-center text-xs text-gray-500">
             <p>
-              By clicking on the Log In button, you understand and agree to{' '}
+              Stay updated with our{' '}
               <a href="/terms-of-service" className="text-blue-600 hover:underline">Terms of Use</a>{' '}
               and{' '}
               <a href="/privacy-policy" className="text-blue-600 hover:underline">Privacy Policy</a>
@@ -302,21 +386,13 @@ const ClientLogin = () => {
                 </div>
                 <motion.a
                   href="http://localhost:5173/starter-kit"
-                  whileHover={{ scale: 1.03, y: -2 }}
-                  whileTap={{ scale: 0.97 }}
-                  className="bg-gradient-to-r from-purple-500 via-blue-500 to-blue-600 text-white px-8 py-3 rounded-xl font-medium shadow-xl hover:shadow-2xl transition-all duration-300 flex items-center space-x-2 relative overflow-hidden group border border-white/20"
+                  whileHover={{ scale: 1.02, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="bg-gradient-to-r from-purple-500 via-blue-500 to-blue-600 text-white px-8 py-3 rounded-2xl font-medium shadow-xl hover:shadow-2xl transition-all duration-300 flex items-center space-x-2"
                 >
-                  {/* Enhanced shine effect */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-500"></div>
-                  
-                  <svg className="w-5 h-5 relative z-10" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                  <span className="relative z-10 font-semibold">Experience Uplinq</span>
-                  <span className="bg-white/30 px-2 py-0.5 rounded-lg text-sm font-bold relative z-10 border border-white/30">Pro</span>
-                  
-                  {/* Glow effect */}
-                  <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-purple-400/50 to-blue-400/50 blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
+                  <SparklesIcon className="w-5 h-5" />
+                  <span>Experience Uplinq</span>
+                  <span className="bg-white/20 px-2 py-0.5 rounded-lg text-sm">Pro</span>
                 </motion.a>
               </div>
             </div>

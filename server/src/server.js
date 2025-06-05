@@ -507,7 +507,7 @@ app.post('/api/contact', async (req, res) => {
                 
                 <!-- CTA Button -->
                 <div style="text-align: center; margin: 50px 0;">
-                  <a href="https://uplinq.digital/contact" style="display: inline-block; background: #3b82f6; color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 6px; font-weight: 500; font-size: 16px; transition: background-color 0.2s;">
+                  <a href="https://calendly.com/wayne-uplinq" style="display: inline-block; background: #3b82f6; color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 6px; font-weight: 500; font-size: 16px; transition: background-color 0.2s;">
                     Book a Free Consultation
                   </a>
                 </div>
@@ -536,8 +536,8 @@ app.post('/api/contact', async (req, res) => {
               <div style="padding: 30px; background: #f8fafc;">
                 <div style="background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                   <h3 style="color: #2d3748; margin-top: 0;">Contact Details:</h3>
-                  <p><strong>Name:</strong> ${name}</p>
-                  <p><strong>Email:</strong> ${email}</p>
+  <p><strong>Name:</strong> ${name}</p>
+  <p><strong>Email:</strong> ${email}</p>
                   <p><strong>Source:</strong> ${source}</p>
                   <p><strong>Message:</strong></p>
                   <div style="background: #f7fafc; padding: 15px; border-radius: 4px; margin-top: 10px;">
