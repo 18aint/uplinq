@@ -37,9 +37,9 @@ const PerformanceStarterKit = () => {
       // Check if Stripe is configured
       const stripeKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
       if (!stripeKey) {
-        console.warn('⚠️ Stripe configuration not available. Redirecting to contact page.');
-        // Redirect to contact page with pre-filled information
-        window.location.href = `/contact?product=UplinqPro&email=${encodeURIComponent(email)}&message=${encodeURIComponent('I would like to purchase UplinqPro Digital Toolkit for £19. Please send me payment details.')}`;
+        console.warn('⚠️ Stripe configuration not available. Redirecting to client login.');
+        // Redirect to client login page
+        window.location.href = `/client-login`;
         return;
       }
 
@@ -61,9 +61,9 @@ const PerformanceStarterKit = () => {
       // Check if the API endpoint exists
       if (!response.ok) {
         if (response.status === 405 || response.status === 404) {
-          // API endpoint doesn't exist, redirect to contact page
-          console.warn('⚠️ Payment API not available. Redirecting to contact page.');
-          window.location.href = `/contact?product=UplinqPro&email=${encodeURIComponent(email)}&message=${encodeURIComponent('I would like to purchase UplinqPro Digital Toolkit for £19. Please send me payment details.')}`;
+          // API endpoint doesn't exist, redirect to client login
+          console.warn('⚠️ Payment API not available. Redirecting to client login.');
+          window.location.href = `/client-login`;
           return;
         }
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -86,9 +86,9 @@ const PerformanceStarterKit = () => {
 
     } catch (error) {
       console.error('Error:', error);
-      // Fallback to contact page for manual processing
-      console.warn('⚠️ Payment processing error. Redirecting to contact page.');
-      window.location.href = `/contact?product=UplinqPro&email=${encodeURIComponent(email)}&message=${encodeURIComponent('I would like to purchase UplinqPro Digital Toolkit for £19. Please send me payment details.')}`;
+      // Fallback to client login for manual processing
+      console.warn('⚠️ Payment processing error. Redirecting to client login.');
+      window.location.href = `/client-login`;
     } finally {
       setIsLoading(false);
     }
