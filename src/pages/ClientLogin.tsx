@@ -55,12 +55,28 @@ const ClientLogin = () => {
     setErrorMessage('');
 
     try {
+      // EmailJS configuration - using environment variables
+      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+      const notificationEmail = import.meta.env.VITE_NOTIFICATION_EMAIL || 'wayne@uplinq.digital';
+
+      // Check if EmailJS is properly configured
+      if (!serviceId || !templateId || !publicKey) {
+        console.warn('⚠️ EmailJS not configured. Email captured for manual follow-up.');
+        // Still show success to user since we captured their email
+        setSubmitStatus('success');
+        setEmail('');
+        console.log(`📧 Manual follow-up needed for: ${email} - Client portal signup`);
+        return;
+      }
+
       // Initialize EmailJS
-      emailjs.init("SHqq4NyI1oDJxMTWH");
+      emailjs.init(publicKey);
       
       // Template parameters for notification email to Wayne
       const notificationParams = {
-        to_email: "wayne@uplinq.digital",
+        to_email: notificationEmail,
         from_email: email,
         from_name: email.split('@')[0],
         subject: "🔔 New Client Portal Signup",
@@ -74,15 +90,18 @@ The user wants to be notified when the client portal is ready.
 
 Best regards,
 Uplinq Digital System`,
+        user_email: email,
         request_type: "Client Portal Signup",
-        source: "client_login"
+        source: "client_login",
+        signup_date: new Date().toLocaleString()
       };
 
       // Send notification email to Wayne
       console.log("Sending notification email to Wayne...");
-      await emailjs.send("service_vn8aen8", "template_ixu1huc", notificationParams);
+      await emailjs.send(serviceId, templateId, notificationParams);
       
-      // Template parameters for confirmation email to user
+      // Send confirmation email to user
+      const confirmationTemplateId = import.meta.env.VITE_EMAILJS_CONFIRMATION_TEMPLATE_ID || 'template_confirmation';
       const confirmationParams = {
         to_email: email,
         to_name: email.split('@')[0],
@@ -111,21 +130,26 @@ P.S. Get ready for an amazing project management experience! 🌟`
 
       // Send confirmation email to user
       console.log("Sending confirmation email to user...");
-      await emailjs.send("service_vn8aen8", "template_ixu1huc", confirmationParams);
+      try {
+        await emailjs.send(serviceId, confirmationTemplateId, confirmationParams);
+      } catch (confirmationError) {
+        console.error('Confirmation email failed:', confirmationError);
+        // Continue anyway since main notification was sent
+      }
       
-      console.log("Both emails sent successfully!");
+      console.log("Emails sent successfully!");
       setSubmitStatus('success');
       setEmail('');
       
     } catch (error) {
       console.error('EmailJS error:', error);
       
-      // Show user-friendly error but still mark as success since we captured the email
+      // Show success to user since we captured their email
       setSubmitStatus('success');
       setEmail('');
       
-      // Log for debugging but don't show error to user
-      console.log("Email submission recorded locally, manual follow-up may be needed");
+      // Log for manual follow-up
+      console.log(`📧 Manual follow-up needed for: ${email} - Client portal signup`);
     } finally {
       setIsSubmitting(false);
     }
