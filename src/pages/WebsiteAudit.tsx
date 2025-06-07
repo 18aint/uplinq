@@ -121,19 +121,19 @@ const WebsiteAudit = () => {
         // Fallback to server endpoint
         try {
           const response = await fetch('https://uplinq-backend-1.onrender.com/api/contact', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
               name: companyName || email.split('@')[0],
               email: email,
               details: `Website Audit Request for ${websiteUrl}. Company: ${companyName || 'N/A'}. User has requested a free website audit.`,
               source: 'website_audit',
               requestType: 'audit_request'
-            }),
-          });
-
+        }),
+      });
+      
           if (!response.ok) {
             throw new Error('Failed to submit audit request');
           }
