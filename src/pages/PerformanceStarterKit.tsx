@@ -34,6 +34,15 @@ const PerformanceStarterKit = () => {
     setIsLoading(true);
 
     try {
+      // Check if Stripe is configured
+      const stripeKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
+      if (!stripeKey) {
+        console.warn('⚠️ Stripe configuration not available. Redirecting to contact page.');
+        // Redirect to contact page with pre-filled information
+        window.location.href = `/contact?product=UplinqPro&email=${encodeURIComponent(email)}&message=${encodeURIComponent('I would like to purchase UplinqPro Digital Toolkit for £19. Please send me payment details.')}`;
+        return;
+      }
+
       // Create Stripe checkout session for UplinqPro
       const response = await fetch('/api/create-checkout-session', {
         method: 'POST',
@@ -49,15 +58,22 @@ const PerformanceStarterKit = () => {
         }),
       });
 
-      const { id: sessionId } = await response.json();
+      // Check if the API endpoint exists
+      if (!response.ok) {
+        if (response.status === 405 || response.status === 404) {
+          // API endpoint doesn't exist, redirect to contact page
+          console.warn('⚠️ Payment API not available. Redirecting to contact page.');
+          window.location.href = `/contact?product=UplinqPro&email=${encodeURIComponent(email)}&message=${encodeURIComponent('I would like to purchase UplinqPro Digital Toolkit for £19. Please send me payment details.')}`;
+          return;
+        }
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
-      // Redirect to Stripe Checkout
-      const stripeKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
-    if (!stripeKey) {
-      alert('Payment processing is currently unavailable. Please contact us directly at wayne@uplinq.digital to proceed with your order.');
-      return;
-    }
-    const stripe = (window as any).Stripe(stripeKey);
+      const responseData = await response.json();
+      const { id: sessionId } = responseData;
+
+      // Initialize Stripe and redirect to checkout
+      const stripe = (window as any).Stripe(stripeKey);
       await stripe.redirectToCheckout({ sessionId });
 
       // Track purchase attempt
@@ -70,7 +86,9 @@ const PerformanceStarterKit = () => {
 
     } catch (error) {
       console.error('Error:', error);
-      setErrors({ general: 'Something went wrong. Please try again.' });
+      // Fallback to contact page for manual processing
+      console.warn('⚠️ Payment processing error. Redirecting to contact page.');
+      window.location.href = `/contact?product=UplinqPro&email=${encodeURIComponent(email)}&message=${encodeURIComponent('I would like to purchase UplinqPro Digital Toolkit for £19. Please send me payment details.')}`;
     } finally {
       setIsLoading(false);
     }
