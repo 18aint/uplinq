@@ -115,23 +115,23 @@ const Quote = () => {
         // Check if EmailJS is configured, otherwise use server endpoint
         if (!serviceId || !templateId || !publicKey) {
           // Fallback to server endpoint
-        const response = await fetch('/api/quote', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ 
-            name, 
-            company, 
-            email, 
-            website, 
-            projectType, 
-            budget, 
-            timeline, 
-            goals 
-          }),
-        });
-        
+          const response = await fetch('/api/quote', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              name,
+              company,
+              email,
+              website,
+              projectType,
+              budget,
+              timeline,
+              goals
+            }),
+          });
+
           if (!response.ok) {
             throw new Error('Failed to submit quote');
           }
@@ -197,7 +197,7 @@ The Uplinq Digital Team`,
         } catch (confirmationError) {
           console.error('Confirmation email failed:', confirmationError);
         }
-        
+
         console.log("Quote form submitted successfully via EmailJS");
         
         // Track successful quote submission

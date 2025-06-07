@@ -124,21 +124,21 @@ const WebsiteGrowthCalculator = () => {
       if (!serviceId || !templateId || !publicKey) {
         // Fallback to server endpoint
         try {
-      const response = await fetch('/api/growth-calculator', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
+          const response = await fetch('/api/growth-calculator', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              email,
               companyName: companyName || 'N/A',
-          monthlyVisitors: parseInt(monthlyVisitors),
-          conversionRate: parseFloat(conversionRate),
-          averageOrderValue: parseFloat(averageOrderValue),
+              monthlyVisitors: parseInt(monthlyVisitors),
+              conversionRate: parseFloat(conversionRate),
+              averageOrderValue: parseFloat(averageOrderValue),
               results: results
-        }),
-      });
-      
+            }),
+          });
+
           if (!response.ok) {
             throw new Error('Failed to submit growth calculator data');
           }
@@ -220,14 +220,14 @@ The Uplinq Digital Team`,
         }
       }
       
-        setSubmitted(true);
-        
-        // Track email capture
-        Analytics.trackConversion('growth_calculator_email_captured', {
-          email,
-          potential_increase: results?.monthlyIncrease || 0,
-          label: 'Growth Plan Requested'
-        });
+      setSubmitted(true);
+      
+      // Track email capture
+      Analytics.trackConversion('growth_calculator_email_captured', {
+        email,
+        potential_increase: results?.monthlyIncrease || 0,
+        label: 'Growth Plan Requested'
+      });
       
     } catch (error) {
       console.error('Error submitting email:', error);

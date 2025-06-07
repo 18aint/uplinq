@@ -668,24 +668,24 @@ const ChatModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }
         }
 
         console.log("Chat form submitted successfully via server API");
-      setIsSubmitting(false);
-      setFormSubmitted(true);
-      
-      // Add confirmation message
-      const confirmationMessage: Message = {
-        id: Date.now().toString(),
+        setIsSubmitting(false);
+        setFormSubmitted(true);
+        
+        // Add confirmation message
+        const confirmationMessage: Message = {
+          id: Date.now().toString(),
           text: `Thanks, ${contactName}! Your request has been submitted to our team at wayne@uplinq.digital. A member of our team will contact you at ${contactEmail} within 1 business day.`,
-        sender: 'assistant',
-        timestamp: new Date(),
-        hasQuickReplies: true
-      };
-      
-      setMessages(prev => [...prev, confirmationMessage]);
-      
-      // Reset form
-      setContactName('');
-      setContactEmail('');
-      setContactMessage('');
+          sender: 'assistant',
+          timestamp: new Date(),
+          hasQuickReplies: true
+        };
+        
+        setMessages(prev => [...prev, confirmationMessage]);
+        
+        // Reset form
+        setContactName('');
+        setContactEmail('');
+        setContactMessage('');
         
         return;
       }

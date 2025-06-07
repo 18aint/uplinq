@@ -135,15 +135,15 @@ const Contact = () => {
           // Check if EmailJS is configured, otherwise use server endpoint
           if (!serviceId || !templateId || !publicKey) {
             // Fallback to server endpoint
-          const response = await fetch('/api/contact', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              name,
-              email,
-              details,
+            const response = await fetch('/api/contact', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                name,
+                email,
+                details,
                 file: file ? {
                   name: file.name,
                   type: file.type,
@@ -151,9 +151,9 @@ const Contact = () => {
                 } : null,
                 source: source || 'contact_form',
                 requestType: 'contact_form'
-            }),
-          });
-          
+              }),
+            });
+
             if (!response.ok) {
               throw new Error('Failed to submit form');
             }
@@ -205,7 +205,7 @@ The Uplinq Digital Team`,
           } catch (confirmationError) {
             console.error('Confirmation email failed:', confirmationError);
           }
-          
+
           console.log("Form submitted successfully via EmailJS");
           
           // Form submission was successful, move to completion step
