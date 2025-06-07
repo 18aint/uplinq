@@ -26,7 +26,13 @@ interface AuditResult {
   recommendations: string[];
 }
 
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+// Initialize Stripe with error handling
+const stripeKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
+const stripePromise = stripeKey ? loadStripe(stripeKey) : null;
+
+if (!stripeKey) {
+  console.warn('⚠️ Stripe publishable key not found. Payment functionality may be limited.');
+}
 
 const WebsiteAudit = () => {
   // Form state management
@@ -114,15 +120,17 @@ const WebsiteAudit = () => {
       if (!serviceId || !templateId || !publicKey) {
         // Fallback to server endpoint
         try {
-          const response = await fetch('/api/audit', {
+          const response = await fetch('https://uplinq-backend-1.onrender.com/api/contact', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              websiteUrl,
-              email,
-              companyName: companyName || 'N/A'
+              name: companyName || email.split('@')[0],
+              email: email,
+              details: `Website Audit Request for ${websiteUrl}. Company: ${companyName || 'N/A'}. User has requested a free website audit.`,
+              source: 'website_audit',
+              requestType: 'audit_request'
             }),
           });
 

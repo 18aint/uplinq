@@ -92,8 +92,13 @@ const LogoCarousel = () => {
   );
 };
 
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
-console.log('Stripe key:', import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+// Initialize Stripe with error handling
+const stripeKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
+const stripePromise = stripeKey ? loadStripe(stripeKey) : null;
+
+if (!stripeKey) {
+  console.warn('⚠️ Stripe publishable key not found. Payment functionality may be limited.');
+}
 const handleCheckout = async (
   priceId: string,
   title: string,
@@ -129,7 +134,7 @@ const handleCheckout = async (
 
   const stripe = await stripePromise;
   if (!stripe) {
-    alert('Stripe failed to load. Please try again later.');
+    alert('Payment processing is currently unavailable. Please contact us directly at wayne@uplinq.digital to proceed with your order.');
     return;
   }
   await stripe.redirectToCheckout({ sessionId: data.id });

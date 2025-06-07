@@ -52,7 +52,12 @@ const PerformanceStarterKit = () => {
       const { id: sessionId } = await response.json();
 
       // Redirect to Stripe Checkout
-      const stripe = (window as any).Stripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+      const stripeKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
+    if (!stripeKey) {
+      alert('Payment processing is currently unavailable. Please contact us directly at wayne@uplinq.digital to proceed with your order.');
+      return;
+    }
+    const stripe = (window as any).Stripe(stripeKey);
       await stripe.redirectToCheckout({ sessionId });
 
       // Track purchase attempt
