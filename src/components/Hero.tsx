@@ -158,7 +158,7 @@ const Hero = () => {
           </p>
           <div className="flex justify-center">
             <Link
-              to="/starter-kit"
+              to="/client-login"
               className="group inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl hover:shadow-lg transition-all duration-300 transform hover:scale-[1.02]"
             >
               <SparklesIcon className="h-5 w-5 text-white bg-transparent" />

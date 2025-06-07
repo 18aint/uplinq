@@ -424,7 +424,7 @@ The Uplinq Digital Team`,
                   </span>
                 </div>
                 <motion.a
-                  href="http://localhost:5173/starter-kit"
+                  href="/client-login"
                   whileHover={{ scale: 1.02, y: -2 }}
                   whileTap={{ scale: 0.98 }}
                   className="bg-gradient-to-r from-purple-500 via-blue-500 to-blue-600 text-white px-8 py-3 rounded-2xl font-medium shadow-xl hover:shadow-2xl transition-all duration-300 flex items-center space-x-2"
