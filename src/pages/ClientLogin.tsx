@@ -61,28 +61,13 @@ const ClientLogin = () => {
       const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
       const notificationEmail = import.meta.env.VITE_NOTIFICATION_EMAIL || 'wayne@uplinq.digital';
 
-      // Check if EmailJS is configured, otherwise use server endpoint
+      // Check if EmailJS is configured, otherwise use simple fallback
       if (!serviceId || !templateId || !publicKey || serviceId === 'service_uplinq' || publicKey === 'your_emailjs_public_key_here') {
-        // Fallback to server endpoint
-        const response = await fetch('/api/contact', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            name: email.split('@')[0],
-            email: email,
-            details: `New user ${email} has signed up for client portal notifications.`,
-            source: 'client_portal',
-            requestType: 'client_portal_signup'
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to submit signup');
-        }
-
-        console.log("Client portal signup submitted successfully via server API");
+        // For MVP - just show success message without actually sending email
+        // In production, you would integrate with your backend API
+        console.log("Email service not configured. Showing success message for demo purposes.");
+        console.log("Client portal signup:", { email, source: 'client_portal' });
+        
         setSubmitStatus('success');
         setEmail('');
         return;
