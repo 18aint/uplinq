@@ -31,15 +31,11 @@ const LoomConfirmation = () => {
       const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
       const notificationEmail = import.meta.env.VITE_NOTIFICATION_EMAIL || 'wayne@uplinq.digital';
 
-      // Check if EmailJS is configured, otherwise use simple fallback
-      if (!serviceId || !templateId || !publicKey || serviceId === 'service_uplinq' || publicKey === 'your_emailjs_public_key_here') {
-        // For MVP - just show success message without actually sending email
-        // In production, you would integrate with your backend API
-        console.log("Email service not configured. Showing success message for demo purposes.");
-        console.log("Audit request:", { email, source: 'loom_confirmation' });
-        
+      // Check if EmailJS is configured
+      if (!serviceId || !templateId || !publicKey) {
+        console.error("EmailJS configuration missing");
+        setError('Email service temporarily unavailable. Please contact us directly at wayne@uplinq.digital');
         setIsSubmitting(false);
-        setIsSubmitted(true);
         return;
       }
 

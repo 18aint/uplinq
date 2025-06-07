@@ -103,14 +103,14 @@ const Navbar = () => {
               <span>Client Access</span>
             </Link>
 
-            {/* CTA Button */}
-            <Link
-              to="/pricing"
+          {/* CTA Button */}
+          <Link
+            to="/pricing"
               className="font-light inline-flex items-center px-4 py-2 rounded-full bg-blue-500 text-white hover:bg-blue-600 transition-colors duration-200"
-            >
-              Get started
-              <span className="ml-2 bg-white rounded-full text-blue-500 ml-3 mr-[-10px] px-2 py-1">→</span>
-            </Link>
+          >
+            Get started
+            <span className="ml-2 bg-white rounded-full text-blue-500 ml-3 mr-[-10px] px-2 py-1">→</span>
+          </Link>
           </div>
 
           {/* Mobile Menu Button */}
