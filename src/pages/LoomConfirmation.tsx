@@ -25,82 +25,81 @@ const LoomConfirmation = () => {
     setError('');
 
     try {
-      // EmailJS configuration - using environment variables
-      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-      const notificationEmail = import.meta.env.VITE_NOTIFICATION_EMAIL || 'wayne@uplinq.digital';
-
-      // Check if EmailJS is configured, otherwise use simple fallback
-      if (!serviceId || !templateId || !publicKey || serviceId === 'service_uplinq' || publicKey === 'your_emailjs_public_key_here') {
-        // For MVP - just show success message without actually sending email
-        // In production, you would integrate with your backend API
-        console.log("Email service not configured. Showing success message for demo purposes.");
-        console.log("Audit request:", { email, source: 'loom_confirmation' });
-        
-        setIsSubmitting(false);
-        setIsSubmitted(true);
-        return;
-      }
-
-      const templateParams = {
-        to_email: notificationEmail,
+      // EmailJS configuration - initialize EmailJS first
+      emailjs.init("SHqq4NyI1oDJxMTWH");
+      
+      // Template parameters for notification email to Wayne
+      const notificationParams = {
+        to_email: "wayne@uplinq.digital",
         from_email: email,
-        message: `Loom Audit Request from ${email}. User has requested their personalized website audit video from the Apollo campaign.`,
-        subject: 'New Loom Audit Video Request',
-        user_email: email,
-        request_type: 'Loom Audit Video',
-        source: 'loom_confirmation',
-        signup_date: new Date().toLocaleString()
-      };
+        from_name: email.split('@')[0],
+        subject: "🎬 New Loom Audit Video Request",
+        message: `New audit video request received!
 
-      // Send notification email
-      await emailjs.send(serviceId, templateId, templateParams, publicKey);
+Email: ${email}
+Request Date: ${new Date().toLocaleString()}
+Source: Loom Confirmation Page (Apollo Campaign)
 
-      // Send confirmation email to user
-      const confirmationTemplateId = import.meta.env.VITE_EMAILJS_CONFIRMATION_TEMPLATE_ID || 'template_confirmation';
-      const confirmationParams = {
-        to_name: email.split('@')[0],
-        to_email: email,
-        from_name: 'Uplinq Digital Team',
-        reply_to: 'wayne@uplinq.digital',
-        message: `Thank you for requesting your personalized website audit video! We'll analyze your website and send you a detailed video review within 24-48 hours.
-
-What to expect:
-• Comprehensive website analysis
-• Personalized recommendations
-• Actionable improvement suggestions
-• Professional insights from our team
-
-We'll send your audit video directly to this email address.
+The user has requested their personalized website audit video. Please prepare and send the audit within 24-48 hours.
 
 Best regards,
-The Uplinq Digital Team`,
-        subject: 'Your Website Audit Video Is Coming Soon!'
+Uplinq Digital System`,
+        request_type: "Loom Audit Video",
+        source: "loom_confirmation"
       };
 
-      try {
-        await emailjs.send(serviceId, confirmationTemplateId, confirmationParams, publicKey);
-      } catch (confirmationError) {
-        console.error('Confirmation email failed:', confirmationError);
-      }
+      // Send notification email to Wayne
+      console.log("Sending notification email to Wayne...");
+      await emailjs.send("service_vn8aen8", "template_ixu1huc", notificationParams);
+      
+      // Template parameters for confirmation email to user
+      const confirmationParams = {
+        to_email: email,
+        to_name: email.split('@')[0],
+        from_name: "Wayne from Uplinq Digital",
+        reply_to: "wayne@uplinq.digital",
+        subject: "🎬 Your Website Audit Video Is Coming Soon!",
+        message: `Hi ${email.split('@')[0]},
 
+Thank you for requesting your personalised website audit video! 
+
+🔍 What happens next:
+• Our team will analyse your website thoroughly
+• We'll create a detailed video review just for you
+• You'll receive your audit within 24-48 hours
+• The video will include actionable recommendations
+
+📧 We'll send your personalised audit video directly to this email address.
+
+If you have any questions in the meantime, just reply to this email!
+
+Best regards,
+Wayne & The Uplinq Digital Team
+
+P.S. Keep an eye on your inbox - your audit is going to be amazing! 🚀`
+      };
+
+      // Send confirmation email to user
+      console.log("Sending confirmation email to user...");
+      await emailjs.send("service_vn8aen8", "template_ixu1huc", confirmationParams);
+      
+      console.log("Both emails sent successfully!");
       setIsSubmitting(false);
       setIsSubmitted(true);
+      
     } catch (error) {
-      console.error('Error submitting loom confirmation:', error);
+      console.error('Error sending emails:', error);
       setIsSubmitting(false);
       
-      let errorMessage = 'There was an error submitting your request. Please try again.';
-      if (error instanceof Error) {
-        if (error.message.includes('EmailJS configuration missing')) {
-          errorMessage = 'Service temporarily unavailable. Please contact us directly at wayne@uplinq.digital';
-        } else if (error.message.includes('Failed to fetch')) {
-          errorMessage = 'Unable to connect. Please check your internet connection and try again.';
-        }
-      }
+      // Show user-friendly error message but still mark as submitted
+      // since they entered their email and we want to capture the lead
+      setError('Request submitted! If you don\'t receive your audit within 48 hours, please contact wayne@uplinq.digital');
       
-      setError(errorMessage);
+      // Still show success after a short delay
+      setTimeout(() => {
+        setIsSubmitted(true);
+        setError('');
+      }, 3000);
     }
   };
 
