@@ -61,22 +61,31 @@ const ClientLogin = () => {
       const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
       const notificationEmail = import.meta.env.VITE_NOTIFICATION_EMAIL || 'wayne@uplinq.digital';
 
-      // Debug logging for production (remove after fixing)
-      console.log('Environment check:', {
-        hasServiceId: !!serviceId,
-        hasTemplateId: !!templateId,
-        hasPublicKey: !!publicKey,
-        currentDomain: window.location.origin
-      });
+      // Check if EmailJS is configured, otherwise use server endpoint
+      if (!serviceId || !templateId || !publicKey || serviceId === 'service_uplinq' || publicKey === 'your_emailjs_public_key_here') {
+        // Fallback to server endpoint
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: email.split('@')[0],
+            email: email,
+            details: `New user ${email} has signed up for client portal notifications.`,
+            source: 'client_portal',
+            requestType: 'client_portal_signup'
+          }),
+        });
 
-      // Validate required environment variables
-      if (!serviceId || !templateId || !publicKey) {
-        throw new Error(`Missing EmailJS configuration. Check environment variables in Vercel dashboard.`);
-      }
+        if (!response.ok) {
+          throw new Error('Failed to submit signup');
+        }
 
-      // Validate that we're not using placeholder values
-      if (serviceId === 'service_uplinq' || publicKey === 'your_emailjs_public_key_here') {
-        throw new Error('EmailJS credentials not properly configured. Please set up your actual EmailJS credentials in Vercel environment variables.');
+        console.log("Client portal signup submitted successfully via server API");
+        setSubmitStatus('success');
+        setEmail('');
+        return;
       }
 
       const templateParams = {

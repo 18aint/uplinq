@@ -120,9 +120,33 @@ const WebsiteGrowthCalculator = () => {
       const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
       const notificationEmail = import.meta.env.VITE_NOTIFICATION_EMAIL || 'wayne@uplinq.digital';
 
-      // Validate required environment variables
+      // Check if EmailJS is configured, otherwise use server endpoint
       if (!serviceId || !templateId || !publicKey) {
-        console.warn('EmailJS not configured, proceeding with success for UX');
+        // Fallback to server endpoint
+        try {
+          const response = await fetch('/api/growth-calculator', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              email,
+              companyName: companyName || 'N/A',
+              monthlyVisitors: parseInt(monthlyVisitors),
+              conversionRate: parseFloat(conversionRate),
+              averageOrderValue: parseFloat(averageOrderValue),
+              results: results
+            }),
+          });
+
+          if (!response.ok) {
+            throw new Error('Failed to submit growth calculator data');
+          }
+
+          console.log("Growth calculator submitted successfully via server API");
+        } catch (error) {
+          console.error('Error submitting growth calculator via server:', error);
+        }
       } else {
         // Send notification email about the growth calculator submission
         const templateParams = {

@@ -132,9 +132,35 @@ const Contact = () => {
           const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
           const notificationEmail = import.meta.env.VITE_NOTIFICATION_EMAIL || 'wayne@uplinq.digital';
 
-          // Validate required environment variables
+          // Check if EmailJS is configured, otherwise use server endpoint
           if (!serviceId || !templateId || !publicKey) {
-            throw new Error('EmailJS configuration missing');
+            // Fallback to server endpoint
+            const response = await fetch('/api/contact', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                name,
+                email,
+                details,
+                file: file ? {
+                  name: file.name,
+                  type: file.type,
+                  size: file.size
+                } : null,
+                source: source || 'contact_form',
+                requestType: 'contact_form'
+              }),
+            });
+
+            if (!response.ok) {
+              throw new Error('Failed to submit form');
+            }
+
+            console.log("Form submitted successfully via server API");
+            setStep(FormStep.Complete);
+            return;
           }
 
           // Prepare file info for email (can't send actual file via EmailJS)

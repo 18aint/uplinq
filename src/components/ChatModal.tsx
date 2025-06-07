@@ -646,9 +646,48 @@ const ChatModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }
       const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
       const notificationEmail = import.meta.env.VITE_NOTIFICATION_EMAIL || 'wayne@uplinq.digital';
 
-      // Validate required environment variables
+      // Check if EmailJS is configured, otherwise use server endpoint
       if (!serviceId || !templateId || !publicKey) {
-        throw new Error('EmailJS configuration missing');
+        // Fallback to server endpoint
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: contactName,
+            email: contactEmail,
+            details: contactMessage,
+            source: 'chat_assistant',
+            requestType: 'chat_assistant'
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to submit message');
+        }
+
+        console.log("Chat form submitted successfully via server API");
+        setIsSubmitting(false);
+        setFormSubmitted(true);
+        
+        // Add confirmation message
+        const confirmationMessage: Message = {
+          id: Date.now().toString(),
+          text: `Thanks, ${contactName}! Your request has been submitted to our team at wayne@uplinq.digital. A member of our team will contact you at ${contactEmail} within 1 business day.`,
+          sender: 'assistant',
+          timestamp: new Date(),
+          hasQuickReplies: true
+        };
+        
+        setMessages(prev => [...prev, confirmationMessage]);
+        
+        // Reset form
+        setContactName('');
+        setContactEmail('');
+        setContactMessage('');
+        
+        return;
       }
 
       const templateParams = {

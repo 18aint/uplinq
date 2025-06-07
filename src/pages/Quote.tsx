@@ -112,9 +112,33 @@ const Quote = () => {
         const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
         const notificationEmail = import.meta.env.VITE_NOTIFICATION_EMAIL || 'wayne@uplinq.digital';
 
-        // Validate required environment variables
+        // Check if EmailJS is configured, otherwise use server endpoint
         if (!serviceId || !templateId || !publicKey) {
-          throw new Error('EmailJS configuration missing');
+          // Fallback to server endpoint
+          const response = await fetch('/api/quote', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              name,
+              company,
+              email,
+              website,
+              projectType,
+              budget,
+              timeline,
+              goals
+            }),
+          });
+
+          if (!response.ok) {
+            throw new Error('Failed to submit quote');
+          }
+
+          console.log("Quote form submitted successfully via server API");
+          setFormState(FormState.Complete);
+          return;
         }
 
         const templateParams = {

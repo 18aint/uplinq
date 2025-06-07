@@ -31,9 +31,31 @@ const LoomConfirmation = () => {
       const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
       const notificationEmail = import.meta.env.VITE_NOTIFICATION_EMAIL || 'wayne@uplinq.digital';
 
-      // Validate required environment variables
+      // Check if EmailJS is configured, otherwise use server endpoint
       if (!serviceId || !templateId || !publicKey) {
-        throw new Error('EmailJS configuration missing');
+        // Fallback to server endpoint
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: email.split('@')[0],
+            email: email,
+            details: `Loom Audit Request from ${email}. User has requested their personalized website audit video from the Apollo campaign.`,
+            source: 'loom_confirmation',
+            requestType: 'audit_video'
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to submit audit video request');
+        }
+
+        console.log("Loom audit request submitted successfully via server API");
+        setIsSubmitting(false);
+        setIsSubmitted(true);
+        return;
       }
 
       const templateParams = {

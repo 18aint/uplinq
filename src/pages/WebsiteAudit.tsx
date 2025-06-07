@@ -110,9 +110,30 @@ const WebsiteAudit = () => {
       const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
       const notificationEmail = import.meta.env.VITE_NOTIFICATION_EMAIL || 'wayne@uplinq.digital';
 
-      // Validate required environment variables
+      // Check if EmailJS is configured, otherwise use server endpoint
       if (!serviceId || !templateId || !publicKey) {
-        console.warn('EmailJS not configured, proceeding with mock results');
+        // Fallback to server endpoint
+        try {
+          const response = await fetch('/api/audit', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              websiteUrl,
+              email,
+              companyName: companyName || 'N/A'
+            }),
+          });
+
+          if (!response.ok) {
+            throw new Error('Failed to submit audit request');
+          }
+
+          console.log("Audit request submitted successfully via server API");
+        } catch (error) {
+          console.error('Error submitting audit via server:', error);
+        }
       } else {
         // Send notification email about the audit request
         const templateParams = {
