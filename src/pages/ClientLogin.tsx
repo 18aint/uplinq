@@ -55,7 +55,84 @@ const ClientLogin = () => {
     setErrorMessage('');
 
     try {
-      // EmailJS configuration - using environment variables
+      // Use YOUR EmailJS configuration
+      const useOwnConfig = true; // Now using your own EmailJS setup
+      
+      if (useOwnConfig) {
+        // Your EmailJS credentials
+        const serviceId = "service_a179wf5";
+        const templateId = "template_csfsw95";
+        const confirmationTemplateId = "template_ozu689f";
+        const publicKey = "rqSYMmFKIf7xYMlLB";
+        const notificationEmail = "wayne@uplinq.digital";
+        
+        // Initialize with YOUR credentials
+        emailjs.init(publicKey);
+        
+        // Template parameters for notification email to Wayne
+        const notificationParams = {
+          to_email: notificationEmail,
+          from_email: email,
+          from_name: email.split('@')[0],
+          subject: "🔔 New Client Portal Signup",
+          message: `New user signed up for client portal notifications!
+
+Email: ${email}
+Signup Date: ${new Date().toLocaleString()}
+Source: Client Login Page
+
+The user wants to be notified when the client portal is ready.
+
+Best regards,
+Uplinq Digital System`,
+          user_email: email,
+          request_type: "Client Portal Signup",
+          source: "client_login",
+          signup_date: new Date().toLocaleString()
+        };
+
+        // Send notification email to Wayne
+        console.log("Sending notification email to Wayne...");
+        await emailjs.send(serviceId, templateId, notificationParams);
+        
+        // Send confirmation email to user
+        const confirmationParams = {
+          to_email: email,
+          to_name: email.split('@')[0],
+          from_name: "Wayne from Uplinq Digital",
+          reply_to: "wayne@uplinq.digital",
+          subject: "🚀 Thanks for your interest in Uplinq Client Portal!",
+          message: `Hi ${email.split('@')[0]},
+
+Thank you for signing up for notifications about our client portal!
+
+🎯 What's coming:
+• Exclusive client dashboard for project management
+• Real-time project updates and communication
+• Seamless file sharing and collaboration tools
+• Advanced analytics and reporting features
+
+📅 We're putting the finishing touches on the portal and expect to launch soon. You'll be among the first to know when it's ready!
+
+💬 In the meantime, if you have any questions or need immediate assistance, just reply to this email.
+
+Best regards,
+Wayne & The Uplinq Digital Team
+
+P.S. Get ready for an amazing project management experience! 🌟`
+        };
+
+        // Send confirmation email to user
+        console.log("Sending confirmation email to user...");
+        await emailjs.send(serviceId, confirmationTemplateId, confirmationParams);
+        
+        console.log("✅ CLIENT PORTAL EMAILS SENT SUCCESSFULLY with YOUR EmailJS!");
+        setSubmitStatus('success');
+        setEmail('');
+        return;
+      }
+
+      // Fallback to environment variables (for future use)
       const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
       const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
       const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;

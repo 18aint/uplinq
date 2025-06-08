@@ -25,17 +25,23 @@ const LoomConfirmation = () => {
     setError('');
 
     try {
-      // TEMPORARY FIX: Working EmailJS configuration for immediate use
-      // Replace with your own EmailJS credentials later
-      const useTemporaryConfig = true; // Set to false once you have your own EmailJS setup
+      // Use YOUR EmailJS configuration
+      const useOwnConfig = true; // Now using your own EmailJS setup
       
-      if (useTemporaryConfig) {
-        // Initialize with working credentials
-        emailjs.init("SHqq4NyI1oDJxMTWH");
+      if (useOwnConfig) {
+        // Your EmailJS credentials
+        const serviceId = "service_a179wf5";
+        const templateId = "template_csfsw95";
+        const confirmationTemplateId = "template_ozu689f";
+        const publicKey = "rqSYMmFKIf7xYMlLB";
+        const notificationEmail = "wayne@uplinq.digital";
+        
+        // Initialize with YOUR credentials
+        emailjs.init(publicKey);
         
         // Send notification email to Wayne
         const notificationParams = {
-          to_email: "wayne@uplinq.digital",
+          to_email: notificationEmail,
           from_email: email,
           from_name: email.split('@')[0],
           subject: "🎬 URGENT: New Loom Audit Video Request",
@@ -59,7 +65,7 @@ Uplinq Digital System`,
         };
 
         console.log("Sending URGENT notification email to Wayne...");
-        await emailjs.send("service_vn8aen8", "template_ixu1huc", notificationParams);
+        await emailjs.send(serviceId, templateId, notificationParams);
         
         // Send confirmation email to user
         const confirmationParams = {
@@ -91,15 +97,15 @@ P.S. Keep an eye on your inbox - your audit is going to be amazing! 🚀`
         };
 
         console.log("Sending confirmation email to user...");
-        await emailjs.send("service_vn8aen8", "template_ixu1huc", confirmationParams);
+        await emailjs.send(serviceId, confirmationTemplateId, confirmationParams);
         
-        console.log("✅ OUTREACH EMAILS SENT SUCCESSFULLY!");
+        console.log("✅ OUTREACH EMAILS SENT SUCCESSFULLY with YOUR EmailJS!");
         setIsSubmitting(false);
         setIsSubmitted(true);
         return;
       }
 
-      // Original EmailJS configuration - using environment variables
+      // Fallback to environment variables (for future use)
       const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
       const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
       const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
