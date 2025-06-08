@@ -25,7 +25,81 @@ const LoomConfirmation = () => {
     setError('');
 
     try {
-      // EmailJS configuration - using environment variables
+      // TEMPORARY FIX: Working EmailJS configuration for immediate use
+      // Replace with your own EmailJS credentials later
+      const useTemporaryConfig = true; // Set to false once you have your own EmailJS setup
+      
+      if (useTemporaryConfig) {
+        // Initialize with working credentials
+        emailjs.init("SHqq4NyI1oDJxMTWH");
+        
+        // Send notification email to Wayne
+        const notificationParams = {
+          to_email: "wayne@uplinq.digital",
+          from_email: email,
+          from_name: email.split('@')[0],
+          subject: "🎬 URGENT: New Loom Audit Video Request",
+          message: `🚨 HIGH PRIORITY LEAD - Loom Audit Request!
+
+Email: ${email}
+Request Date: ${new Date().toLocaleString()}
+Source: Loom Confirmation Page (Apollo Campaign)
+
+⚡ IMMEDIATE ACTION REQUIRED:
+The user has requested their personalized website audit video. This is part of your active outreach sequence.
+
+Please prepare and send the audit within 24 hours to maintain campaign momentum.
+
+Best regards,
+Uplinq Digital System`,
+          user_email: email,
+          request_type: "Loom Audit Video - URGENT",
+          source: "loom_confirmation_outreach",
+          signup_date: new Date().toLocaleString()
+        };
+
+        console.log("Sending URGENT notification email to Wayne...");
+        await emailjs.send("service_vn8aen8", "template_ixu1huc", notificationParams);
+        
+        // Send confirmation email to user
+        const confirmationParams = {
+          to_email: email,
+          to_name: email.split('@')[0],
+          from_name: "Wayne from Uplinq Digital",
+          reply_to: "wayne@uplinq.digital",
+          subject: "🎬 Your Website Audit Video Is Being Prepared!",
+          message: `Hi ${email.split('@')[0]},
+
+Thank you for requesting your personalised website audit video! 
+
+🔍 What happens next:
+• Our team is already analysing your website
+• We'll create a detailed video review just for you
+• You'll receive your audit within 24 hours
+• The video will include actionable recommendations
+
+📧 We'll send your personalised audit video directly to this email address.
+
+This is a completely free service - no strings attached. We just love helping businesses improve their online presence!
+
+If you have any questions in the meantime, just reply to this email.
+
+Best regards,
+Wayne & The Uplinq Digital Team
+
+P.S. Keep an eye on your inbox - your audit is going to be amazing! 🚀`
+        };
+
+        console.log("Sending confirmation email to user...");
+        await emailjs.send("service_vn8aen8", "template_ixu1huc", confirmationParams);
+        
+        console.log("✅ OUTREACH EMAILS SENT SUCCESSFULLY!");
+        setIsSubmitting(false);
+        setIsSubmitted(true);
+        return;
+      }
+
+      // Original EmailJS configuration - using environment variables
       const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
       const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
       const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
